@@ -1,7 +1,7 @@
 {
   "hero": {
     "headline": "Ekosistem Digital untuk <span class=\"bg-gradient-to-r from-indigo-400 via-purple-400 to-orange-400 bg-clip-text text-transparent\">Percepatan Bisnis</span> Anda",
-    "subheadline": "Centric menghadirkan 4 produk unggulan yang saling terintegrasi — dari meeting intelligence, WhatsApp CRM, social media marketing, hingga link-building — untuk mendorong pertumbuhan bisnis Anda."
+    "subheadline": "Centric menghadirkan 5 produk unggulan yang saling terintegrasi — dari meeting intelligence, WhatsApp CRM, social media marketing, link-building, hingga platform karir — untuk mendorong pertumbuhan bisnis Anda."
   },
   "testimonials": [
     {
@@ -33,7 +33,7 @@
     {
       "id": 1,
       "question": "Apa itu Centric Ecosystem?",
-      "answer": "Centric Ecosystem adalah kumpulan produk digital yang saling terintegrasi, terdiri dari Centric Meet (AI Meeting), Centric Hub (WhatsApp CRM), Centric Buzz (SMM Platform), dan Centric Link (LinkBackSeed Aggregator)."
+      "answer": "Centric Ecosystem adalah kumpulan produk digital yang saling terintegrasi, terdiri dari Centric Meet (AI Meeting), Centric Hub (WhatsApp CRM), Centric Buzz (SMM Platform), Centric Link (LinkBackSeed Aggregator), dan Centric Seekr (Platform Karir Jobseeker)."
     },
     {
       "id": 2,

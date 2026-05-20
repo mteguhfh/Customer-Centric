@@ -11,7 +11,7 @@
 
 ## Tentang
 
-Centric Ecosystem adalah kumpulan produk digital yang saling terintegrasi, terdiri dari 4 produk unggulan yang dirancang untuk membantu bisnis di Indonesia beroperasi lebih efisien dan tumbuh lebih cepat.
+Centric Ecosystem adalah kumpulan produk digital yang saling terintegrasi, terdiri dari 5 produk unggulan yang dirancang untuk membantu bisnis dan individu di Indonesia beroperasi lebih efisien dan tumbuh lebih cepat.
 
 | Produk | Fungsi | URL |
 |--------|--------|-----|
@@ -19,6 +19,7 @@ Centric Ecosystem adalah kumpulan produk digital yang saling terintegrasi, terdi
 | **Centric Hub** | WhatsApp Gateway & CRM All-in-One | [hub.customercentric.id](https://hub.customercentric.id) |
 | **Centric Buzz** | Social Media Marketing Platform | [buzz.customercentric.id](https://buzz.customercentric.id) |
 | **Centric Link** | LinkBackSeed Aggregator | [link.customercentric.id](https://link.customercentric.id) |
+| **Centric Seekr** | Platform Karir Jobseeker AI | [doc.customercentric.id](https://doc.customercentric.id) |
 
 ## Tech Stack
 
