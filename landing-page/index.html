@@ -89,6 +89,65 @@
     .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
 
     .step-number { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 700; font-size: 1.25rem; }
+
+    /* ===== PARTICLE CANVAS ===== */
+    #particle-canvas { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+
+    /* ===== ANIMATED BLOBS ===== */
+    .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.12; will-change: transform; }
+    .blob-1 { width: 600px; height: 600px; background: #6366f1; top: -200px; left: -150px; animation: blob-float 25s ease-in-out infinite; }
+    .blob-2 { width: 500px; height: 500px; background: #a855f7; bottom: -150px; right: -100px; animation: blob-float 20s ease-in-out infinite reverse; }
+    .blob-3 { width: 350px; height: 350px; background: #f97316; top: 40%; left: 60%; animation: blob-float 22s ease-in-out infinite; animation-delay: -8s; }
+    @keyframes blob-float {
+      0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      25% { transform: translate(40px, -60px) scale(1.15) rotate(90deg); }
+      50% { transform: translate(-30px, 40px) scale(0.9) rotate(180deg); }
+      75% { transform: translate(20px, -30px) scale(1.05) rotate(270deg); }
+    }
+
+    /* ===== SCROLL PROGRESS ===== */
+    #scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9999; background: transparent; }
+    #scroll-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #6366f1, #a855f7, #f97316); transition: width 0.1s linear; border-radius: 0 2px 2px 0; box-shadow: 0 0 10px rgba(99,102,241,0.5); }
+
+    /* ===== 3D TILT CARDS ===== */
+    .tilt-card { transition: transform 0.1s ease-out !important; will-change: transform; }
+
+    /* ===== MAGNETIC BUTTON ===== */
+    .magnetic-btn { transition: transform 0.2s ease-out; will-change: transform; }
+
+    /* ===== TESTIMONIAL CAROUSEL ===== */
+    .testimonial-slide { animation: fadeSlideIn 0.5s ease forwards; }
+    @keyframes fadeSlideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+    .carousel-dot { transition: all 0.3s ease; cursor: pointer; }
+    .carousel-dot.active { background: #6366f1; width: 2rem; }
+
+    /* ===== SHIMMER BORDER ===== */
+    .shimmer-border { position: relative; overflow: hidden; }
+    .shimmer-border::before { content: ''; position: absolute; inset: -2px; border-radius: inherit; background: conic-gradient(from 0deg, transparent, #6366f1, transparent, #a855f7, transparent, #f97316, transparent); animation: shimmer-rotate 4s linear infinite; z-index: -1; opacity: 0; transition: opacity 0.4s ease; }
+    .shimmer-border:hover::before { opacity: 1; }
+    .shimmer-border::after { content: ''; position: absolute; inset: 1px; border-radius: inherit; background: white; z-index: -1; }
+    @keyframes shimmer-rotate { to { transform: rotate(360deg); } }
+
+    /* ===== SECTION DIVIDER ===== */
+    .section-divider { position: relative; height: 80px; overflow: hidden; }
+    .section-divider svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; }
+
+    /* ===== FLOATING BADGE ===== */
+    .floating-badge { animation: float-badge 3s ease-in-out infinite; }
+    @keyframes float-badge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* ===== GRADIENT TEXT SHIMMER ===== */
+    .gradient-shimmer { background: linear-gradient(135deg, #6366f1, #a855f7, #f97316, #6366f1); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer-gradient 4s ease infinite; }
+    @keyframes shimmer-gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+    /* ===== STAGGER DELAYS ===== */
+    .stagger-1 { transition-delay: 0.1s !important; }
+    .stagger-2 { transition-delay: 0.2s !important; }
+    .stagger-3 { transition-delay: 0.3s !important; }
+    .stagger-4 { transition-delay: 0.4s !important; }
   </style>
   <script type="application/ld+json">
   {
@@ -133,6 +192,9 @@
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
 
+  <!-- ===== SCROLL PROGRESS BAR ===== -->
+  <div id="scroll-progress"><div id="scroll-progress-bar"></div></div>
+
   <!-- ===== NAVBAR ===== -->
   <nav class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -148,7 +210,7 @@
           <a href="#link" class="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors">Link</a>
         </div>
 
-        <a href="#products" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl btn-primary transition-all">
+          <a href="#products" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl btn-primary transition-all magnetic-btn">
           Jelajahi Produk
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
         </a>
@@ -173,7 +235,11 @@
   </nav>
 
   <!-- ===== HERO ===== -->
-  <section class="relative min-h-screen flex items-center overflow-hidden bg-slate-900">
+  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden bg-slate-900">
+    <canvas id="particle-canvas"></canvas>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
     <div class="hero-glow absolute inset-0 pointer-events-none"></div>
     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
 
@@ -195,11 +261,11 @@
         </p>
 
         <div class="flex flex-wrap justify-center gap-4 fade-in visible">
-          <a href="#products" class="inline-flex items-center gap-2 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-2xl btn-primary text-base">
+          <a href="#products" class="inline-flex items-center gap-2 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-2xl btn-primary text-base magnetic-btn">
             Lihat Semua Produk
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
-          <a href="#keunggulan" class="inline-flex items-center gap-2 px-8 py-3.5 border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white font-semibold rounded-2xl btn-outline text-base">
+          <a href="#keunggulan" class="inline-flex items-center gap-2 px-8 py-3.5 border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white font-semibold rounded-2xl btn-outline text-base magnetic-btn">
             Kenali Kami
           </a>
         </div>
@@ -208,6 +274,11 @@
 
     <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none"></div>
   </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="section-divider bg-slate-50">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" fill="#0f172a"><path d="M0,40 C360,0 1080,80 1440,40 L1440,0 L0,0 Z" opacity="0.03"/><path d="M0,50 C360,10 1080,90 1440,50 L1440,0 L0,0 Z" opacity="0.06"/></svg>
+  </div>
 
   <!-- ===== PRODUK SHOWCASE ===== -->
   <section id="products" class="py-20 md:py-28 bg-slate-50">
@@ -221,7 +292,7 @@
       <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
 
         <!-- Centric Meet -->
-        <div id="meet" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-blue-500/10 fade-in-up">
+        <div id="meet" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-blue-500/10 fade-in-up tilt-card shimmer-border" data-tilt>
           <div class="card-glow absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" style="background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(59,130,246,0.1), transparent);"></div>
           <div class="relative">
             <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center mb-5 product-icon">
@@ -244,7 +315,7 @@
         </div>
 
         <!-- Centric Hub -->
-        <div id="hub" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-purple-500/10 fade-in-up">
+        <div id="hub" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-purple-500/10 fade-in-up tilt-card shimmer-border" data-tilt>
           <div class="card-glow absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" style="background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(139,92,246,0.1), transparent);"></div>
           <div class="relative">
             <div class="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center mb-5 product-icon">
@@ -267,7 +338,7 @@
         </div>
 
         <!-- Centric Buzz -->
-        <div id="buzz" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-orange-500/10 fade-in-up">
+        <div id="buzz" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-orange-500/10 fade-in-up tilt-card shimmer-border" data-tilt>
           <div class="card-glow absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" style="background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(249,115,22,0.1), transparent);"></div>
           <div class="relative">
             <div class="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center mb-5 product-icon">
@@ -290,7 +361,7 @@
         </div>
 
         <!-- Centric Link -->
-        <div id="link" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-emerald-500/10 fade-in-up">
+        <div id="link" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-emerald-500/10 fade-in-up tilt-card shimmer-border" data-tilt>
           <div class="card-glow absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" style="background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(16,185,129,0.1), transparent);"></div>
           <div class="relative">
             <div class="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center mb-5 product-icon">
@@ -315,6 +386,11 @@
       </div>
     </div>
   </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="section-divider bg-slate-900">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" fill="#f8fafc"><path d="M0,40 C360,0 1080,80 1440,40 L1440,0 L0,0 Z" opacity="0.5"/></svg>
+  </div>
 
   <!-- ===== STATS ===== -->
   <section class="py-16 md:py-20 bg-slate-900">
@@ -350,7 +426,7 @@
       </div>
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up text-center">
+        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up stagger-1 text-center">
           <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-100 flex items-center justify-center mb-5">
             <svg class="w-7 h-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
           </div>
@@ -358,7 +434,7 @@
           <p class="text-slate-500 text-sm leading-relaxed">Empat produk dalam satu ekosistem yang saling terintegrasi. Tidak perlu berpindah-pindah platform.</p>
         </div>
 
-        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up text-center">
+        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up stagger-2 text-center">
           <div class="w-14 h-14 mx-auto rounded-2xl bg-purple-100 flex items-center justify-center mb-5">
             <svg class="w-7 h-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
           </div>
@@ -366,7 +442,7 @@
           <p class="text-slate-500 text-sm leading-relaxed">Data dan workflow antar produk terhubung secara seamless untuk efisiensi maksimal.</p>
         </div>
 
-        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up text-center">
+        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up stagger-3 text-center">
           <div class="w-14 h-14 mx-auto rounded-2xl bg-orange-100 flex items-center justify-center mb-5">
             <svg class="w-7 h-7 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 0a2 2 0 11-.708 3.464 2 2 0 01.708-3.464zm0 0l-7.778 7.778m5.303-5.303l-2.122 2.121M7.5 21H3v-4.5L15.5 4.5a2.121 2.121 0 013 3L7.5 21z"/></svg>
           </div>
@@ -374,7 +450,7 @@
           <p class="text-slate-500 text-sm leading-relaxed">Tim support spesialis kami siap membantu kapanpun Anda membutuhkan bantuan atau konsultasi.</p>
         </div>
 
-        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up text-center">
+        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up stagger-4 text-center">
           <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-100 flex items-center justify-center mb-5">
             <svg class="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
           </div>
@@ -425,17 +501,28 @@
     </div>
   </section>
 
-  <!-- ===== TESTIMONIALS ===== -->
+  <!-- ===== TESTIMONIALS (CAROUSEL) ===== -->
   <section id="testimonials" class="py-20 md:py-28 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 fade-in">
         <span class="text-indigo-600 font-semibold text-sm tracking-wider uppercase">Testimonial</span>
         <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Apa Kata Mereka?</h2>
         <p class="text-lg text-slate-500 max-w-2xl mx-auto">Ribuan klien telah merasakan manfaat ekosistem Centric.</p>
       </div>
 
-      <div id="testimonial-list" class="grid md:grid-cols-3 gap-6 lg:gap-8">
-        <!-- Testimonials will be loaded from CMS -->
+      <div id="testimonial-carousel" class="relative">
+        <div id="testimonial-list" class="min-h-[280px]">
+          <!-- Testimonials loaded from CMS -->
+        </div>
+        <div id="testimonial-dots" class="flex justify-center gap-2 mt-10"></div>
+        <div class="flex justify-center gap-4 mt-6">
+          <button id="testimonial-prev" class="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:border-slate-400 transition-all" aria-label="Sebelumnya">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button id="testimonial-next" class="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:border-slate-400 transition-all" aria-label="Selanjutnya">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -531,6 +618,14 @@
 
   <!-- ===== SCRIPTS ===== -->
   <script>
+    // ===== SCROLL PROGRESS BAR =====
+    const progressBar = document.getElementById('scroll-progress-bar');
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      progressBar.style.width = (scrollTop / scrollHeight * 100) + '%';
+    }, { passive: true });
+
     // ===== MOBILE MENU =====
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -542,7 +637,6 @@
       mobileMenu.style.maxHeight = menuOpen ? mobileMenu.scrollHeight + 'px' : '0';
     });
 
-    // Close menu on link click
     document.querySelectorAll('#mobile-menu a').forEach(link => {
       link.addEventListener('click', () => {
         menuOpen = false;
@@ -551,14 +645,125 @@
       });
     });
 
-    // ===== SCROLL ANIMATIONS (Intersection Observer) =====
+    // ===== PARTICLE CANVAS =====
+    const initParticles = (canvas) => {
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let animId;
+      let w, h;
+
+      const resize = () => {
+        const parent = canvas.parentElement;
+        w = canvas.width = parent.offsetWidth;
+        h = canvas.height = parent.offsetHeight;
+      };
+
+      const createParticles = (count) => {
+        particles = [];
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            size: Math.random() * 2 + 0.5,
+            speedX: (Math.random() - 0.5) * 0.4,
+            speedY: (Math.random() - 0.5) * 0.4,
+            opacity: Math.random() * 0.4 + 0.1,
+          });
+        }
+      };
+
+      const draw = () => {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach((p, i) => {
+          p.x += p.speedX;
+          p.y += p.speedY;
+          if (p.x < 0 || p.x > w) p.speedX *= -1;
+          if (p.y < 0 || p.y > h) p.speedY *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(99, 102, 241, ${p.opacity})`;
+          ctx.fill();
+
+          // Draw connections
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = p.x - particles[j].x;
+            const dy = p.y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 150) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(99, 102, 241, ${0.06 * (1 - dist / 150)})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        });
+        animId = requestAnimationFrame(draw);
+      };
+
+      resize();
+      createParticles(Math.floor((w * h) / 8000));
+      draw();
+
+      window.addEventListener('resize', () => {
+        resize();
+        createParticles(Math.floor((w * h) / 8000));
+      });
+    };
+
+    // ===== 3D TILT EFFECT =====
+    const initTilt = () => {
+      document.querySelectorAll('[data-tilt]').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -8;
+          const rotateY = ((x - centerX) / centerX) * 8;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    };
+
+    // ===== MAGNETIC BUTTONS =====
+    const initMagnetic = () => {
+      document.querySelectorAll('.magnetic-btn').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = '';
+        });
+      });
+    };
+
+    // ===== SCROLL ANIMATIONS (with stagger support) =====
     const animateElements = () => {
       const elements = document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .fade-in-up, .fade-scale');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const delay = entry.target.dataset.delay || 0;
-            setTimeout(() => entry.target.classList.add('visible'), delay);
+            const delay = parseInt(entry.target.dataset.delay) || 0;
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+              // Stagger children with stagger-N classes
+              const staggables = entry.target.querySelectorAll('.stagger-1, .stagger-2, .stagger-3, .stagger-4');
+              staggables.forEach(el => {
+                const cls = [...el.classList].find(c => c.startsWith('stagger-'));
+                const d = parseInt(cls.split('-')[1]) * 120;
+                setTimeout(() => el.classList.add('visible'), d);
+              });
+            }, delay);
             observer.unobserve(entry.target);
           }
         });
@@ -607,7 +812,6 @@
 
         question.addEventListener('click', () => {
           const isOpen = answer.classList.contains('open');
-          // Close all
           document.querySelectorAll('.faq-answer.open').forEach(a => {
             a.classList.remove('open');
             a.style.maxHeight = '0';
@@ -623,6 +827,54 @@
       });
     };
 
+    // ===== TESTIMONIAL CAROUSEL =====
+    const initCarousel = () => {
+      const container = document.getElementById('testimonial-list');
+      const dotsContainer = document.getElementById('testimonial-dots');
+      const prevBtn = document.getElementById('testimonial-prev');
+      const nextBtn = document.getElementById('testimonial-next');
+      if (!container) return;
+      let current = 0;
+      let items = container.querySelectorAll('.testimonial-card');
+      let autoPlay;
+
+      const render = () => {
+        items = container.querySelectorAll('.testimonial-card');
+        items.forEach((item, i) => {
+          item.style.display = i === current ? 'block' : 'none';
+          item.style.opacity = i === current ? '1' : '0';
+        });
+
+        dotsContainer.innerHTML = '';
+        items.forEach((_, i) => {
+          const dot = document.createElement('button');
+          dot.className = `carousel-dot w-2.5 h-2.5 rounded-full ${i === current ? 'active' : 'bg-slate-300'}`;
+          dot.setAttribute('aria-label', `Testimonial ${i + 1}`);
+          dot.addEventListener('click', () => { goTo(i); resetAutoplay(); });
+          dotsContainer.appendChild(dot);
+        });
+      };
+
+      const goTo = (index) => {
+        if (items.length === 0) return;
+        current = (index + items.length) % items.length;
+        render();
+      };
+
+      const resetAutoplay = () => {
+        clearInterval(autoPlay);
+        autoPlay = setInterval(() => goTo(current + 1), 6000);
+      };
+
+      if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1); resetAutoplay(); });
+      if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1); resetAutoplay(); });
+
+      if (items.length > 1) {
+        render();
+        autoPlay = setInterval(() => goTo(current + 1), 6000);
+      }
+    };
+
     // ===== LOAD CMS CONTENT =====
     const loadCMS = async () => {
       try {
@@ -630,18 +882,16 @@
         if (!res.ok) throw new Error('Failed to load CMS');
         const data = await res.json();
 
-        // Hero
         if (data.hero) {
           document.querySelector('[data-cms="hero-headline"]') && (document.querySelector('[data-cms="hero-headline"]').innerHTML = data.hero.headline);
           document.querySelector('[data-cms="hero-subheadline"]') && (document.querySelector('[data-cms="hero-subheadline"]').textContent = data.hero.subheadline);
         }
 
-        // Testimonials
         if (data.testimonials && data.testimonials.length > 0) {
           const list = document.getElementById('testimonial-list');
           if (list) {
             list.innerHTML = data.testimonials.map(t => `
-              <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up">
+              <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
                 <div class="flex items-center gap-1 mb-4">
                   ${'<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(t.rating || 5)}
                 </div>
@@ -655,10 +905,10 @@
                 </div>
               </div>
             `).join('');
+            initCarousel();
           }
         }
 
-        // FAQ
         if (data.faq && data.faq.length > 0) {
           const list = document.getElementById('faq-list');
           if (list) {
@@ -679,7 +929,6 @@
 
       } catch (e) {
         console.warn('CMS content not loaded, using defaults:', e.message);
-        // Load default fallback testimonials & FAQ
         loadDefaults();
       }
     };
@@ -689,7 +938,7 @@
       const list = document.getElementById('testimonial-list');
       if (list && list.children.length === 0) {
         list.innerHTML = `
-          <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up">
+          <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
             <div class="flex items-center gap-1 mb-4">${'<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(5)}</div>
             <p class="text-slate-600 text-sm leading-relaxed mb-6">"Centric Hub benar-benar membantu tim sales kami. WA Gateway-nya stabil, fitur broadcast-nya powerful banget. Recommended!"</p>
             <div class="flex items-center gap-3">
@@ -697,7 +946,7 @@
               <div><div class="font-semibold text-slate-900 text-sm">Andi Pratama</div><div class="text-slate-400 text-xs">CEO &middot; TechStart Inc.</div></div>
             </div>
           </div>
-          <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up">
+          <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
             <div class="flex items-center gap-1 mb-4">${'<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(5)}</div>
             <p class="text-slate-600 text-sm leading-relaxed mb-6">"Cece Buzz adalah SMM panel terbaik yang pernah saya pakai. Proses cepat, harga kompetitif, dan support 24/7-nya luar biasa."</p>
             <div class="flex items-center gap-3">
@@ -705,7 +954,7 @@
               <div><div class="font-semibold text-slate-900 text-sm">Sari Dewi</div><div class="text-slate-400 text-xs">Digital Marketer &middot; Creativa Agency</div></div>
             </div>
           </div>
-          <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up">
+          <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
             <div class="flex items-center gap-1 mb-4">${'<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(4)}</div>
             <p class="text-slate-600 text-sm leading-relaxed mb-6">"Centric Meet menghemat waktu tim saya dalam membuat notulensi rapat. Fitur AI-nya akurat dan ringkasannya sangat membantu."</p>
             <div class="flex items-center gap-3">
@@ -714,6 +963,7 @@
             </div>
           </div>
         `;
+        initCarousel();
       }
 
       // Default FAQ
@@ -755,9 +1005,12 @@
 
     // ===== INIT =====
     document.addEventListener('DOMContentLoaded', () => {
+      initParticles(document.getElementById('particle-canvas'));
+      initTilt();
+      initMagnetic();
       animateElements();
       animateCounters();
-      initFAQ();
+      initCarousel();
       loadCMS();
     });
   </script>
