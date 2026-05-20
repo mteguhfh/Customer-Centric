@@ -1,0 +1,59 @@
+{
+  "hero": {
+    "headline": "Ekosistem Digital untuk <span class=\"bg-gradient-to-r from-indigo-400 via-purple-400 to-orange-400 bg-clip-text text-transparent\">Percepatan Bisnis</span> Anda",
+    "subheadline": "Centric menghadirkan 4 produk unggulan yang saling terintegrasi — dari meeting intelligence, WhatsApp CRM, social media marketing, hingga link-building — untuk mendorong pertumbuhan bisnis Anda."
+  },
+  "testimonials": [
+    {
+      "id": 1,
+      "quote": "Centric Hub benar-benar membantu tim sales kami. WA Gateway-nya stabil, fitur broadcast-nya powerful banget. Recommended!",
+      "name": "Andi Pratama",
+      "role": "CEO",
+      "company": "TechStart Inc.",
+      "rating": 5
+    },
+    {
+      "id": 2,
+      "quote": "Cece Buzz adalah SMM panel terbaik yang pernah saya pakai. Proses cepat, harga kompetitif, dan support 24/7-nya luar biasa.",
+      "name": "Sari Dewi",
+      "role": "Digital Marketer",
+      "company": "Creativa Agency",
+      "rating": 5
+    },
+    {
+      "id": 3,
+      "quote": "Centric Meet menghemat waktu tim saya dalam membuat notulensi rapat. Fitur AI-nya akurat dan ringkasannya sangat membantu.",
+      "name": "Bambang Kris",
+      "role": "Operations Lead",
+      "company": "FinCorp Group",
+      "rating": 4
+    }
+  ],
+  "faq": [
+    {
+      "id": 1,
+      "question": "Apa itu Centric Ecosystem?",
+      "answer": "Centric Ecosystem adalah kumpulan produk digital yang saling terintegrasi, terdiri dari Centric Meet (AI Meeting), Centric Hub (WhatsApp CRM), Centric Buzz (SMM Platform), dan Centric Link (LinkBackSeed Aggregator)."
+    },
+    {
+      "id": 2,
+      "question": "Apakah produk-produk Centric bisa digunakan terpisah?",
+      "answer": "Ya, setiap produk dapat digunakan secara independen sesuai kebutuhan Anda. Namun, ketika digunakan bersama-sama, integrasi antar produk memberikan nilai tambah yang lebih besar."
+    },
+    {
+      "id": 3,
+      "question": "Bagaimana cara mendaftar?",
+      "answer": "Kunjungi halaman produk yang ingin Anda gunakan, klik tombol 'Daftar' atau 'Mulai', dan ikuti proses registrasi. Pendaftaran gratis tanpa biaya tersembunyi."
+    },
+    {
+      "id": 4,
+      "question": "Apakah ada dukungan teknis jika saya mengalami masalah?",
+      "answer": "Tentu! Tim support kami siap membantu 24/7 melalui WhatsApp, email, atau live chat. Kami berkomitmen untuk memberikan respon cepat dan solusi terbaik."
+    },
+    {
+      "id": 5,
+      "question": "Apakah data saya aman?",
+      "answer": "Keamanan data adalah prioritas utama kami. Semua produk Centric dibangun dengan standar keamanan tinggi, enkripsi data, dan kepatuhan terhadap regulasi perlindungan data."
+    }
+  ]
+}

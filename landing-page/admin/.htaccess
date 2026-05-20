@@ -1,0 +1,4 @@
+# Protect sensitive files
+<Files "setup.php">
+    Deny from all
+</Files>
