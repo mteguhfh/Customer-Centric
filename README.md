@@ -95,11 +95,11 @@ npx tailwindcss -i css/src/tailwind.css -o css/style.css --watch
 
 ```bash
 # Upload to VPS via SCP
-scp -i ~/.ssh/cecebuzz_deploy landing-page/*.html root@103.245.38.81:/var/www/vhosts/customercentric.id/web/
-scp -i ~/.ssh/cecebuzz_deploy landing-page/css/style.css root@103.245.38.81:/var/www/vhosts/customercentric.id/web/css/
+scp -i ~/.ssh/your_ssh_deploy landing-page/*.html root@123.YOUR.IP:/var/www/your/vps/host/homepage
+scp -i ~/.ssh/your_ssh_deploy landing-page/css/style.css root@123.YOUR.IP:/var/www/your/vps/host/web/css/
 
 # Fix permissions
-ssh -i ~/.ssh/cecebuzz_deploy root@103.245.38.81 "chown -R customercentric:psacln /var/www/vhosts/customercentric.id/web/*.html /var/www/vhosts/customercentric.id/web/css/ /var/www/vhosts/customercentric.id/web/*.xml /var/www/vhosts/customercentric.id/web/robots.txt"
+ssh -i ~/.ssh/your_ssh_deploy root@123.YOUR.IP "chown -R yourproject:psacln /var/www/your/vps/host/web/*.html /var/www/your/vps/host/web/css/ /var/www/your/vps/host/web/*.xml /var/www/your/vps/host/web/robots.txt"
 ```
 
 ## Halaman
