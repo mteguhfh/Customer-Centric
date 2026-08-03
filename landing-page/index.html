@@ -27,22 +27,21 @@
   <link rel="stylesheet" href="css/style.css?v=2" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
-    * { font-family: 'Inter', system-ui, sans-serif; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
+    body { overflow-x: clip; }
 
     .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-    .glass-nav { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-    .glass-nav::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(99,102,241,0.06) 0%, transparent 100%); pointer-events: none; }
+    .glass-nav { background: rgba(10, 16, 32, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    .glass-nav::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(86, 102, 251, 0.05) 0%, transparent 100%); pointer-events: none; }
 
-    .hero-glow { background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(99, 102, 241, 0.25), transparent); }
-    .card-glow { background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(99, 102, 241, 0.08), transparent); }
+    .hero-glow { background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(86, 102, 251, 0.22), transparent); }
 
     .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    .product-card:hover { transform: translateY(-8px); }
+    .product-card:hover { transform: translateY(-6px); }
     .product-card .product-icon { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    .product-card:hover .product-icon { transform: scale(1.1) rotate(-3deg); }
+    .product-card:hover .product-icon { transform: scale(1.08); }
 
     .fade-in, .fade-in-left, .fade-in-right, .fade-in-up, .fade-scale {
       opacity: 1;
@@ -64,7 +63,7 @@
     .stat-number { display: inline-block; }
 
     .testimonial-card { transition: all 0.4s ease; }
-    .testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .testimonial-card:hover { transform: translateY(-4px); }
 
     .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; opacity: 0; }
     .faq-answer.open { max-height: 500px; opacity: 1; }
@@ -75,10 +74,9 @@
     .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: currentColor; transition: width 0.3s ease; }
     .nav-link:hover::after { width: 100%; }
 
-    .btn-primary { transition: all 0.3s ease; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4); }
-
-    .btn-outline { transition: all 0.3s ease; }
+    .btn-primary, .btn-outline { transition: all 0.3s ease; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(62, 77, 240, 0.35); }
+    .btn-primary:active, .btn-outline:active { transform: translateY(0) scale(0.98); }
     .btn-outline:hover { transform: translateY(-2px); }
 
     .mobile-menu { transition: all 0.3s ease; }
@@ -91,14 +89,34 @@
 
     .step-number { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 700; font-size: 1.25rem; }
 
+    /* ===== REDESIGN UTILITIES ===== */
+    .text-balance { text-wrap: balance; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    .ghost-text { color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, 0.14); }
+    .ghost-text-dark { color: transparent; -webkit-text-stroke: 1px rgba(10, 16, 32, 0.10); }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(560px circle at var(--mx, 50%) var(--my, 50%), rgba(86, 102, 251, 0.10), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+    .product-card:hover::before { opacity: 1; }
+
+    .testimonial-card { overflow: hidden; }
+
     /* ===== PARTICLE CANVAS ===== */
     #particle-canvas { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
 
     /* ===== ANIMATED BLOBS ===== */
     .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.12; will-change: transform; }
-    .blob-1 { width: 600px; height: 600px; background: #6366f1; top: -200px; left: -150px; animation: blob-float 25s ease-in-out infinite; }
-    .blob-2 { width: 500px; height: 500px; background: #a855f7; bottom: -150px; right: -100px; animation: blob-float 20s ease-in-out infinite reverse; }
-    .blob-3 { width: 350px; height: 350px; background: #f97316; top: 40%; left: 60%; animation: blob-float 22s ease-in-out infinite; animation-delay: -8s; }
+    .blob-1 { width: 600px; height: 600px; background: #5666fb; top: -200px; left: -150px; animation: blob-float 25s ease-in-out infinite; }
+    .blob-2 { width: 500px; height: 500px; background: #7d8dff; bottom: -150px; right: -100px; animation: blob-float 20s ease-in-out infinite reverse; }
+    .blob-3 { width: 350px; height: 350px; background: #38bdf8; top: 40%; left: 60%; animation: blob-float 22s ease-in-out infinite; animation-delay: -8s; }
     @keyframes blob-float {
       0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
       25% { transform: translate(40px, -60px) scale(1.15) rotate(90deg); }
@@ -107,27 +125,14 @@
     }
 
     /* ===== SCROLL PROGRESS ===== */
-    #scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9999; background: transparent; }
-    #scroll-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #6366f1, #a855f7, #f97316); transition: width 0.1s linear; border-radius: 0 2px 2px 0; box-shadow: 0 0 10px rgba(99,102,241,0.5); }
+    #scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; background: transparent; }
+    #scroll-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #5666fb, #7d8dff); transition: width 0.1s linear; border-radius: 0 2px 2px 0; box-shadow: 0 0 10px rgba(86, 102, 251, 0.5); }
 
     /* ===== 3D TILT CARDS ===== */
     .tilt-card { transition: transform 0.1s ease-out !important; will-change: transform; }
 
     /* ===== MAGNETIC BUTTON ===== */
     .magnetic-btn { transition: transform 0.2s ease-out; will-change: transform; }
-
-    /* ===== TESTIMONIAL CAROUSEL ===== */
-    .testimonial-slide { animation: fadeSlideIn 0.5s ease forwards; }
-    @keyframes fadeSlideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-    .carousel-dot { transition: all 0.3s ease; cursor: pointer; }
-    .carousel-dot.active { background: #6366f1; width: 2rem; }
-
-    /* ===== SHIMMER BORDER ===== */
-    .shimmer-border { position: relative; overflow: hidden; }
-    .shimmer-border::before { content: ''; position: absolute; inset: -2px; border-radius: inherit; background: conic-gradient(from 0deg, transparent, #6366f1, transparent, #a855f7, transparent, #f97316, transparent); animation: shimmer-rotate 4s linear infinite; z-index: -1; opacity: 0; transition: opacity 0.4s ease; }
-    .shimmer-border:hover::before { opacity: 1; }
-    .shimmer-border::after { content: ''; position: absolute; inset: 1px; border-radius: inherit; background: white; z-index: -1; }
-    @keyframes shimmer-rotate { to { transform: rotate(360deg); } }
 
     /* ===== SECTION DIVIDER ===== */
     .section-divider { position: relative; height: 80px; overflow: hidden; }
@@ -139,10 +144,6 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-6px); }
     }
-
-    /* ===== GRADIENT TEXT SHIMMER ===== */
-    .gradient-shimmer { background: linear-gradient(135deg, #6366f1, #a855f7, #f97316, #6366f1); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer-gradient 4s ease infinite; }
-    @keyframes shimmer-gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
     /* ===== STAGGER DELAYS ===== */
     .stagger-1 { transition-delay: 0.1s !important; }
@@ -193,31 +194,35 @@
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
 
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-slate-900 focus:px-5 focus:py-3 focus:rounded-xl focus:shadow-xl focus:text-sm focus:font-semibold">
+    Langsung ke konten
+  </a>
+
   <!-- ===== SCROLL PROGRESS BAR ===== -->
   <div id="scroll-progress"><div id="scroll-progress-bar"></div></div>
 
   <!-- ===== NAVBAR ===== -->
-  <nav class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-indigo-500/20" style="box-shadow: 0 1px 30px rgba(99,102,241,0.08);">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-brand-500/20" style="box-shadow: 0 1px 30px rgba(86,102,251,0.08);">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 md:h-20">
-        <a href="#" class="flex items-center gap-3 shrink-0">
+        <a href="index.html" class="flex items-center gap-3 shrink-0">
           <img src="logo/logo_CC_putih.png" alt="Centric" class="h-8 md:h-9 w-auto brightness-0 invert" />
         </a>
 
         <div class="hidden md:flex items-center gap-8">
-          <a href="#meet" class="nav-link text-sm font-medium text-slate-300 hover:text-indigo-300 transition-colors">Meet</a>
-          <a href="#hub" class="nav-link text-sm font-medium text-slate-300 hover:text-indigo-300 transition-colors">Hub</a>
-          <a href="#buzz" class="nav-link text-sm font-medium text-slate-300 hover:text-indigo-300 transition-colors">Buzz</a>
-          <a href="#link" class="nav-link text-sm font-medium text-slate-300 hover:text-indigo-300 transition-colors">Link</a>
-          <a href="#seekr" class="nav-link text-sm font-medium text-slate-300 hover:text-indigo-300 transition-colors">Seekr</a>
+          <a href="#meet" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Meet</a>
+          <a href="#hub" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Hub</a>
+          <a href="#buzz" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Buzz</a>
+          <a href="#link" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Link</a>
+          <a href="#seekr" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Seekr</a>
         </div>
 
-          <a href="#products" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-sm font-semibold rounded-xl btn-primary transition-all magnetic-btn" style="box-shadow: 0 4px 20px rgba(99,102,241,0.25);">
+          <a href="#products" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl btn-primary transition-all magnetic-btn" style="box-shadow: 0 4px 20px rgba(62,77,240,0.3);">
           Jelajahi Produk
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
         </a>
 
-        <button id="menu-toggle" class="md:hidden p-2 text-slate-300 hover:text-white">
+        <button id="menu-toggle" class="md:hidden p-2 text-slate-300 hover:text-white" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-menu">
           <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
@@ -226,19 +231,19 @@
     </div>
 
     <div id="mobile-menu" class="md:hidden hidden max-h-0 overflow-hidden mobile-menu">
-      <div class="px-4 py-4 space-y-3 border-t border-indigo-500/20">
-        <a href="#meet" class="block text-sm font-medium text-slate-300 hover:text-indigo-300 py-2">Centric Meet</a>
-        <a href="#hub" class="block text-sm font-medium text-slate-300 hover:text-indigo-300 py-2">Centric Hub</a>
-        <a href="#buzz" class="block text-sm font-medium text-slate-300 hover:text-indigo-300 py-2">Centric Buzz</a>
-        <a href="#link" class="block text-sm font-medium text-slate-300 hover:text-indigo-300 py-2">Centric Link</a>
-        <a href="#seekr" class="block text-sm font-medium text-slate-300 hover:text-indigo-300 py-2">Centric Seekr</a>
-        <a href="#products" class="block w-full text-center px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-sm font-semibold rounded-xl mt-2">Jelajahi Produk</a>
+      <div class="px-4 py-4 space-y-3 border-t border-brand-500/20">
+        <a href="#meet" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Centric Meet</a>
+        <a href="#hub" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Centric Hub</a>
+        <a href="#buzz" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Centric Buzz</a>
+        <a href="#link" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Centric Link</a>
+        <a href="#seekr" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Centric Seekr</a>
+        <a href="#products" class="block w-full text-center px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl mt-2">Jelajahi Produk</a>
       </div>
     </div>
   </nav>
 
   <!-- ===== HERO ===== -->
-  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden bg-slate-900">
+  <section id="main" tabindex="-1" class="relative min-h-[100dvh] flex items-center overflow-hidden bg-ink">
     <canvas id="particle-canvas"></canvas>
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
@@ -246,32 +251,117 @@
     <div class="hero-glow absolute inset-0 pointer-events-none"></div>
     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
 
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-40">
-      <div class="max-w-4xl mx-auto text-center">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-indigo-300 text-sm font-medium mb-6 fade-in visible">
-          <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse-glow"></span>
-          Ekosistem Solusi Digital Terintegrasi
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-36 lg:py-40">
+      <div class="grid lg:grid-cols-12 gap-14 lg:gap-16 items-center">
+
+        <div class="lg:col-span-6 text-left">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-500/10 border border-brand-500/20 rounded-full text-brand-300 text-sm font-medium mb-6 fade-in visible">
+            <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse-glow"></span>
+            Ekosistem solusi digital terintegrasi
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-[1.04] tracking-tight text-balance mb-6 fade-in visible" data-cms="hero-headline">
+            Ekosistem Digital untuk
+            <span class="text-brand-300">Percepatan Bisnis</span>
+            Anda
+          </h1>
+
+          <p class="text-lg sm:text-xl text-slate-400 max-w-xl mb-10 fade-in visible" data-cms="hero-subheadline">
+            Centric menghadirkan 5 produk unggulan yang saling terintegrasi — dari meeting intelligence, WhatsApp CRM, social media marketing, link-building, hingga platform karir — untuk mendorong pertumbuhan bisnis Anda.
+          </p>
+
+          <div class="flex flex-wrap gap-4 fade-in visible">
+            <a href="#products" class="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-2xl btn-primary text-base magnetic-btn">
+              Lihat Semua Produk
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+            <a href="#keunggulan" class="inline-flex items-center gap-2 px-8 py-3.5 border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white font-semibold rounded-2xl btn-outline text-base magnetic-btn">
+              Kenali Kami
+            </a>
+          </div>
+
+          <div class="mt-10 pt-8 border-t border-white/10 flex flex-wrap items-center gap-x-8 gap-y-3 fade-in visible">
+            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 5 produk terintegrasi</span>
+            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Konsultasi gratis</span>
+            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Support 24/7</span>
+          </div>
         </div>
 
-        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 fade-in visible">
-          Ekosistem Digital untuk
-          <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-orange-400 bg-clip-text text-transparent">Percepatan Bisnis</span>
-          Anda
-        </h1>
+        <div class="lg:col-span-6">
+          <div class="relative max-w-lg ml-auto fade-in-right visible">
+            <div class="absolute -top-5 -left-4 sm:-left-5 z-10 rounded-2xl bg-white text-slate-900 px-4 py-3 shadow-2xl shadow-brand-600/20 flex items-center gap-3 floating-badge">
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-500 shrink-0"></span>
+              <div>
+                <p class="text-sm font-bold leading-none">AI-Powered</p>
+                <p class="text-xs text-slate-500 mt-1">Automasi di semua lini</p>
+              </div>
+            </div>
 
-        <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 fade-in visible">
-          Centric menghadirkan 5 produk unggulan yang saling terintegrasi — dari meeting intelligence, WhatsApp CRM, social media marketing, link-building, hingga platform karir — untuk mendorong pertumbuhan bisnis Anda.
-        </p>
+            <div class="relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-7 shadow-2xl shadow-black/30">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <p class="text-xs font-semibold text-slate-400 mb-1">Ekosistem Centric</p>
+                  <p class="text-xl sm:text-2xl font-bold text-white leading-tight">Lima produk, satu tujuan</p>
+                </div>
+                <div class="w-11 h-11 rounded-2xl bg-brand-600 flex items-center justify-center shrink-0">
+                  <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                </div>
+              </div>
 
-        <div class="flex flex-wrap justify-center gap-4 fade-in visible">
-          <a href="#products" class="inline-flex items-center gap-2 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-2xl btn-primary text-base magnetic-btn">
-            Lihat Semua Produk
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-          </a>
-          <a href="#keunggulan" class="inline-flex items-center gap-2 px-8 py-3.5 border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white font-semibold rounded-2xl btn-outline text-base magnetic-btn">
-            Kenali Kami
-          </a>
+              <div class="space-y-3">
+                <a href="https://meet.customercentric.id" target="_blank" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-3 transition-colors">
+                  <span class="w-10 h-10 shrink-0 rounded-xl bg-blue-500/15 flex items-center justify-center"><svg class="w-5 h-5 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></span>
+                  <span class="min-w-0">
+                    <span class="block text-sm font-semibold text-white">Centric Meet</span>
+                    <span class="block text-xs text-slate-400">Notulensi rapat AI</span>
+                  </span>
+                  <svg class="w-4 h-4 ml-auto text-slate-500 group-hover:text-brand-300 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+                <a href="https://hub.customercentric.id" target="_blank" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-3 transition-colors">
+                  <span class="w-10 h-10 shrink-0 rounded-xl bg-purple-500/15 flex items-center justify-center"><svg class="w-5 h-5 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg></span>
+                  <span class="min-w-0">
+                    <span class="block text-sm font-semibold text-white">Centric Hub</span>
+                    <span class="block text-xs text-slate-400">WA Gateway &amp; CRM Indonesia</span>
+                  </span>
+                  <svg class="w-4 h-4 ml-auto text-slate-500 group-hover:text-brand-300 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+                <a href="https://buzz.customercentric.id" target="_blank" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-3 transition-colors">
+                  <span class="w-10 h-10 shrink-0 rounded-xl bg-orange-500/15 flex items-center justify-center"><svg class="w-5 h-5 text-orange-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></span>
+                  <span class="min-w-0">
+                    <span class="block text-sm font-semibold text-white">Centric Buzz</span>
+                    <span class="block text-xs text-slate-400">Social media marketing</span>
+                  </span>
+                  <svg class="w-4 h-4 ml-auto text-slate-500 group-hover:text-brand-300 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+                <a href="https://link.customercentric.id" target="_blank" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-3 transition-colors">
+                  <span class="w-10 h-10 shrink-0 rounded-xl bg-emerald-500/15 flex items-center justify-center"><svg class="w-5 h-5 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></span>
+                  <span class="min-w-0">
+                    <span class="block text-sm font-semibold text-white">Centric Link</span>
+                    <span class="block text-xs text-slate-400">Link-building &amp; press</span>
+                  </span>
+                  <svg class="w-4 h-4 ml-auto text-slate-500 group-hover:text-brand-300 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+                <a href="https://doc.customercentric.id" target="_blank" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-3 transition-colors">
+                  <span class="w-10 h-10 shrink-0 rounded-xl bg-pink-500/15 flex items-center justify-center"><svg class="w-5 h-5 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></span>
+                  <span class="min-w-0">
+                    <span class="block text-sm font-semibold text-white">Centric Seekr</span>
+                    <span class="block text-xs text-slate-400">Platform karir jobseeker</span>
+                  </span>
+                  <svg class="w-4 h-4 ml-auto text-slate-500 group-hover:text-brand-300 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+
+              <div class="mt-6 pt-5 border-t border-white/10 flex items-center justify-between">
+                <span class="text-xs text-slate-400">Terintegrasi penuh</span>
+                <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-300">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-glow"></span>
+                  Semua produk tersambung
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -280,30 +370,28 @@
 
   <!-- ===== DIVIDER ===== -->
   <div class="section-divider bg-slate-50">
-    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" fill="#0f172a"><path d="M0,40 C360,0 1080,80 1440,40 L1440,0 L0,0 Z" opacity="0.03"/><path d="M0,50 C360,10 1080,90 1440,50 L1440,0 L0,0 Z" opacity="0.06"/></svg>
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" fill="#0a1020"><path d="M0,40 C360,0 1080,80 1440,40 L1440,0 L0,0 Z" opacity="0.03"/><path d="M0,50 C360,10 1080,90 1440,50 L1440,0 L0,0 Z" opacity="0.06"/></svg>
   </div>
 
   <!-- ===== PRODUK SHOWCASE ===== -->
   <section id="products" class="py-20 md:py-28 bg-slate-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 fade-in">
-        <span class="text-indigo-600 font-semibold text-sm tracking-wider uppercase">Produk Kami</span>
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Solusi Tepat untuk Setiap Kebutuhan</h2>
+        <span class="text-brand-600 font-semibold text-sm">Produk kami</span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Solusi tepat untuk setiap kebutuhan</h2>
         <p class="text-lg text-slate-500 max-w-2xl mx-auto">Lima produk unggulan yang dirancang untuk membantu bisnis Anda tumbuh di era digital.</p>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
 
         <!-- Centric Meet -->
-        <div id="meet" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-blue-500/10 fade-in-up tilt-card shimmer-border" data-tilt>
-          <div class="card-glow absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" style="background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(59,130,246,0.1), transparent);"></div>
+        <div id="meet" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-ink/5 fade-in-up tilt-card" data-tilt>
           <div class="relative">
             <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center mb-5 product-icon">
               <svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             </div>
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-blue-50 rounded-full text-blue-700 text-xs font-medium mb-3">AI-Powered</div>
             <h3 class="text-2xl font-bold text-slate-900 mb-2">Centric <span class="text-blue-600">Meet</span></h3>
-            <p class="text-sm font-medium text-blue-600 mb-3">Notulensi Rapat AI Cerdas</p>
+            <p class="text-sm font-medium text-blue-600 mb-3">Notulensi rapat AI</p>
             <p class="text-slate-500 mb-6 leading-relaxed">Ubah rekaman rapat Anda menjadi notulensi terstruktur, ringkasan eksekutif, dan poin tindakan secara otomatis menggunakan AI. Hemat waktu, tingkatkan produktivitas tim.</p>
             <div class="flex items-center gap-2 text-sm text-slate-400 mb-6">
               <span class="flex items-center gap-1"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Transkripsi Auto</span>
@@ -318,15 +406,13 @@
         </div>
 
         <!-- Centric Hub -->
-        <div id="hub" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-purple-500/10 fade-in-up tilt-card shimmer-border" data-tilt>
-          <div class="card-glow absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" style="background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(139,92,246,0.1), transparent);"></div>
+        <div id="hub" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-ink/5 fade-in-up tilt-card" data-tilt>
           <div class="relative">
             <div class="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center mb-5 product-icon">
               <svg class="w-7 h-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
             </div>
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-purple-50 rounded-full text-purple-700 text-xs font-medium mb-3">All-in-One Platform</div>
             <h3 class="text-2xl font-bold text-slate-900 mb-2">Centric <span class="text-purple-600">Hub</span></h3>
-            <p class="text-sm font-medium text-purple-600 mb-3">WhatsApp Gateway & CRM Platform Indonesia</p>
+            <p class="text-sm font-medium text-purple-600 mb-3">WhatsApp gateway & CRM Indonesia</p>
             <p class="text-slate-500 mb-6 leading-relaxed">Platform all-in-one WhatsApp Business API, CRM, chatbot AI, kampanye broadcast, inbox multi-agent, dan automasi penjualan untuk bisnis Indonesia.</p>
             <div class="flex items-center gap-2 text-sm text-slate-400 mb-6">
               <span class="flex items-center gap-1"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> WA API Gateway</span>
@@ -341,15 +427,13 @@
         </div>
 
         <!-- Centric Buzz -->
-        <div id="buzz" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-orange-500/10 fade-in-up tilt-card shimmer-border" data-tilt>
-          <div class="card-glow absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" style="background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(249,115,22,0.1), transparent);"></div>
+        <div id="buzz" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-ink/5 fade-in-up tilt-card" data-tilt>
           <div class="relative">
             <div class="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center mb-5 product-icon">
               <svg class="w-7 h-7 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
             </div>
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-orange-50 rounded-full text-orange-700 text-xs font-medium mb-3">#1 SMM Platform</div>
             <h3 class="text-2xl font-bold text-slate-900 mb-2">Centric <span class="text-orange-600">Buzz</span></h3>
-            <p class="text-sm font-medium text-orange-600 mb-3">Social Media Marketing Platform #1</p>
+            <p class="text-sm font-medium text-orange-600 mb-3">Social media marketing platform</p>
             <p class="text-slate-500 mb-6 leading-relaxed">Tingkatkan followers, engagement, dan brand awareness Anda secara instan dan organik. Layanan SMM lengkap untuk Instagram, TikTok, YouTube, X/Twitter, dan lainnya.</p>
             <div class="flex items-center gap-2 text-sm text-slate-400 mb-6">
               <span class="flex items-center gap-1"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> 10K+ Klien Aktif</span>
@@ -364,15 +448,13 @@
         </div>
 
         <!-- Centric Link -->
-        <div id="link" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-emerald-500/10 fade-in-up tilt-card shimmer-border" data-tilt>
-          <div class="card-glow absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" style="background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(16,185,129,0.1), transparent);"></div>
+        <div id="link" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-ink/5 fade-in-up tilt-card lg:col-span-2" data-tilt>
           <div class="relative">
             <div class="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center mb-5 product-icon">
               <svg class="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
             </div>
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-emerald-50 rounded-full text-emerald-700 text-xs font-medium mb-3">Backbone Link-Building</div>
             <h3 class="text-2xl font-bold text-slate-900 mb-2">Centric <span class="text-emerald-600">Link</span></h3>
-            <p class="text-sm font-medium text-emerald-600 mb-3">LinkBackSeed Aggregator untuk Press & Media</p>
+            <p class="text-sm font-medium text-emerald-600 mb-3">LinkBackSeed aggregator untuk press & media</p>
             <p class="text-slate-500 mb-6 leading-relaxed">Platform aggregator LinkBackSeed yang menghubungkan Anda dengan provider press dan media. Backbone link-building untuk kebutuhan SEO dan publikasi konten Anda.</p>
             <div class="flex items-center gap-2 text-sm text-slate-400 mb-6">
               <span class="flex items-center gap-1"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Multi-Provider</span>
@@ -387,15 +469,13 @@
         </div>
 
         <!-- Centric Seekr -->
-        <div id="seekr" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-pink-500/10 fade-in-up tilt-card shimmer-border" data-tilt>
-          <div class="card-glow absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" style="background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(236,72,153,0.1), transparent);"></div>
+        <div id="seekr" class="product-card group relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-ink/5 fade-in-up tilt-card" data-tilt>
           <div class="relative">
             <div class="w-14 h-14 rounded-2xl bg-pink-100 flex items-center justify-center mb-5 product-icon">
               <svg class="w-7 h-7 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             </div>
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-pink-50 rounded-full text-pink-700 text-xs font-medium mb-3">AI-Powered Career Platform</div>
             <h3 class="text-2xl font-bold text-slate-900 mb-2">Centric <span class="text-pink-600">Seekr</span></h3>
-            <p class="text-sm font-medium text-pink-600 mb-3">Platform Andalannya Jobseeker Indonesia</p>
+            <p class="text-sm font-medium text-pink-600 mb-3">Platform karir untuk jobseeker</p>
             <p class="text-slate-500 mb-6 leading-relaxed">Buat CV ATS-friendly, portfolio menarik, surat lamaran kerja, dan lacak lamaranmu — semuanya dengan bantuan AI dalam satu platform.</p>
             <div class="flex items-center gap-2 text-sm text-slate-400 mb-6">
               <span class="flex items-center gap-1"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> CV Builder AI</span>
@@ -410,33 +490,56 @@
         </div>
 
       </div>
+
+      <!-- CTA band -->
+      <div class="mt-8 relative bg-ink rounded-3xl overflow-hidden fade-in-up">
+        <div class="hero-glow absolute inset-0 pointer-events-none"></div>
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
+        <div class="relative p-8 lg:p-12 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+          <div class="flex items-start gap-5">
+            <div class="w-14 h-14 shrink-0 rounded-2xl bg-brand-500/20 flex items-center justify-center">
+              <svg class="w-7 h-7 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2">Belum yakin mulai dari mana?</h3>
+              <p class="text-slate-400 leading-relaxed max-w-xl">Ceritakan kebutuhan bisnis Anda, kami bantu pilihkan produk yang paling sesuai tanpa biaya konsultasi.</p>
+            </div>
+          </div>
+          <a href="hubungi-kami.html" class="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl btn-primary transition-all shrink-0">
+            Konsultasi Gratis
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ===== DIVIDER ===== -->
-  <div class="section-divider bg-slate-900">
+  <div class="section-divider bg-ink">
     <svg viewBox="0 0 1440 80" preserveAspectRatio="none" fill="#f8fafc"><path d="M0,40 C360,0 1080,80 1440,40 L1440,0 L0,0 Z" opacity="0.5"/></svg>
   </div>
 
   <!-- ===== STATS ===== -->
-  <section class="py-16 md:py-20 bg-slate-900">
+  <section class="py-16 md:py-24 bg-ink">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-        <div class="text-center fade-scale">
-          <div class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-1"><span class="stat-number" data-target="15000">0</span><span class="text-indigo-400">+</span></div>
-          <div class="text-slate-400 text-sm md:text-base">Klien Aktif</div>
-        </div>
-        <div class="text-center fade-scale">
-          <div class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-1"><span class="stat-number" data-target="52000000">0</span><span class="text-indigo-400">+</span></div>
-          <div class="text-slate-400 text-sm md:text-base">Interaksi Dihasilkan</div>
-        </div>
-        <div class="text-center fade-scale">
-          <div class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-1"><span class="stat-number" data-target="5">0</span></div>
-          <div class="text-slate-400 text-sm md:text-base">Produk Aktif</div>
-        </div>
-        <div class="text-center fade-scale">
-          <div class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-1"><span class="stat-number" data-target="98">0</span><span class="text-indigo-400">%</span></div>
-          <div class="text-slate-400 text-sm md:text-base">Kepuasan Klien</div>
+      <div class="rounded-3xl border border-white/10 bg-ink-soft/60 backdrop-blur-xl px-6 py-12 md:px-12 md:py-14 fade-scale">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 md:gap-y-0">
+          <div class="text-center md:border-l md:border-white/10 md:pl-8 first:md:border-l-0 first:md:pl-0">
+            <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-white tabular mb-1"><span class="stat-number" data-target="14287">0</span><span class="text-brand-400">+</span></div>
+            <div class="text-slate-400 text-sm md:text-base">Klien Aktif</div>
+          </div>
+          <div class="text-center md:border-l md:border-white/10 md:pl-8">
+            <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-white tabular mb-1"><span class="stat-number" data-target="58300000">0</span><span class="text-brand-400">+</span></div>
+            <div class="text-slate-400 text-sm md:text-base">Interaksi Dihasilkan</div>
+          </div>
+          <div class="text-center md:border-l md:border-white/10 md:pl-8">
+            <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-white tabular mb-1"><span class="stat-number" data-target="5">0</span></div>
+            <div class="text-slate-400 text-sm md:text-base">Produk Aktif</div>
+          </div>
+          <div class="text-center md:border-l md:border-white/10 md:pl-8">
+            <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-white tabular mb-1"><span class="stat-number" data-target="96">0</span><span class="text-brand-400">%</span></div>
+            <div class="text-slate-400 text-sm md:text-base">Kepuasan Klien</div>
+          </div>
         </div>
       </div>
     </div>
@@ -445,158 +548,195 @@
   <!-- ===== KEUNGGULAN ===== -->
   <section id="keunggulan" class="py-20 md:py-28 bg-slate-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16 fade-in">
-        <span class="text-indigo-600 font-semibold text-sm tracking-wider uppercase">Keunggulan</span>
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Mengapa Memilih Ekosistem Centric?</h2>
-        <p class="text-lg text-slate-500 max-w-2xl mx-auto">Kami menghadirkan solusi terintegrasi yang saling melengkapi untuk mendukung pertumbuhan bisnis Anda.</p>
-      </div>
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-20">
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up stagger-1 text-center">
-          <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-100 flex items-center justify-center mb-5">
-            <svg class="w-7 h-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-          </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">All-in-One Ecosystem</h3>
-          <p class="text-slate-500 text-sm leading-relaxed">Lima produk dalam satu ekosistem yang saling terintegrasi. Tidak perlu berpindah-pindah platform.</p>
+        <div class="lg:col-span-5 fade-in-left">
+          <span class="text-brand-600 font-semibold text-sm">Keunggulan</span>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-5 text-balance">Mengapa memilih ekosistem Centric?</h2>
+          <p class="text-lg text-slate-500 mb-8">Kami menghadirkan solusi terintegrasi yang saling melengkapi untuk mendukung pertumbuhan bisnis Anda.</p>
+          <a href="#products" class="inline-flex items-center gap-2 text-brand-600 font-semibold hover:text-brand-700 transition-colors">
+            Lihat semua produk
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
         </div>
 
-        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up stagger-2 text-center">
-          <div class="w-14 h-14 mx-auto rounded-2xl bg-purple-100 flex items-center justify-center mb-5">
-            <svg class="w-7 h-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+        <div class="lg:col-span-7">
+          <div class="flex gap-5 py-6 border-t border-slate-200 fade-in-up stagger-1">
+            <div class="w-12 h-12 shrink-0 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+              <svg class="w-6 h-6 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-baseline gap-3">
+                <h3 class="text-lg font-bold text-slate-900">All-in-One Ecosystem</h3>
+                <span class="ml-auto font-display text-sm font-semibold text-slate-300 tabular">01</span>
+              </div>
+              <p class="text-slate-500 text-sm leading-relaxed mt-1">Lima produk dalam satu ekosistem yang saling terintegrasi. Tidak perlu berpindah-pindah platform.</p>
+            </div>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">Fully Integrated</h3>
-          <p class="text-slate-500 text-sm leading-relaxed">Data dan workflow antar produk terhubung secara seamless untuk efisiensi maksimal.</p>
+
+          <div class="flex gap-5 py-6 border-t border-slate-200 fade-in-up stagger-2">
+            <div class="w-12 h-12 shrink-0 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+              <svg class="w-6 h-6 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-baseline gap-3">
+                <h3 class="text-lg font-bold text-slate-900">Fully Integrated</h3>
+                <span class="ml-auto font-display text-sm font-semibold text-slate-300 tabular">02</span>
+              </div>
+              <p class="text-slate-500 text-sm leading-relaxed mt-1">Data dan alur kerja antar produk terhubung langsung tanpa hambatan untuk efisiensi maksimal.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-5 py-6 border-t border-slate-200 fade-in-up stagger-3">
+            <div class="w-12 h-12 shrink-0 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+              <svg class="w-6 h-6 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 0a2 2 0 11-.708 3.464 2 2 0 01.708-3.464zm0 0l-7.778 7.778m5.303-5.303l-2.122 2.121M7.5 21H3v-4.5L15.5 4.5a2.121 2.121 0 013 3L7.5 21z"/></svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-baseline gap-3">
+                <h3 class="text-lg font-bold text-slate-900">24/7 Support</h3>
+                <span class="ml-auto font-display text-sm font-semibold text-slate-300 tabular">03</span>
+              </div>
+              <p class="text-slate-500 text-sm leading-relaxed mt-1">Tim support spesialis kami siap membantu kapanpun Anda membutuhkan bantuan atau konsultasi.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-5 py-6 border-t border-b border-slate-200 fade-in-up stagger-4">
+            <div class="w-12 h-12 shrink-0 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+              <svg class="w-6 h-6 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-baseline gap-3">
+                <h3 class="text-lg font-bold text-slate-900">Security First</h3>
+                <span class="ml-auto font-display text-sm font-semibold text-slate-300 tabular">04</span>
+              </div>
+              <p class="text-slate-500 text-sm leading-relaxed mt-1">Keamanan data dan privasi adalah prioritas. Semua produk dibangun dengan standar keamanan tinggi.</p>
+            </div>
+          </div>
         </div>
 
-        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up stagger-3 text-center">
-          <div class="w-14 h-14 mx-auto rounded-2xl bg-orange-100 flex items-center justify-center mb-5">
-            <svg class="w-7 h-7 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 0a2 2 0 11-.708 3.464 2 2 0 01.708-3.464zm0 0l-7.778 7.778m5.303-5.303l-2.122 2.121M7.5 21H3v-4.5L15.5 4.5a2.121 2.121 0 013 3L7.5 21z"/></svg>
-          </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">24/7 Support</h3>
-          <p class="text-slate-500 text-sm leading-relaxed">Tim support spesialis kami siap membantu kapanpun Anda membutuhkan bantuan atau konsultasi.</p>
-        </div>
-
-        <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm fade-in-up stagger-4 text-center">
-          <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-100 flex items-center justify-center mb-5">
-            <svg class="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">Security First</h3>
-          <p class="text-slate-500 text-sm leading-relaxed">Keamanan data dan privasi adalah prioritas. Semua produk dibangun dengan standar keamanan tinggi.</p>
-        </div>
       </div>
     </div>
   </section>
 
   <!-- ===== HOW IT WORKS ===== -->
-  <section class="py-20 md:py-28 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16 fade-in">
-        <span class="text-indigo-600 font-semibold text-sm tracking-wider uppercase">Cara Memulai</span>
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Mulai dalam 3 Langkah Mudah</h2>
+  <section class="py-20 md:py-28 bg-white relative overflow-hidden">
+    <span class="absolute top-10 left-1/2 -translate-x-1/2 font-display text-[7rem] md:text-[9rem] font-bold ghost-text-dark select-none pointer-events-none leading-none">3</span>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-20 md:mb-24 fade-in">
+        <span class="text-brand-600 font-semibold text-sm">Cara memulai</span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4 text-balance">Mulai dalam 3 langkah mudah</h2>
         <p class="text-lg text-slate-500 max-w-2xl mx-auto">Tidak perlu ribet. Pilih produk, daftar, dan rasakan sendiri manfaatnya.</p>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
-        <div class="text-center fade-in-up">
-          <div class="step-number mx-auto mb-6 bg-indigo-100 text-indigo-700 text-xl">1</div>
-          <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-50 flex items-center justify-center mb-5">
-            <svg class="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/></svg>
+      <div class="relative grid md:grid-cols-3 gap-14 md:gap-8">
+        <div class="hidden md:block absolute top-10 left-[16.66%] right-[16.66%] h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent"></div>
+
+        <div class="text-center relative fade-in-up stagger-1">
+          <div class="relative z-10 mx-auto mb-7 w-20 h-20 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+            <svg class="w-9 h-9 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/></svg>
           </div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2">Pilih Produk</h3>
-          <p class="text-slate-500 text-sm leading-relaxed">Tentukan kebutuhan Anda. Apakah butuh meeting AI, WhatsApp CRM, SMM panel, atau link-building.</p>
+          <span class="font-display text-sm font-bold text-brand-600 tracking-widest">LANGKAH 01</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-2 mb-2">Pilih Produk</h3>
+          <p class="text-slate-500 text-sm leading-relaxed max-w-xs mx-auto">Tentukan kebutuhan Anda. Apakah butuh meeting AI, WhatsApp CRM, SMM panel, atau link-building.</p>
         </div>
 
-        <div class="text-center fade-in-up">
-          <div class="step-number mx-auto mb-6 bg-purple-100 text-purple-700 text-xl">2</div>
-          <div class="w-16 h-16 mx-auto rounded-2xl bg-purple-50 flex items-center justify-center mb-5">
-            <svg class="w-8 h-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+        <div class="text-center relative fade-in-up stagger-2">
+          <div class="relative z-10 mx-auto mb-7 w-20 h-20 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+            <svg class="w-9 h-9 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
           </div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2">Daftar & Mulai</h3>
-          <p class="text-slate-500 text-sm leading-relaxed">Registrasi gratis, pilih paket sesuai kebutuhan, dan mulai gunakan produk dalam hitungan menit.</p>
+          <span class="font-display text-sm font-bold text-brand-600 tracking-widest">LANGKAH 02</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-2 mb-2">Daftar &amp; Mulai</h3>
+          <p class="text-slate-500 text-sm leading-relaxed max-w-xs mx-auto">Registrasi gratis, pilih paket sesuai kebutuhan, dan mulai gunakan produk dalam hitungan menit.</p>
         </div>
 
-        <div class="text-center fade-in-up">
-          <div class="step-number mx-auto mb-6 bg-orange-100 text-orange-700 text-xl">3</div>
-          <div class="w-16 h-16 mx-auto rounded-2xl bg-orange-50 flex items-center justify-center mb-5">
-            <svg class="w-8 h-8 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        <div class="text-center relative fade-in-up stagger-3">
+          <div class="relative z-10 mx-auto mb-7 w-20 h-20 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+            <svg class="w-9 h-9 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
           </div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2">Rasakan Growth</h3>
-          <p class="text-slate-500 text-sm leading-relaxed">Pantau perkembangan bisnis Anda secara real-time dan nikmati pertumbuhan yang konsisten.</p>
+          <span class="font-display text-sm font-bold text-brand-600 tracking-widest">LANGKAH 03</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-2 mb-2">Rasakan Growth</h3>
+          <p class="text-slate-500 text-sm leading-relaxed max-w-xs mx-auto">Pantau perkembangan bisnis Anda secara real-time dan nikmati pertumbuhan yang konsisten.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== TESTIMONIALS (CAROUSEL) ===== -->
+  <!-- ===== TESTIMONIALS ===== -->
   <section id="testimonials" class="py-20 md:py-28 bg-slate-50">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 fade-in">
-        <span class="text-indigo-600 font-semibold text-sm tracking-wider uppercase">Testimonial</span>
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Apa Kata Mereka?</h2>
+        <span class="text-brand-600 font-semibold text-sm">Testimoni</span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Apa kata mereka?</h2>
         <p class="text-lg text-slate-500 max-w-2xl mx-auto">Ribuan klien telah merasakan manfaat ekosistem Centric.</p>
       </div>
 
-      <div id="testimonial-carousel" class="relative">
-        <div id="testimonial-list" class="min-h-[280px]">
-          <!-- Testimonials loaded from CMS -->
-        </div>
-        <div id="testimonial-dots" class="flex justify-center gap-2 mt-10"></div>
-        <div class="flex justify-center gap-4 mt-6">
-          <button id="testimonial-prev" class="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:border-slate-400 transition-all" aria-label="Sebelumnya">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-          </button>
-          <button id="testimonial-next" class="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:border-slate-400 transition-all" aria-label="Selanjutnya">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </button>
-        </div>
+      <div id="testimonial-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <!-- Testimonials loaded from CMS -->
       </div>
     </div>
   </section>
 
   <!-- ===== FAQ ===== -->
   <section id="faq" class="py-20 md:py-28 bg-white">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16 fade-in">
-        <span class="text-indigo-600 font-semibold text-sm tracking-wider uppercase">FAQ</span>
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Pertanyaan Umum</h2>
-        <p class="text-lg text-slate-500 max-w-2xl mx-auto">Temukan jawaban untuk pertanyaan yang sering diajukan.</p>
-      </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-20">
 
-      <div id="faq-list" class="space-y-4">
-        <!-- FAQ items will be loaded from CMS -->
+        <div class="lg:col-span-4 fade-in-left">
+          <span class="text-brand-600 font-semibold text-sm">FAQ</span>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4 text-balance">Pertanyaan umum</h2>
+          <p class="text-lg text-slate-500 mb-8">Temukan jawaban untuk pertanyaan yang sering diajukan tentang produk dan layanan kami.</p>
+
+          <div class="relative bg-ink rounded-2xl p-6 overflow-hidden">
+            <div class="hero-glow absolute inset-0 pointer-events-none"></div>
+            <div class="relative">
+              <div class="w-11 h-11 rounded-xl bg-brand-500/20 flex items-center justify-center mb-4">
+                <svg class="w-5 h-5 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+              </div>
+              <h3 class="text-white font-semibold mb-1.5">Masih ada pertanyaan?</h3>
+              <p class="text-slate-400 text-sm mb-5">Tim kami siap membantu Anda 24/7 tanpa biaya konsultasi.</p>
+              <a href="hubungi-kami.html" class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl btn-primary transition-all">
+                Hubungi Kami
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8" id="faq-list">
+          <!-- FAQ items loaded from CMS -->
+        </div>
+
       </div>
     </div>
   </section>
 
   <!-- ===== CTA FINAL ===== -->
-  <section class="py-20 md:py-28 bg-slate-900 relative overflow-hidden">
+  <section class="py-20 md:py-28 bg-ink relative overflow-hidden">
     <div class="hero-glow absolute inset-0 pointer-events-none"></div>
     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
-    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 fade-in">Siap Mempercepat Pertumbuhan Bisnis Anda?</h2>
+    <span class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 font-display text-[22vw] lg:text-[13rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none">Centric</span>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-16">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 text-balance fade-in">Siap mempercepat pertumbuhan bisnis Anda?</h2>
       <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-10 fade-in">Pilih produk yang sesuai dengan kebutuhan Anda. Daftar gratis dan mulai transformasi digital bisnis Anda sekarang.</p>
       <div class="flex flex-wrap justify-center gap-4 fade-in">
-        <a href="https://meet.customercentric.id" target="_blank" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl btn-primary text-sm">Coba Centric Meet</a>
-        <a href="https://hub.customercentric.id" target="_blank" class="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl btn-primary text-sm">Coba Centric Hub</a>
-        <a href="https://buzz.customercentric.id" target="_blank" class="px-6 py-3 bg-orange-600 hover:bg-orange-500 text-white font-semibold rounded-xl btn-primary text-sm">Coba Centric Buzz</a>
-        <a href="https://link.customercentric.id" target="_blank" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl btn-primary text-sm">Coba Centric Link</a>
-        <a href="https://doc.customercentric.id" target="_blank" class="px-6 py-3 bg-pink-600 hover:bg-pink-500 text-white font-semibold rounded-xl btn-primary text-sm">Coba Centric Seekr</a>
+        <a href="hubungi-kami.html" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl btn-primary text-sm">Konsultasi Gratis</a>
+        <a href="#products" class="px-6 py-3 border border-white/20 hover:border-white/40 hover:bg-white/5 text-white font-semibold rounded-xl text-sm transition-all">Lihat Produk</a>
       </div>
     </div>
   </section>
 
   <!-- ===== FOOTER ===== -->
-  <footer class="bg-slate-950 border-t border-slate-800">
+  <footer class="bg-ink-deep border-t border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div class="grid md:grid-cols-4 gap-10">
-        <div class="md:col-span-1">
-          <a href="#" class="inline-flex items-center gap-3 mb-4">
+      <div class="grid md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+        <div class="lg:col-span-5 md:col-span-2">
+          <a href="index.html" class="inline-flex items-center gap-3 mb-4">
             <img src="logo/logo_CC_putih.png" alt="Centric" class="h-8 w-auto brightness-0 invert opacity-90" />
           </a>
-          <p class="text-slate-400 text-sm leading-relaxed">Ekosistem solusi digital terintegrasi untuk mempercepat pertumbuhan bisnis Anda di era digital.</p>
+          <p class="text-slate-400 text-sm leading-relaxed max-w-sm">Ekosistem solusi digital terintegrasi untuk mempercepat pertumbuhan bisnis Anda di era digital.</p>
         </div>
 
-        <div>
+        <div class="lg:col-span-2">
           <h4 class="text-white font-semibold mb-4">Produk</h4>
           <ul class="space-y-3">
             <li><a href="https://meet.customercentric.id" target="_blank" class="text-slate-400 hover:text-white text-sm transition-colors">Centric Meet</a></li>
@@ -607,7 +747,7 @@
           </ul>
         </div>
 
-        <div>
+        <div class="lg:col-span-2">
           <h4 class="text-white font-semibold mb-4">Perusahaan</h4>
           <ul class="space-y-3">
             <li><a href="tentang-kami.html" class="text-slate-400 hover:text-white text-sm transition-colors">Tentang Kami</a></li>
@@ -617,7 +757,7 @@
           </ul>
         </div>
 
-        <div>
+        <div class="lg:col-span-3">
           <h4 class="text-white font-semibold mb-4">Kontak</h4>
           <ul class="space-y-3">
             <li class="text-slate-400 text-sm">support@customercentric.id</li>
@@ -627,17 +767,11 @@
         </div>
       </div>
 
-      <div class="border-t border-slate-800 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p class="text-slate-500 text-sm">&copy; 2026 Centric Ecosystem. Hak Cipta Dilindungi.</p>
         <div class="flex items-center gap-4">
-          <a href="#" class="text-slate-500 hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
-          </a>
-          <a href="#" class="text-slate-500 hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/></svg>
-          </a>
-          <a href="#" class="text-slate-500 hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          <a href="https://www.instagram.com/customercentric.id" target="_blank" rel="noopener noreferrer" aria-label="Instagram Centric" class="text-slate-500 hover:text-brand-300 transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           </a>
         </div>
       </div>
@@ -663,6 +797,7 @@
       menuOpen = !menuOpen;
       mobileMenu.classList.toggle('hidden');
       mobileMenu.style.maxHeight = menuOpen ? mobileMenu.scrollHeight + 'px' : '0';
+      menuToggle.setAttribute('aria-expanded', String(menuOpen));
     });
 
     document.querySelectorAll('#mobile-menu a').forEach(link => {
@@ -670,6 +805,7 @@
         menuOpen = false;
         mobileMenu.classList.add('hidden');
         mobileMenu.style.maxHeight = '0';
+        menuToggle.setAttribute('aria-expanded', 'false');
       });
     });
 
@@ -710,7 +846,7 @@
 
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(99, 102, 241, ${p.opacity})`;
+          ctx.fillStyle = `rgba(86, 102, 251, ${p.opacity})`;
           ctx.fill();
 
           // Draw connections
@@ -722,7 +858,7 @@
               ctx.beginPath();
               ctx.moveTo(p.x, p.y);
               ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(99, 102, 241, ${0.06 * (1 - dist / 150)})`;
+              ctx.strokeStyle = `rgba(86, 102, 251, ${0.06 * (1 - dist / 150)})`;
               ctx.lineWidth = 0.5;
               ctx.stroke();
             }
@@ -753,6 +889,8 @@
           const rotateX = ((y - centerY) / centerY) * -8;
           const rotateY = ((x - centerX) / centerX) * 8;
           card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
+          card.style.setProperty('--mx', x + 'px');
+          card.style.setProperty('--my', y + 'px');
         });
         card.addEventListener('mouseleave', () => {
           card.style.transform = '';
@@ -855,52 +993,10 @@
       });
     };
 
-    // ===== TESTIMONIAL CAROUSEL =====
+    // ===== TESTIMONIALS (static grid, no carousel) =====
     const initCarousel = () => {
       const container = document.getElementById('testimonial-list');
-      const dotsContainer = document.getElementById('testimonial-dots');
-      const prevBtn = document.getElementById('testimonial-prev');
-      const nextBtn = document.getElementById('testimonial-next');
       if (!container) return;
-      let current = 0;
-      let items = container.querySelectorAll('.testimonial-card');
-      let autoPlay;
-
-      const render = () => {
-        items = container.querySelectorAll('.testimonial-card');
-        items.forEach((item, i) => {
-          item.style.display = i === current ? 'block' : 'none';
-          item.style.opacity = i === current ? '1' : '0';
-        });
-
-        dotsContainer.innerHTML = '';
-        items.forEach((_, i) => {
-          const dot = document.createElement('button');
-          dot.className = `carousel-dot w-2.5 h-2.5 rounded-full ${i === current ? 'active' : 'bg-slate-300'}`;
-          dot.setAttribute('aria-label', `Testimonial ${i + 1}`);
-          dot.addEventListener('click', () => { goTo(i); resetAutoplay(); });
-          dotsContainer.appendChild(dot);
-        });
-      };
-
-      const goTo = (index) => {
-        if (items.length === 0) return;
-        current = (index + items.length) % items.length;
-        render();
-      };
-
-      const resetAutoplay = () => {
-        clearInterval(autoPlay);
-        autoPlay = setInterval(() => goTo(current + 1), 6000);
-      };
-
-      if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1); resetAutoplay(); });
-      if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1); resetAutoplay(); });
-
-      if (items.length > 1) {
-        render();
-        autoPlay = setInterval(() => goTo(current + 1), 6000);
-      }
     };
 
     // ===== LOAD CMS CONTENT =====
@@ -919,13 +1015,14 @@
           const list = document.getElementById('testimonial-list');
           if (list) {
             list.innerHTML = data.testimonials.map(t => `
-              <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+              <div class="testimonial-card relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-ink/5 transition-shadow">
+                <svg class="absolute top-6 right-6 w-9 h-9 text-brand-200" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.017 5.328C3.254 7.04 2.005 9.47 2 12.49c0 3.088 1.852 5.195 4.254 5.195 2.173 0 3.78-1.653 3.78-3.877 0-2.124-1.55-3.61-3.58-3.61-.287 0-.627.034-.68.068.31-1.465 1.52-2.737 2.73-3.34L6.017 5.328zm10.971 0c-2.763 1.712-4.012 4.143-4.017 7.162 0 3.088 1.852 5.195 4.254 5.195 2.173 0 3.78-1.653 3.78-3.877 0-2.124-1.55-3.61-3.58-3.61-.287 0-.627.034-.68.068.31-1.465 1.52-2.737 2.73-3.34L16.988 5.328z"/></svg>
                 <div class="flex items-center gap-1 mb-4">
-                  ${'<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(t.rating || 5)}
+                  ${'<svg class="w-5 h-5 text-brand-500 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(t.rating || 5)}
                 </div>
                 <p class="text-slate-600 text-sm leading-relaxed mb-6">"${t.quote}"</p>
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold text-sm">${t.name.charAt(0)}</div>
+                <div class="flex items-center gap-3 border-t border-slate-100 pt-5">
+                  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-bold text-sm">${t.name.charAt(0)}</div>
                   <div>
                     <div class="font-semibold text-slate-900 text-sm">${t.name}</div>
                     <div class="text-slate-400 text-xs">${t.role}${t.company ? ' &middot; ' + t.company : ''}</div>
@@ -941,13 +1038,13 @@
           const list = document.getElementById('faq-list');
           if (list) {
             list.innerHTML = data.faq.map((f, i) => `
-              <div class="faq-item bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                <button class="faq-question w-full flex items-center justify-between p-5 text-left font-semibold text-slate-900 hover:bg-slate-100 transition-colors">
-                  <span>${f.question}</span>
-                  <svg class="faq-toggle w-5 h-5 text-slate-400 shrink-0 ml-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              <div class="faq-item border-b border-slate-200${i === data.faq.length - 1 ? ' border-b-0' : ''}">
+                <button class="faq-question w-full flex items-center justify-between py-6 text-left font-semibold text-slate-900 hover:text-brand-600 transition-colors">
+                  <span class="pr-4">${f.question}</span>
+                  <svg class="faq-toggle w-5 h-5 text-brand-500 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 </button>
                 <div class="faq-answer" style="max-height: 0;">
-                  <div class="px-5 pb-5 text-slate-500 text-sm leading-relaxed">${f.answer}</div>
+                  <div class="pb-6 text-slate-500 text-sm leading-relaxed">${f.answer}</div>
                 </div>
               </div>
             `).join('');
@@ -966,27 +1063,30 @@
       const list = document.getElementById('testimonial-list');
       if (list && list.children.length === 0) {
         list.innerHTML = `
-          <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-            <div class="flex items-center gap-1 mb-4">${'<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(5)}</div>
+          <div class="testimonial-card relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-ink/5 transition-shadow">
+            <svg class="absolute top-6 right-6 w-9 h-9 text-brand-200" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.017 5.328C3.254 7.04 2.005 9.47 2 12.49c0 3.088 1.852 5.195 4.254 5.195 2.173 0 3.78-1.653 3.78-3.877 0-2.124-1.55-3.61-3.58-3.61-.287 0-.627.034-.68.068.31-1.465 1.52-2.737 2.73-3.34L6.017 5.328zm10.971 0c-2.763 1.712-4.012 4.143-4.017 7.162 0 3.088 1.852 5.195 4.254 5.195 2.173 0 3.78-1.653 3.78-3.877 0-2.124-1.55-3.61-3.58-3.61-.287 0-.627.034-.68.068.31-1.465 1.52-2.737 2.73-3.34L16.988 5.328z"/></svg>
+            <div class="flex items-center gap-1 mb-4">${'<svg class="w-5 h-5 text-brand-500 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(5)}</div>
             <p class="text-slate-600 text-sm leading-relaxed mb-6">"Centric Hub benar-benar membantu tim sales kami. WA Gateway-nya stabil, fitur broadcast-nya powerful banget. Recommended!"</p>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold text-sm">A</div>
+            <div class="flex items-center gap-3 border-t border-slate-100 pt-5">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-bold text-sm">A</div>
               <div><div class="font-semibold text-slate-900 text-sm">Andi Pratama</div><div class="text-slate-400 text-xs">CEO &middot; TechStart Inc.</div></div>
             </div>
           </div>
-          <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-            <div class="flex items-center gap-1 mb-4">${'<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(5)}</div>
+          <div class="testimonial-card relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-ink/5 transition-shadow">
+            <svg class="absolute top-6 right-6 w-9 h-9 text-brand-200" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.017 5.328C3.254 7.04 2.005 9.47 2 12.49c0 3.088 1.852 5.195 4.254 5.195 2.173 0 3.78-1.653 3.78-3.877 0-2.124-1.55-3.61-3.58-3.61-.287 0-.627.034-.68.068.31-1.465 1.52-2.737 2.73-3.34L6.017 5.328zm10.971 0c-2.763 1.712-4.012 4.143-4.017 7.162 0 3.088 1.852 5.195 4.254 5.195 2.173 0 3.78-1.653 3.78-3.877 0-2.124-1.55-3.61-3.58-3.61-.287 0-.627.034-.68.068.31-1.465 1.52-2.737 2.73-3.34L16.988 5.328z"/></svg>
+            <div class="flex items-center gap-1 mb-4">${'<svg class="w-5 h-5 text-brand-500 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(5)}</div>
             <p class="text-slate-600 text-sm leading-relaxed mb-6">"Cece Buzz adalah SMM panel terbaik yang pernah saya pakai. Proses cepat, harga kompetitif, dan support 24/7-nya luar biasa."</p>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm">S</div>
+            <div class="flex items-center gap-3 border-t border-slate-100 pt-5">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-bold text-sm">S</div>
               <div><div class="font-semibold text-slate-900 text-sm">Sari Dewi</div><div class="text-slate-400 text-xs">Digital Marketer &middot; Creativa Agency</div></div>
             </div>
           </div>
-          <div class="testimonial-card bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-            <div class="flex items-center gap-1 mb-4">${'<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(4)}</div>
+          <div class="testimonial-card relative bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-ink/5 transition-shadow">
+            <svg class="absolute top-6 right-6 w-9 h-9 text-brand-200" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.017 5.328C3.254 7.04 2.005 9.47 2 12.49c0 3.088 1.852 5.195 4.254 5.195 2.173 0 3.78-1.653 3.78-3.877 0-2.124-1.55-3.61-3.58-3.61-.287 0-.627.034-.68.068.31-1.465 1.52-2.737 2.73-3.34L6.017 5.328zm10.971 0c-2.763 1.712-4.012 4.143-4.017 7.162 0 3.088 1.852 5.195 4.254 5.195 2.173 0 3.78-1.653 3.78-3.877 0-2.124-1.55-3.61-3.58-3.61-.287 0-.627.034-.68.068.31-1.465 1.52-2.737 2.73-3.34L16.988 5.328z"/></svg>
+            <div class="flex items-center gap-1 mb-4">${'<svg class="w-5 h-5 text-brand-500 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'.repeat(4)}</div>
             <p class="text-slate-600 text-sm leading-relaxed mb-6">"Centric Meet menghemat waktu tim saya dalam membuat notulensi rapat. Fitur AI-nya akurat dan ringkasannya sangat membantu."</p>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center text-white font-bold text-sm">B</div>
+            <div class="flex items-center gap-3 border-t border-slate-100 pt-5">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-bold text-sm">B</div>
               <div><div class="font-semibold text-slate-900 text-sm">Bambang Kris</div><div class="text-slate-400 text-xs">Operations Lead &middot; FinCorp Group</div></div>
             </div>
           </div>
@@ -998,33 +1098,33 @@
       const faqList = document.getElementById('faq-list');
       if (faqList && faqList.children.length === 0) {
         faqList.innerHTML = `
-          <div class="faq-item bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-            <button class="faq-question w-full flex items-center justify-between p-5 text-left font-semibold text-slate-900 hover:bg-slate-100 transition-colors">
-              <span>Apa itu Centric Ecosystem?</span>
-              <svg class="faq-toggle w-5 h-5 text-slate-400 shrink-0 ml-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <div class="faq-item border-b border-slate-200">
+            <button class="faq-question w-full flex items-center justify-between py-6 text-left font-semibold text-slate-900 hover:text-brand-600 transition-colors">
+              <span class="pr-4">Apa itu Centric Ecosystem?</span>
+              <svg class="faq-toggle w-5 h-5 text-brand-500 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             </button>
-            <div class="faq-answer" style="max-height: 0;"><div class="px-5 pb-5 text-slate-500 text-sm leading-relaxed">Centric Ecosystem adalah kumpulan produk digital yang saling terintegrasi, terdiri dari Centric Meet (AI Meeting), Centric Hub (WhatsApp CRM), Centric Buzz (SMM Platform), Centric Link (LinkBackSeed Aggregator), dan Centric Seekr (Platform Karir Jobseeker).</div></div>
+            <div class="faq-answer" style="max-height: 0;"><div class="pb-6 text-slate-500 text-sm leading-relaxed">Centric Ecosystem adalah kumpulan produk digital yang saling terintegrasi, terdiri dari Centric Meet (AI Meeting), Centric Hub (WhatsApp CRM), Centric Buzz (SMM Platform), Centric Link (LinkBackSeed Aggregator), dan Centric Seekr (Platform Karir Jobseeker).</div></div>
           </div>
-          <div class="faq-item bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-            <button class="faq-question w-full flex items-center justify-between p-5 text-left font-semibold text-slate-900 hover:bg-slate-100 transition-colors">
-              <span>Apakah produk-produk Centric bisa digunakan terpisah?</span>
-              <svg class="faq-toggle w-5 h-5 text-slate-400 shrink-0 ml-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <div class="faq-item border-b border-slate-200">
+            <button class="faq-question w-full flex items-center justify-between py-6 text-left font-semibold text-slate-900 hover:text-brand-600 transition-colors">
+              <span class="pr-4">Apakah produk-produk Centric bisa digunakan terpisah?</span>
+              <svg class="faq-toggle w-5 h-5 text-brand-500 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             </button>
-            <div class="faq-answer" style="max-height: 0;"><div class="px-5 pb-5 text-slate-500 text-sm leading-relaxed">Ya, setiap produk dapat digunakan secara independen sesuai kebutuhan Anda. Namun, ketika digunakan bersama-sama, integrasi antar produk memberikan nilai tambah yang lebih besar.</div></div>
+            <div class="faq-answer" style="max-height: 0;"><div class="pb-6 text-slate-500 text-sm leading-relaxed">Ya, setiap produk dapat digunakan secara independen sesuai kebutuhan Anda. Namun, ketika digunakan bersama-sama, integrasi antar produk memberikan nilai tambah yang lebih besar.</div></div>
           </div>
-          <div class="faq-item bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-            <button class="faq-question w-full flex items-center justify-between p-5 text-left font-semibold text-slate-900 hover:bg-slate-100 transition-colors">
-              <span>Bagaimana cara mendaftar?</span>
-              <svg class="faq-toggle w-5 h-5 text-slate-400 shrink-0 ml-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <div class="faq-item border-b border-slate-200">
+            <button class="faq-question w-full flex items-center justify-between py-6 text-left font-semibold text-slate-900 hover:text-brand-600 transition-colors">
+              <span class="pr-4">Bagaimana cara mendaftar?</span>
+              <svg class="faq-toggle w-5 h-5 text-brand-500 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             </button>
-            <div class="faq-answer" style="max-height: 0;"><div class="px-5 pb-5 text-slate-500 text-sm leading-relaxed">Kunjungi halaman produk yang ingin Anda gunakan, klik tombol "Daftar" atau "Mulai", dan ikuti proses registrasi. Pendaftaran gratis tanpa biaya tersembunyi.</div></div>
+            <div class="faq-answer" style="max-height: 0;"><div class="pb-6 text-slate-500 text-sm leading-relaxed">Kunjungi halaman produk yang ingin Anda gunakan, klik tombol "Daftar" atau "Mulai", dan ikuti proses registrasi. Pendaftaran gratis tanpa biaya tersembunyi.</div></div>
           </div>
-          <div class="faq-item bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-            <button class="faq-question w-full flex items-center justify-between p-5 text-left font-semibold text-slate-900 hover:bg-slate-100 transition-colors">
-              <span>Apakah ada dukungan teknis jika saya mengalami masalah?</span>
-              <svg class="faq-toggle w-5 h-5 text-slate-400 shrink-0 ml-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <div class="faq-item">
+            <button class="faq-question w-full flex items-center justify-between py-6 text-left font-semibold text-slate-900 hover:text-brand-600 transition-colors">
+              <span class="pr-4">Apakah ada dukungan teknis jika saya mengalami masalah?</span>
+              <svg class="faq-toggle w-5 h-5 text-brand-500 shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             </button>
-            <div class="faq-answer" style="max-height: 0;"><div class="px-5 pb-5 text-slate-500 text-sm leading-relaxed">Tentu! Tim support kami siap membantu 24/7 melalui WhatsApp, email, atau live chat. Kami berkomitmen untuk memberikan respon cepat dan solusi terbaik.</div></div>
+            <div class="faq-answer" style="max-height: 0;"><div class="pb-6 text-slate-500 text-sm leading-relaxed">Tentu! Tim support kami siap membantu 24/7 melalui WhatsApp, email, atau live chat. Kami berkomitmen untuk memberikan respon cepat dan solusi terbaik.</div></div>
           </div>
         `;
         initFAQ();

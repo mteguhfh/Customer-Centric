@@ -23,21 +23,66 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png" />
   <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=2" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
-    * { font-family: 'Inter', system-ui, sans-serif; }
-    html { scroll-behavior: smooth; }
-    .glass-nav { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    html { scroll-behavior: smooth; overflow-x: clip; }
+    body { overflow-x: clip; }
+
+    .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .glass-nav { background: rgba(10, 16, 32, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    .glass-nav::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(86, 102, 251, 0.05) 0%, transparent 100%); pointer-events: none; }
+
+    .hero-glow { background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(86, 102, 251, 0.22), transparent); }
+
+    .fade-in, .fade-in-left, .fade-in-right, .fade-in-up, .fade-scale {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+      .fade-in.visible { opacity: 1; transform: translateY(0); }
+      .fade-in-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+      .fade-in-left.visible { opacity: 1; transform: translateX(0); }
+      .fade-in-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+      .fade-in-right.visible { opacity: 1; transform: translateX(0); }
+      .fade-in-up { opacity: 0; transform: translateY(40px); transition: opacity 0.6s ease, transform 0.6s ease; }
+      .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+      .fade-scale { opacity: 0; transform: scale(0.9); transition: opacity 0.6s ease, transform 0.6s ease; }
+      .fade-scale.visible { opacity: 1; transform: scale(1); }
+    }
+
     .nav-link { position: relative; }
     .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: currentColor; transition: width 0.3s ease; }
     .nav-link:hover::after { width: 100%; }
-    .btn-primary { transition: all 0.3s ease; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4); }
+
+    .btn-primary, .btn-outline { transition: all 0.3s ease; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(62, 77, 240, 0.35); }
+    .btn-primary:active, .btn-outline:active { transform: translateY(0) scale(0.98); }
+    .btn-outline:hover { transform: translateY(-2px); }
+
     .mobile-menu { transition: all 0.3s ease; }
-    .hero-glow { background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(99, 102, 241, 0.25), transparent); }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+    .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+
+    .text-balance { text-wrap: balance; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    .ghost-text { color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, 0.14); }
+    .ghost-text-dark { color: transparent; -webkit-text-stroke: 1px rgba(10, 16, 32, 0.10); }
+
+    #scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; background: transparent; }
+    #scroll-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #5666fb, #7d8dff); transition: width 0.1s linear; border-radius: 0 2px 2px 0; box-shadow: 0 0 10px rgba(86, 102, 251, 0.5); }
+
+    .stagger-1 { transition-delay: 0.1s !important; }
+    .stagger-2 { transition-delay: 0.2s !important; }
+    .stagger-3 { transition-delay: 0.3s !important; }
+    .stagger-4 { transition-delay: 0.4s !important; }
   </style>
   <script type="application/ld+json">
   {
@@ -81,23 +126,29 @@
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
 
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-slate-900 focus:px-5 focus:py-3 focus:rounded-xl focus:shadow-xl focus:text-sm focus:font-semibold">
+    Langsung ke konten
+  </a>
+
+  <div id="scroll-progress"><div id="scroll-progress-bar"></div></div>
+
   <!-- ===== NAVBAR ===== -->
-  <nav class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-white/10">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-brand-500/20" style="box-shadow: 0 1px 30px rgba(86,102,251,0.08);">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 md:h-20">
         <a href="index.html" class="flex items-center gap-3 shrink-0">
           <img src="logo/logo_CC_putih.png" alt="Centric" class="h-8 md:h-9 w-auto brightness-0 invert" />
         </a>
         <div class="hidden md:flex items-center gap-8">
-          <a href="index.html" class="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors">Beranda</a>
-          <a href="tentang-kami.html" class="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors">Tentang</a>
-          <a href="hubungi-kami.html" class="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors">Kontak</a>
+          <a href="index.html" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Beranda</a>
+          <a href="tentang-kami.html" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Tentang</a>
+          <a href="hubungi-kami.html" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Kontak</a>
         </div>
-        <a href="index.html#products" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl btn-primary transition-all">
+        <a href="index.html#products" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl btn-primary transition-all">
           Jelajahi Produk
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
         </a>
-        <button id="menu-toggle" class="md:hidden p-2 text-slate-300 hover:text-white">
+        <button id="menu-toggle" class="md:hidden p-2 text-slate-300 hover:text-white" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-menu">
           <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
@@ -105,126 +156,207 @@
       </div>
     </div>
     <div id="mobile-menu" class="md:hidden hidden max-h-0 overflow-hidden mobile-menu">
-      <div class="px-4 py-4 space-y-3 border-t border-white/10">
-        <a href="index.html" class="block text-sm font-medium text-slate-300 hover:text-white py-2">Beranda</a>
-        <a href="tentang-kami.html" class="block text-sm font-medium text-slate-300 hover:text-white py-2">Tentang Kami</a>
-        <a href="hubungi-kami.html" class="block text-sm font-medium text-slate-300 hover:text-white py-2">Hubungi Kami</a>
-        <a href="index.html#products" class="block w-full text-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl mt-2">Jelajahi Produk</a>
+      <div class="px-4 py-4 space-y-3 border-t border-brand-500/20">
+        <a href="index.html" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Beranda</a>
+        <a href="tentang-kami.html" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Tentang Kami</a>
+        <a href="hubungi-kami.html" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Hubungi Kami</a>
+        <a href="index.html#products" class="block w-full text-center px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl mt-2">Jelajahi Produk</a>
       </div>
     </div>
   </nav>
 
   <!-- ===== HERO ===== -->
-  <section class="relative pt-32 pb-20 md:pt-44 md:pb-24 bg-slate-900 overflow-hidden">
+  <section id="main" tabindex="-1" class="relative pt-32 pb-24 md:pt-44 md:pb-28 bg-ink overflow-hidden">
     <div class="hero-glow absolute inset-0 pointer-events-none"></div>
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
+    <span class="absolute left-1/2 -translate-x-1/2 top-8 font-display text-[26vw] lg:text-[11rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none leading-none">Privasi</span>
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-        Kebijakan <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-orange-400 bg-clip-text text-transparent">Privasi</span>
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-500/10 border border-brand-500/20 rounded-full text-brand-300 text-sm font-medium mb-6 fade-in visible">
+        <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse-glow"></span>
+        Kebijakan &amp; transparansi data
+      </div>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-6 text-balance fade-in visible">
+        Kebijakan <span class="text-brand-300">Privasi</span>
       </h1>
-      <p class="text-lg text-slate-400">Terakhir diperbarui: Mei 2026</p>
+      <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-8 fade-in visible">
+        Bagaimana kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda.
+      </p>
+      <span class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-slate-300 fade-in visible">
+        <svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Terakhir diperbarui: Mei 2026
+      </span>
     </div>
   </section>
 
   <!-- ===== CONTENT ===== -->
-  <section class="py-20 md:py-28 bg-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="space-y-10 text-slate-600 leading-relaxed">
+  <section class="py-20 md:py-28 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-16">
 
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">1. Pendahuluan</h2>
-          <p>Kebijakan Privasi ini menjelaskan bagaimana Centric Ecosystem ("kami", "kita", atau "milik kami") mengumpulkan, menggunakan, mengungkapkan, dan melindungi informasi pribadi Anda ketika Anda menggunakan situs web kami (customercentric.id) dan produk-produk terkait, termasuk Centric Meet, Centric Hub, Centric Buzz, Centric Link, dan Centric Seekr (secara bersama-sama disebut "Layanan").</p>
-          <p class="mt-4">Dengan menggunakan Layanan kami, Anda menyetujui pengumpulan dan penggunaan informasi sesuai dengan kebijakan ini.</p>
-        </div>
+        <!-- Sidebar -->
+        <aside class="lg:col-span-4">
+          <div class="lg:sticky lg:top-28 space-y-6">
+            <div class="bg-white rounded-3xl border border-slate-200 p-8 fade-in-left">
+              <span class="text-brand-600 font-semibold text-sm">Daftar isi</span>
+              <h2 class="text-xl font-bold text-slate-900 mt-2 mb-6">Pada halaman ini</h2>
+              <ul class="space-y-4">
+                <li><a href="#sec-1" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">01</span> Pendahuluan</a></li>
+                <li><a href="#sec-2" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">02</span> Informasi yang Kami Kumpulkan</a></li>
+                <li><a href="#sec-3" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">03</span> Penggunaan Informasi Anda</a></li>
+                <li><a href="#sec-4" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">04</span> Perlindungan Data</a></li>
+                <li><a href="#sec-5" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">05</span> Pengungkapan ke Pihak Ketiga</a></li>
+                <li><a href="#sec-6" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">06</span> Cookie</a></li>
+                <li><a href="#sec-7" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">07</span> Hak Anda</a></li>
+                <li><a href="#sec-8" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">08</span> Perubahan Kebijakan</a></li>
+                <li><a href="#sec-9" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">09</span> Hubungi Kami</a></li>
+              </ul>
+            </div>
 
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">2. Informasi yang Kami Kumpulkan</h2>
-          <p>Kami dapat mengumpulkan jenis informasi berikut:</p>
-          <ul class="list-disc pl-6 mt-3 space-y-2">
-            <li><strong>Informasi Pribadi:</strong> Nama lengkap, alamat email, nomor telepon, dan informasi lain yang Anda berikan saat mendaftar atau menggunakan Layanan kami.</li>
-            <li><strong>Informasi Penggunaan:</strong> Data tentang bagaimana Anda berinteraksi dengan Layanan kami, termasuk halaman yang dikunjungi, fitur yang digunakan, dan durasi sesi.</li>
-            <li><strong>Informasi Perangkat:</strong> Jenis perangkat, sistem operasi, browser, alamat IP, dan pengenal perangkat unik.</li>
-            <li><strong>Data Komunikasi:</strong> Pesan, file, dan konten lain yang Anda bagikan melalui Layanan kami.</li>
-          </ul>
-        </div>
+            <div class="relative bg-ink rounded-3xl p-6 overflow-hidden fade-in-up">
+              <div class="hero-glow absolute inset-0 pointer-events-none"></div>
+              <div class="relative">
+                <div class="w-11 h-11 rounded-xl bg-brand-500/20 flex items-center justify-center mb-4">
+                  <svg class="w-5 h-5 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1.5">Punya pertanyaan?</h3>
+                <p class="text-slate-400 text-sm mb-5">Tim kami siap membantu Anda terkait data dan privasi.</p>
+                <a href="hubungi-kami.html" class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl btn-primary transition-all">
+                  Hubungi Kami
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </aside>
 
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">3. Bagaimana Kami Menggunakan Informasi Anda</h2>
-          <p>Kami menggunakan informasi yang dikumpulkan untuk:</p>
-          <ul class="list-disc pl-6 mt-3 space-y-2">
-            <li>Menyediakan, memelihara, dan meningkatkan Layanan kami</li>
-            <li>Memproses transaksi dan mengirimkan konfirmasi terkait</li>
-            <li>Menanggapi pertanyaan, komentar, atau keluhan Anda</li>
-            <li>Mengirimkan pembaruan, pemberitahuan keamanan, dan informasi dukungan</li>
-            <li>Mendeteksi, mencegah, dan mengatasi masalah teknis atau penyalahgunaan</li>
-            <li>Menganalisis tren penggunaan untuk meningkatkan pengalaman pengguna</li>
-            <li>Mematuhi kewajiban hukum dan peraturan yang berlaku</li>
-          </ul>
-        </div>
+        <!-- Content -->
+        <div class="lg:col-span-8">
+          <div class="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 md:p-14 fade-in-right space-y-10 text-slate-600 leading-relaxed">
 
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">4. Perlindungan Data</h2>
-          <p>Kami menerapkan langkah-langkah keamanan yang wajar untuk melindungi informasi pribadi Anda dari akses tidak sah, perubahan, pengungkapan, atau penghancuran. Langkah-langkah tersebut meliputi enkripsi data, firewall, dan kontrol akses yang ketat.</p>
-          <p class="mt-4">Namun, tidak ada metode transmisi melalui internet atau penyimpanan elektronik yang 100% aman. Kami tidak dapat menjamin keamanan absolut dari informasi Anda.</p>
-        </div>
+            <div id="sec-1">
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">01</span> Pendahuluan</h2>
+              <p>Kebijakan Privasi ini menjelaskan bagaimana Centric Ecosystem ("kami", "kita", atau "milik kami") mengumpulkan, menggunakan, mengungkapkan, dan melindungi informasi pribadi Anda ketika Anda menggunakan situs web kami (customercentric.id) dan produk-produk terkait, termasuk Centric Meet, Centric Hub, Centric Buzz, Centric Link, dan Centric Seekr (secara bersama-sama disebut "Layanan").</p>
+              <p class="mt-4">Dengan menggunakan Layanan kami, Anda menyetujui pengumpulan dan penggunaan informasi sesuai dengan kebijakan ini.</p>
+            </div>
 
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">5. Pengungkapan kepada Pihak Ketiga</h2>
-          <p>Kami tidak menjual, memperdagangkan, atau mentransfer informasi pribadi Anda kepada pihak ketiga tanpa persetujuan Anda, kecuali dalam situasi berikut:</p>
-          <ul class="list-disc pl-6 mt-3 space-y-2">
-            <li>Kepada penyedia layanan tepercaya yang membantu kami mengoperasikan Layanan (misalnya penyedia hosting, pemrosesan pembayaran)</li>
-            <li>Jika diwajibkan oleh hukum atau peraturan yang berlaku</li>
-            <li>Untuk melindungi hak, properti, atau keamanan kami atau orang lain</li>
-            <li>Dalam konteks merger, akuisisi, atau penjualan aset perusahaan</li>
-          </ul>
-        </div>
+            <div id="sec-2">
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">02</span> Informasi yang Kami Kumpulkan</h2>
+              <p>Kami dapat mengumpulkan jenis informasi berikut:</p>
+              <ul class="list-disc pl-6 mt-3 space-y-2">
+                <li><strong>Informasi Pribadi:</strong> Nama lengkap, alamat email, nomor telepon, dan informasi lain yang Anda berikan saat mendaftar atau menggunakan Layanan kami.</li>
+                <li><strong>Informasi Penggunaan:</strong> Data tentang bagaimana Anda berinteraksi dengan Layanan kami, termasuk halaman yang dikunjungi, fitur yang digunakan, dan durasi sesi.</li>
+                <li><strong>Informasi Perangkat:</strong> Jenis perangkat, sistem operasi, browser, alamat IP, dan pengenal perangkat unik.</li>
+                <li><strong>Data Komunikasi:</strong> Pesan, file, dan konten lain yang Anda bagikan melalui Layanan kami.</li>
+              </ul>
+            </div>
 
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">6. Cookie</h2>
-          <p>Kami menggunakan cookie dan teknologi pelacakan serupa untuk meningkatkan pengalaman Anda, menganalisis tren, dan mengelola Layanan. Anda dapat mengontrol penggunaan cookie melalui pengaturan browser Anda.</p>
-        </div>
+            <div id="sec-3">
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">03</span> Bagaimana Kami Menggunakan Informasi Anda</h2>
+              <p>Kami menggunakan informasi yang dikumpulkan untuk:</p>
+              <ul class="list-disc pl-6 mt-3 space-y-2">
+                <li>Menyediakan, memelihara, dan meningkatkan Layanan kami</li>
+                <li>Memproses transaksi dan mengirimkan konfirmasi terkait</li>
+                <li>Menanggapi pertanyaan, komentar, atau keluhan Anda</li>
+                <li>Mengirimkan pembaruan, pemberitahuan keamanan, dan informasi dukungan</li>
+                <li>Mendeteksi, mencegah, dan mengatasi masalah teknis atau penyalahgunaan</li>
+                <li>Menganalisis tren penggunaan untuk meningkatkan pengalaman pengguna</li>
+                <li>Mematuhi kewajiban hukum dan peraturan yang berlaku</li>
+              </ul>
+            </div>
 
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">7. Hak Anda</h2>
-          <p>Anda memiliki hak untuk:</p>
-          <ul class="list-disc pl-6 mt-3 space-y-2">
-            <li>Mengakses informasi pribadi yang kami simpan tentang Anda</li>
-            <li>Meminta koreksi data yang tidak akurat atau tidak lengkap</li>
-            <li>Meminta penghapusan data pribadi Anda</li>
-            <li>Menolak atau membatasi pemrosesan data tertentu</li>
-            <li>Menarik persetujuan Anda kapan saja</li>
-          </ul>
-          <p class="mt-4">Untuk menggunakan hak-hak ini, silakan hubungi kami melalui informasi kontak yang tercantum di bawah.</p>
-        </div>
+            <div id="sec-4">
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">04</span> Perlindungan Data</h2>
+              <p>Kami menerapkan langkah-langkah keamanan yang wajar untuk melindungi informasi pribadi Anda dari akses tidak sah, perubahan, pengungkapan, atau penghancuran. Langkah-langkah tersebut meliputi enkripsi data, firewall, dan kontrol akses yang ketat.</p>
+              <p class="mt-4">Namun, tidak ada metode transmisi melalui internet atau penyimpanan elektronik yang 100% aman. Kami tidak dapat menjamin keamanan absolut dari informasi Anda.</p>
+            </div>
 
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">8. Perubahan Kebijakan Privasi</h2>
-          <p>Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Setiap perubahan akan diumumkan melalui Layanan kami dan, jika signifikan, melalui pemberitahuan langsung. Kami menyarankan Anda untuk meninjau halaman ini secara berkala.</p>
-        </div>
+            <div id="sec-5">
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">05</span> Pengungkapan kepada Pihak Ketiga</h2>
+              <p>Kami tidak menjual, memperdagangkan, atau mentransfer informasi pribadi Anda kepada pihak ketiga tanpa persetujuan Anda, kecuali dalam situasi berikut:</p>
+              <ul class="list-disc pl-6 mt-3 space-y-2">
+                <li>Kepada penyedia layanan tepercaya yang membantu kami mengoperasikan Layanan (misalnya penyedia hosting, pemrosesan pembayaran)</li>
+                <li>Jika diwajibkan oleh hukum atau peraturan yang berlaku</li>
+                <li>Untuk melindungi hak, properti, atau keamanan kami atau orang lain</li>
+                <li>Dalam konteks merger, akuisisi, atau penjualan aset perusahaan</li>
+              </ul>
+            </div>
 
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">9. Hubungi Kami</h2>
-          <p>Jika Anda memiliki pertanyaan, keluhan, atau permintaan terkait Kebijakan Privasi ini, silakan hubungi kami:</p>
-          <ul class="mt-3 space-y-1">
-            <li>Email: support@customercentric.id</li>
-            <li>Telepon: +62 851-5612-2122</li>
-          </ul>
+            <div id="sec-6">
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">06</span> Cookie</h2>
+              <p>Kami menggunakan cookie dan teknologi pelacakan serupa untuk meningkatkan pengalaman Anda, menganalisis tren, dan mengelola Layanan. Anda dapat mengontrol penggunaan cookie melalui pengaturan browser Anda.</p>
+            </div>
+
+            <div id="sec-7">
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">07</span> Hak Anda</h2>
+              <p>Anda memiliki hak untuk:</p>
+              <ul class="list-disc pl-6 mt-3 space-y-2">
+                <li>Mengakses informasi pribadi yang kami simpan tentang Anda</li>
+                <li>Meminta koreksi data yang tidak akurat atau tidak lengkap</li>
+                <li>Meminta penghapusan data pribadi Anda</li>
+                <li>Menolak atau membatasi pemrosesan data tertentu</li>
+                <li>Menarik persetujuan Anda kapan saja</li>
+              </ul>
+              <p class="mt-4">Untuk menggunakan hak-hak ini, silakan hubungi kami melalui informasi kontak yang tercantum di bawah.</p>
+            </div>
+
+            <div id="sec-8">
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">08</span> Perubahan Kebijakan Privasi</h2>
+              <p>Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Setiap perubahan akan diumumkan melalui Layanan kami dan, jika signifikan, melalui pemberitahuan langsung. Kami menyarankan Anda untuk meninjau halaman ini secara berkala.</p>
+            </div>
+
+            <div id="sec-9">
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">09</span> Hubungi Kami</h2>
+              <p>Jika Anda memiliki pertanyaan, keluhan, atau permintaan terkait Kebijakan Privasi ini, silakan hubungi kami:</p>
+              <ul class="mt-3 space-y-1">
+                <li>Email: support@customercentric.id</li>
+                <li>Telepon: +62 851-5612-2122</li>
+              </ul>
+            </div>
+
+          </div>
         </div>
 
       </div>
     </div>
   </section>
 
+  <!-- ===== CTA ===== -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative bg-ink rounded-3xl overflow-hidden fade-in-up">
+        <div class="hero-glow absolute inset-0 pointer-events-none"></div>
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
+        <span class="absolute -right-4 -top-10 font-display text-[9rem] lg:text-[11rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none leading-none">Tanya</span>
+        <div class="relative p-8 lg:p-14 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+          <div class="flex items-start gap-5">
+            <div class="w-14 h-14 shrink-0 rounded-2xl bg-brand-500/20 flex items-center justify-center">
+              <svg class="w-7 h-7 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2">Punya pertanyaan soal privasi?</h3>
+              <p class="text-slate-400 leading-relaxed max-w-xl">Tim kami siap membantu menjelaskan cara kami melindungi data Anda.</p>
+            </div>
+          </div>
+          <a href="hubungi-kami.html" class="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl btn-primary transition-all shrink-0">
+            Hubungi Kami
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== FOOTER ===== -->
-  <footer class="bg-slate-950 border-t border-slate-800">
+  <footer class="bg-ink-deep border-t border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div class="grid md:grid-cols-4 gap-10">
-        <div class="md:col-span-1">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+        <div class="lg:col-span-5">
           <a href="index.html" class="inline-flex items-center gap-3 mb-4">
             <img src="logo/logo_CC_putih.png" alt="Centric" class="h-8 w-auto brightness-0 invert opacity-90" />
           </a>
-          <p class="text-slate-400 text-sm leading-relaxed">Ekosistem solusi digital terintegrasi untuk mempercepat pertumbuhan bisnis Anda di era digital.</p>
+          <p class="text-slate-400 text-sm leading-relaxed max-w-sm">Ekosistem solusi digital terintegrasi untuk mempercepat pertumbuhan bisnis Anda di era digital.</p>
         </div>
-        <div>
+        <div class="lg:col-span-2">
           <h4 class="text-white font-semibold mb-4">Produk</h4>
           <ul class="space-y-3">
             <li><a href="https://meet.customercentric.id" target="_blank" class="text-slate-400 hover:text-white text-sm transition-colors">Centric Meet</a></li>
@@ -234,7 +366,7 @@
             <li><a href="https://doc.customercentric.id" target="_blank" class="text-slate-400 hover:text-white text-sm transition-colors">Centric Seekr</a></li>
           </ul>
         </div>
-        <div>
+        <div class="lg:col-span-2">
           <h4 class="text-white font-semibold mb-4">Perusahaan</h4>
           <ul class="space-y-3">
             <li><a href="tentang-kami.html" class="text-slate-400 hover:text-white text-sm transition-colors">Tentang Kami</a></li>
@@ -243,7 +375,7 @@
             <li><a href="hubungi-kami.html" class="text-slate-400 hover:text-white text-sm transition-colors">Hubungi Kami</a></li>
           </ul>
         </div>
-        <div>
+        <div class="lg:col-span-3">
           <h4 class="text-white font-semibold mb-4">Kontak</h4>
           <ul class="space-y-3">
             <li class="text-slate-400 text-sm">support@customercentric.id</li>
@@ -252,17 +384,11 @@
           </ul>
         </div>
       </div>
-      <div class="border-t border-slate-800 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p class="text-slate-500 text-sm">&copy; 2026 Centric Ecosystem. Hak Cipta Dilindungi.</p>
         <div class="flex items-center gap-4">
-          <a href="#" class="text-slate-500 hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
-          </a>
-          <a href="#" class="text-slate-500 hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/></svg>
-          </a>
-          <a href="#" class="text-slate-500 hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          <a href="https://www.instagram.com/customercentric.id" target="_blank" rel="noopener noreferrer" aria-label="Instagram Centric" class="text-slate-500 hover:text-brand-300 transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           </a>
         </div>
       </div>
@@ -278,14 +404,42 @@
       menuOpen = !menuOpen;
       mobileMenu.classList.toggle('hidden');
       mobileMenu.style.maxHeight = menuOpen ? mobileMenu.scrollHeight + 'px' : '0';
+      menuToggle.setAttribute('aria-expanded', String(menuOpen));
     });
     document.querySelectorAll('#mobile-menu a').forEach(link => {
       link.addEventListener('click', () => {
         menuOpen = false;
         mobileMenu.classList.add('hidden');
         mobileMenu.style.maxHeight = '0';
+        menuToggle.setAttribute('aria-expanded', 'false');
       });
     });
+
+    const scrollBar = document.getElementById('scroll-progress-bar');
+    const onScroll = () => {
+      const h = document.documentElement;
+      const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+      scrollBar.style.width = (scrolled * 100) + '%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          el.classList.add('visible');
+          const stagger = el.querySelectorAll('.stagger-1, .stagger-2, .stagger-3, .stagger-4');
+          if (stagger.length) {
+            [...stagger].sort((a, b) => parseInt(a.className.match(/stagger-(\d)/)?.[1] || '0') - parseInt(b.className.match(/stagger-(\d)/)?.[1] || '0')).forEach((child, i) => {
+              setTimeout(() => child.classList.add('visible'), i * 120);
+            });
+          }
+          io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .fade-in-up, .fade-scale').forEach(el => io.observe(el));
   </script>
 </body>
 </html>
