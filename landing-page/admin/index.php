@@ -16,6 +16,12 @@ function write_content($data) {
     return file_put_contents($data_file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
+// Ambil nilai konten per bahasa (backward-compat untuk format lama / flat string)
+function tr($x, $lang) {
+    if (is_array($x)) return isset($x[$lang]) ? $x[$lang] : ($x['id'] ?? '');
+    return is_string($x) ? $x : '';
+}
+
 $error = '';
 $success = '';
 
@@ -41,18 +47,32 @@ if (isset($_POST['save']) && isset($_SESSION['logged_in'])) {
 
     // Update hero
     $data['hero'] = [
-        'headline' => $_POST['hero_headline'] ?? '',
-        'subheadline' => $_POST['hero_subheadline'] ?? ''
+        'headline' => [
+            'id' => $_POST['hero_headline_id'] ?? '',
+            'en' => $_POST['hero_headline_en'] ?? '',
+            'ko' => $_POST['hero_headline_ko'] ?? '',
+        ],
+        'subheadline' => [
+            'id' => $_POST['hero_subheadline_id'] ?? '',
+            'en' => $_POST['hero_subheadline_en'] ?? '',
+            'ko' => $_POST['hero_subheadline_ko'] ?? '',
+        ],
     ];
 
     // Update testimonials
     $data['testimonials'] = [];
-    if (isset($_POST['testimonial_quote'])) {
-        foreach ($_POST['testimonial_quote'] as $i => $quote) {
-            if (trim($quote)) {
+    if (isset($_POST['testimonial_quote_id'])) {
+        foreach ($_POST['testimonial_quote_id'] as $i => $quote_id) {
+            $quote_en = $_POST['testimonial_quote_en'][$i] ?? '';
+            $quote_ko = $_POST['testimonial_quote_ko'][$i] ?? '';
+            if (trim($quote_id) || trim($quote_en) || trim($quote_ko)) {
                 $data['testimonials'][] = [
                     'id' => intval($_POST['testimonial_id'][$i] ?? 0),
-                    'quote' => $quote,
+                    'quote' => [
+                        'id' => $quote_id,
+                        'en' => $quote_en,
+                        'ko' => $quote_ko,
+                    ],
                     'name' => $_POST['testimonial_name'][$i] ?? '',
                     'role' => $_POST['testimonial_role'][$i] ?? '',
                     'company' => $_POST['testimonial_company'][$i] ?? '',
@@ -64,13 +84,26 @@ if (isset($_POST['save']) && isset($_SESSION['logged_in'])) {
 
     // Update FAQ
     $data['faq'] = [];
-    if (isset($_POST['faq_question'])) {
-        foreach ($_POST['faq_question'] as $i => $question) {
-            if (trim($question)) {
+    if (isset($_POST['faq_question_id'])) {
+        foreach ($_POST['faq_question_id'] as $i => $question_id) {
+            $question_en = $_POST['faq_question_en'][$i] ?? '';
+            $question_ko = $_POST['faq_question_ko'][$i] ?? '';
+            $answer_id = $_POST['faq_answer_id'][$i] ?? '';
+            $answer_en = $_POST['faq_answer_en'][$i] ?? '';
+            $answer_ko = $_POST['faq_answer_ko'][$i] ?? '';
+            if (trim($question_id) || trim($question_en) || trim($question_ko) || trim($answer_id) || trim($answer_en) || trim($answer_ko)) {
                 $data['faq'][] = [
                     'id' => intval($_POST['faq_id'][$i] ?? 0),
-                    'question' => $question,
-                    'answer' => $_POST['faq_answer'][$i] ?? ''
+                    'question' => [
+                        'id' => $question_id,
+                        'en' => $question_en,
+                        'ko' => $question_ko,
+                    ],
+                    'answer' => [
+                        'id' => $answer_id,
+                        'en' => $answer_en,
+                        'ko' => $answer_ko,
+                    ]
                 ];
             }
         }
@@ -88,7 +121,7 @@ if (isset($_POST['add_testimonial']) && isset($_SESSION['logged_in'])) {
     $data = read_content();
     $max_id = 0;
     foreach ($data['testimonials'] as $t) { if ($t['id'] > $max_id) $max_id = $t['id']; }
-    $data['testimonials'][] = ['id' => $max_id + 1, 'quote' => '', 'name' => '', 'role' => '', 'company' => '', 'rating' => 5];
+    $data['testimonials'][] = ['id' => $max_id + 1, 'quote' => ['id' => '', 'en' => '', 'ko' => ''], 'name' => '', 'role' => '', 'company' => '', 'rating' => 5];
     write_content($data);
     $success = 'Testimonial baru ditambahkan.';
 }
@@ -97,7 +130,7 @@ if (isset($_POST['add_faq']) && isset($_SESSION['logged_in'])) {
     $data = read_content();
     $max_id = 0;
     foreach ($data['faq'] as $f) { if ($f['id'] > $max_id) $max_id = $f['id']; }
-    $data['faq'][] = ['id' => $max_id + 1, 'question' => '', 'answer' => ''];
+    $data['faq'][] = ['id' => $max_id + 1, 'question' => ['id' => '', 'en' => '', 'ko' => ''], 'answer' => ['id' => '', 'en' => '', 'ko' => '']];
     write_content($data);
     $success = 'FAQ baru ditambahkan.';
 }
@@ -200,14 +233,34 @@ if (!$is_logged_in):
                 <h2 class="text-lg font-bold text-slate-900 mb-1">Hero Section</h2>
                 <p class="text-slate-500 text-sm mb-5">Ubah teks headline dan subheadline pada hero landing page.</p>
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Headline</label>
-                        <textarea name="hero_headline" rows="2" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars($content['hero']['headline'] ?? '') ?></textarea>
-                        <p class="text-xs text-slate-400 mt-1">HTML tags diperbolehkan. Gunakan <code class="text-indigo-600 bg-indigo-50 px-1 rounded">&lt;span class="..."&gt;</code> untuk gradient text.</p>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Headline <span class="text-indigo-600 font-semibold">ID</span></label>
+                            <textarea name="hero_headline_id" rows="2" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($content['hero']['headline'] ?? '', 'id')) ?></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Headline <span class="text-emerald-600 font-semibold">EN</span></label>
+                            <textarea name="hero_headline_en" rows="2" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($content['hero']['headline'] ?? '', 'en')) ?></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Headline <span class="text-sky-600 font-semibold">KO</span></label>
+                            <textarea name="hero_headline_ko" rows="2" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($content['hero']['headline'] ?? '', 'ko')) ?></textarea>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Subheadline</label>
-                        <textarea name="hero_subheadline" rows="3" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars($content['hero']['subheadline'] ?? '') ?></textarea>
+                    <p class="text-xs text-slate-400">HTML tags diperbolehkan. Gunakan <code class="text-indigo-600 bg-indigo-50 px-1 rounded">&lt;span class="..."&gt;</code> untuk gradient text.</p>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Subheadline <span class="text-indigo-600 font-semibold">ID</span></label>
+                            <textarea name="hero_subheadline_id" rows="3" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($content['hero']['subheadline'] ?? '', 'id')) ?></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Subheadline <span class="text-emerald-600 font-semibold">EN</span></label>
+                            <textarea name="hero_subheadline_en" rows="3" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($content['hero']['subheadline'] ?? '', 'en')) ?></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Subheadline <span class="text-sky-600 font-semibold">KO</span></label>
+                            <textarea name="hero_subheadline_ko" rows="3" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($content['hero']['subheadline'] ?? '', 'ko')) ?></textarea>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -227,14 +280,24 @@ if (!$is_logged_in):
                         <a href="?delete_testimonial=<?= $t['id'] ?>" class="text-red-500 hover:text-red-600 text-xs font-medium" onclick="return confirm('Hapus testimonial ini?')">Hapus</a>
                     </div>
                     <input type="hidden" name="testimonial_id[]" value="<?= $t['id'] ?>">
-                    <div class="grid sm:grid-cols-2 gap-4">
-                        <div class="sm:col-span-2">
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Quote</label>
-                            <textarea name="testimonial_quote[]" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars($t['quote']) ?></textarea>
+                    <div class="grid sm:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Quote <span class="text-indigo-600 font-semibold">ID</span></label>
+                            <textarea name="testimonial_quote_id[]" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($t['quote'] ?? '', 'id')) ?></textarea>
                         </div>
                         <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Quote <span class="text-emerald-600 font-semibold">EN</span></label>
+                            <textarea name="testimonial_quote_en[]" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($t['quote'] ?? '', 'en')) ?></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Quote <span class="text-sky-600 font-semibold">KO</span></label>
+                            <textarea name="testimonial_quote_ko[]" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($t['quote'] ?? '', 'ko')) ?></textarea>
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
                             <label class="block text-xs font-medium text-slate-600 mb-1">Nama</label>
-                            <input type="text" name="testimonial_name[]" value="<?= htmlspecialchars($t['name']) ?>" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <input type="text" name="testimonial_name[]" value="<?= htmlspecialchars($t['name'] ?? '') ?>" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-slate-600 mb-1">Rating (1-5)</label>
@@ -271,14 +334,30 @@ if (!$is_logged_in):
                         <a href="?delete_faq=<?= $f['id'] ?>" class="text-red-500 hover:text-red-600 text-xs font-medium" onclick="return confirm('Hapus FAQ ini?')">Hapus</a>
                     </div>
                     <input type="hidden" name="faq_id[]" value="<?= $f['id'] ?>">
-                    <div class="space-y-4">
+                    <div class="grid sm:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Pertanyaan</label>
-                            <input type="text" name="faq_question[]" value="<?= htmlspecialchars($f['question']) ?>" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Pertanyaan <span class="text-indigo-600 font-semibold">ID</span></label>
+                            <input type="text" name="faq_question_id[]" value="<?= htmlspecialchars(tr($f['question'] ?? '', 'id')) ?>" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Jawaban</label>
-                            <textarea name="faq_answer[]" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars($f['answer']) ?></textarea>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Pertanyaan <span class="text-emerald-600 font-semibold">EN</span></label>
+                            <input type="text" name="faq_question_en[]" value="<?= htmlspecialchars(tr($f['question'] ?? '', 'en')) ?>" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Pertanyaan <span class="text-sky-600 font-semibold">KO</span></label>
+                            <input type="text" name="faq_question_ko[]" value="<?= htmlspecialchars(tr($f['question'] ?? '', 'ko')) ?>" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Jawaban <span class="text-indigo-600 font-semibold">ID</span></label>
+                            <textarea name="faq_answer_id[]" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($f['answer'] ?? '', 'id')) ?></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Jawaban <span class="text-emerald-600 font-semibold">EN</span></label>
+                            <textarea name="faq_answer_en[]" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($f['answer'] ?? '', 'en')) ?></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Jawaban <span class="text-sky-600 font-semibold">KO</span></label>
+                            <textarea name="faq_answer_ko[]" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"><?= htmlspecialchars(tr($f['answer'] ?? '', 'ko')) ?></textarea>
                         </div>
                     </div>
                 </div>

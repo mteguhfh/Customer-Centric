@@ -23,10 +23,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png" />
   <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=3" />
+  <link rel="stylesheet" href="css/style.css?v=4" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script src="js/i18n.js" defer></script>
   <style>
     html { scroll-behavior: smooth; overflow-x: clip; }
     body { overflow-x: clip; }
@@ -85,6 +86,14 @@
     .stagger-2 { transition-delay: 0.2s !important; }
     .stagger-3 { transition-delay: 0.3s !important; }
     .stagger-4 { transition-delay: 0.4s !important; }
+
+    /* ===== LANGUAGE SWITCHER ===== */
+    .lang-switch { display: inline-flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid rgba(255,255,255,0.12); border-radius: 9999px; background: rgba(255,255,255,0.05); }
+    .lang-switch.hide-on-mobile { display: none; }
+    @media (min-width: 768px) { .lang-switch.hide-on-mobile { display: inline-flex; } }
+    .lang-btn { padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; line-height: 1.25rem; color: #94a3b8; transition: color 0.2s ease, background-color 0.2s ease; }
+    .lang-btn:hover { color: #a4b1ff; }
+    .lang-btn.active { background: #3e4df0; color: #ffffff; }
   </style>
   <script type="application/ld+json">
   {
@@ -126,9 +135,9 @@
   }
   </script>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased">
+<body class="bg-slate-50 text-slate-900 antialiased" data-page="tentang">
 
-  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-slate-900 focus:px-5 focus:py-3 focus:rounded-xl focus:shadow-xl focus:text-sm focus:font-semibold">
+  <a href="#main" data-i18n="nav.skip" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-slate-900 focus:px-5 focus:py-3 focus:rounded-xl focus:shadow-xl focus:text-sm focus:font-semibold">
     Langsung ke konten
   </a>
 
@@ -142,12 +151,17 @@
           <img src="logo/logo_CC_putih.png" alt="Centric" class="h-8 md:h-9 w-auto brightness-0 invert" />
         </a>
         <div class="hidden md:flex items-center gap-8">
-          <a href="index.html" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Beranda</a>
-          <a href="tentang-kami.html" class="nav-link text-sm font-medium text-white transition-colors" aria-current="page">Tentang</a>
-          <a href="hubungi-kami.html" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Kontak</a>
+          <a href="index.html" data-i18n="nav.home" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Beranda</a>
+          <a href="tentang-kami.html" data-i18n="nav.about" class="nav-link text-sm font-medium text-white transition-colors" aria-current="page">Tentang</a>
+          <a href="hubungi-kami.html" data-i18n="nav.contact" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Kontak</a>
+        </div>
+        <div class="lang-switch hide-on-mobile" role="group" data-i18n-aria="nav.langLabel">
+          <button type="button" data-lang="id" class="lang-btn" aria-pressed="true">ID</button>
+          <button type="button" data-lang="en" class="lang-btn" aria-pressed="false">EN</button>
+          <button type="button" data-lang="ko" class="lang-btn" aria-pressed="false">KO</button>
         </div>
         <a href="index.html#products" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl btn-primary transition-all">
-          Jelajahi Produk
+          <span data-i18n="nav.exploreProducts">Jelajahi Produk</span>
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
         </a>
         <button id="menu-toggle" class="md:hidden p-2 text-slate-300 hover:text-white" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -159,10 +173,15 @@
     </div>
     <div id="mobile-menu" class="md:hidden hidden max-h-0 overflow-hidden mobile-menu">
       <div class="px-4 py-4 space-y-3 border-t border-brand-500/20">
-        <a href="index.html" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Beranda</a>
-        <a href="tentang-kami.html" class="block text-sm font-medium text-white py-2">Tentang Kami</a>
-        <a href="hubungi-kami.html" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Hubungi Kami</a>
-        <a href="index.html#products" class="block w-full text-center px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl mt-2">Jelajahi Produk</a>
+        <a href="index.html" data-i18n="nav.home" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Beranda</a>
+        <a href="tentang-kami.html" data-i18n="nav.aboutFull" class="block text-sm font-medium text-white py-2">Tentang Kami</a>
+        <a href="hubungi-kami.html" data-i18n="footer.contactLink" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Hubungi Kami</a>
+        <a href="index.html#products" data-i18n="nav.exploreProducts" class="block w-full text-center px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl mt-2">Jelajahi Produk</a>
+        <div class="lang-switch pt-2" role="group" data-i18n-aria="nav.langLabel">
+          <button type="button" data-lang="id" class="lang-btn" aria-pressed="true">ID</button>
+          <button type="button" data-lang="en" class="lang-btn" aria-pressed="false">EN</button>
+          <button type="button" data-lang="ko" class="lang-btn" aria-pressed="false">KO</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -171,33 +190,33 @@
   <section id="main" tabindex="-1" class="relative pt-32 pb-20 md:pt-44 md:pb-24 bg-ink overflow-hidden">
     <div class="hero-glow absolute inset-0 pointer-events-none"></div>
     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
-    <span class="absolute left-0 top-24 lg:top-16 font-display text-[24vw] lg:text-[12rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none leading-none">Tentang</span>
+    <span data-i18n="tentang.ghost" class="absolute left-0 top-24 lg:top-16 font-display text-[24vw] lg:text-[12rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none leading-none">Tentang</span>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-12 gap-14 lg:gap-16 items-center">
         <div class="lg:col-span-6">
           <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-500/10 border border-brand-500/20 rounded-full text-brand-300 text-sm font-medium mb-6 fade-in visible">
             <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse-glow"></span>
-            Tentang Centric Ecosystem
+            <span data-i18n="tentang.heroBadge">Tentang Centric Ecosystem</span>
           </div>
-          <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.05] tracking-tight text-balance mb-6 fade-in visible">
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.05] tracking-tight text-balance mb-6 fade-in visible" data-i18n-html="tentang.heroTitle">
             Tentang <span class="text-brand-300">Centric Ecosystem</span>
           </h1>
-          <p class="text-lg sm:text-xl text-slate-400 max-w-xl mb-10 fade-in visible">
+          <p class="text-lg sm:text-xl text-slate-400 max-w-xl mb-10 fade-in visible" data-i18n="tentang.heroDesc">
             Misi kami adalah menyediakan ekosistem solusi digital terintegrasi yang memberdayakan bisnis Indonesia untuk berkembang di era digital.
           </p>
           <div class="flex flex-wrap gap-4 fade-in visible">
             <a href="index.html#products" class="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-2xl btn-primary text-base magnetic-btn">
-              Jelajahi Produk
+              <span data-i18n="tentang.ctaProducts">Jelajahi Produk</span>
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
             <a href="hubungi-kami.html" class="inline-flex items-center gap-2 px-8 py-3.5 border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white font-semibold rounded-2xl btn-outline text-base magnetic-btn">
-              Hubungi Kami
+              <span data-i18n="tentang.ctaContact">Hubungi Kami</span>
             </a>
           </div>
           <div class="mt-10 pt-8 border-t border-white/10 flex flex-wrap items-center gap-x-8 gap-y-3 fade-in visible">
-            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 5 produk terintegrasi</span>
-            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Sejak 2024</span>
+            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span data-i18n="tentang.trustProducts">5 produk terintegrasi</span></span>
+            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span data-i18n="tentang.trustSince">Sejak 2024</span></span>
           </div>
         </div>
 
@@ -206,16 +225,16 @@
             <div class="absolute -top-5 -left-4 sm:-left-5 z-10 rounded-2xl bg-white text-slate-900 px-4 py-3 shadow-2xl shadow-brand-600/20 flex items-center gap-3 floating-badge">
               <span class="w-2.5 h-2.5 rounded-full bg-brand-500 shrink-0"></span>
               <div>
-                <p class="text-sm font-bold leading-none">Ekosistem Digital</p>
-                <p class="text-xs text-slate-500 mt-1">Satu platform, lima solusi</p>
+                <p class="text-sm font-bold leading-none"><span data-i18n="tentang.badgeTitle">Ekosistem Digital</span></p>
+                <p class="text-xs text-slate-500 mt-1"><span data-i18n="tentang.badgeSub">Satu platform, lima solusi</span></p>
               </div>
             </div>
 
             <div class="relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 shadow-2xl shadow-black/30">
               <div class="flex items-center justify-between mb-8">
                 <div>
-                  <p class="text-xs font-semibold text-slate-400 mb-1">Centric dalam angka</p>
-                  <p class="text-xl sm:text-2xl font-bold text-white leading-tight">Kepercayaan pelanggan</p>
+                  <p class="text-xs font-semibold text-slate-400 mb-1"><span data-i18n="tentang.cardLabel">Centric dalam angka</span></p>
+                  <p class="text-xl sm:text-2xl font-bold text-white leading-tight"><span data-i18n="tentang.cardTitle">Kepercayaan pelanggan</span></p>
                 </div>
                 <div class="w-11 h-11 rounded-2xl bg-brand-600 flex items-center justify-center shrink-0">
                   <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
@@ -225,27 +244,27 @@
               <div class="grid grid-cols-2 gap-8">
                 <div>
                   <div class="text-3xl sm:text-4xl font-bold text-white tabular mb-1"><span class="stat-number" data-target="14287">0</span><span class="text-brand-400">+</span></div>
-                  <div class="text-slate-400 text-sm">Klien Aktif</div>
+                  <div class="text-slate-400 text-sm" data-i18n="tentang.statActive">Klien Aktif</div>
                 </div>
                 <div>
                   <div class="text-3xl sm:text-4xl font-bold text-white tabular mb-1"><span class="stat-number" data-target="58300000">0</span><span class="text-brand-400">+</span></div>
-                  <div class="text-slate-400 text-sm">Interaksi Dihasilkan</div>
+                  <div class="text-slate-400 text-sm" data-i18n="tentang.statInteractions">Interaksi Dihasilkan</div>
                 </div>
                 <div>
                   <div class="text-3xl sm:text-4xl font-bold text-white tabular mb-1"><span class="stat-number" data-target="5">0</span></div>
-                  <div class="text-slate-400 text-sm">Produk Aktif</div>
+                  <div class="text-slate-400 text-sm" data-i18n="tentang.statProducts">Produk Aktif</div>
                 </div>
                 <div>
                   <div class="text-3xl sm:text-4xl font-bold text-white tabular mb-1"><span class="stat-number" data-target="96">0</span><span class="text-brand-400">%</span></div>
-                  <div class="text-slate-400 text-sm">Kepuasan Klien</div>
+                  <div class="text-slate-400 text-sm" data-i18n="tentang.statSatisfaction">Kepuasan Klien</div>
                 </div>
               </div>
 
               <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between">
-                <span class="text-xs text-slate-400">Konsistensi sejak awal</span>
+                <span class="text-xs text-slate-400"><span data-i18n="tentang.cardConsistency">Konsistensi sejak awal</span></span>
                 <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-300">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-glow"></span>
-                  Tumbuh setiap tahun
+                  <span data-i18n="tentang.cardGrowing">Tumbuh setiap tahun</span>
                 </span>
               </div>
             </div>
@@ -262,17 +281,27 @@
       <!-- Editorial: Siapa kami -->
       <div class="grid lg:grid-cols-12 gap-12 lg:gap-20 mb-24">
         <div class="lg:col-span-5 fade-in-left">
-          <span class="text-brand-600 font-semibold text-sm">Siapa kami</span>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-5 text-balance">Ekosistem digital yang dibangun untuk pertumbuhan</h2>
-          <p class="text-lg text-slate-500 mb-8">Centric Ecosystem adalah ekosistem produk digital yang saling terintegrasi, dirancang untuk membantu bisnis di Indonesia beroperasi lebih efisien dan tumbuh lebih cepat.</p>
+          <span class="text-brand-600 font-semibold text-sm"><span data-i18n="tentang.whoEyebrow">Siapa kami</span></span>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-5 text-balance" data-i18n="tentang.whoTitle">Ekosistem digital yang dibangun untuk pertumbuhan</h2>
+          <p class="text-lg text-slate-500 mb-8" data-i18n="tentang.whoDesc">Centric Ecosystem adalah ekosistem produk digital yang saling terintegrasi, dirancang untuk membantu bisnis di Indonesia beroperasi lebih efisien dan tumbuh lebih cepat.</p>
           <a href="index.html#products" class="inline-flex items-center gap-2 text-brand-600 font-semibold hover:text-brand-700 transition-colors">
-            Lihat semua produk
+            <span data-i18n="tentang.whoSeeAll">Lihat semua produk</span>
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
         </div>
         <div class="lg:col-span-7 space-y-6 text-slate-600 leading-relaxed fade-in-right">
-          <p>Kami percaya bahwa teknologi yang tepat dapat menjadi katalis utama dalam transformasi digital bisnis. Didirikan oleh para profesional yang berpengalaman di bidang teknologi dan bisnis digital, Centric Ecosystem menghadirkan solusi komprehensif yang mencakup meeting intelligence (Centric Meet), WhatsApp Gateway &amp; CRM (Centric Hub), social media marketing (Centric Buzz), link-building aggregator (Centric Link), dan platform karir jobseeker (Centric Seekr).</p>
-          <p>Dengan pendekatan ekosistem yang terintegrasi, kami memastikan setiap produk dapat digunakan secara independen maupun bersama-sama untuk memberikan nilai tambah maksimal bagi pelanggan kami.</p>
+          <p data-i18n="tentang.whoP1">Kami percaya bahwa teknologi yang tepat dapat menjadi katalis utama dalam transformasi digital bisnis. Didirikan oleh para profesional yang berpengalaman di bidang teknologi dan bisnis digital, Centric Ecosystem menghadirkan solusi komprehensif yang mencakup meeting intelligence (Centric Meet), WhatsApp Gateway &amp; CRM (Centric Hub), social media marketing (Centric Buzz), link-building aggregator (Centric Link), dan platform karir jobseeker (Centric Seekr).</p>
+          <p data-i18n="tentang.whoP2">Dengan pendekatan ekosistem yang terintegrasi, kami memastikan setiap produk dapat digunakan secara independen maupun bersama-sama untuk memberikan nilai tambah maksimal bagi pelanggan kami.</p>
+        </div>
+      </div>
+
+      <!-- ===== VIDEO PERKENALAN ===== -->
+      <div class="text-center mb-12 fade-in">
+        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900" data-i18n="tentang.videoTitle">Tonton pengenalan singkat Centric</h2>
+      </div>
+      <div class="relative max-w-4xl mx-auto mb-24 fade-in-up">
+        <div class="relative aspect-video rounded-3xl overflow-hidden bg-ink border border-slate-200 shadow-xl shadow-ink/10" style="aspect-ratio: 16 / 9">
+          <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube-nocookie.com/embed/Aa7xNlbS7T4?rel=0&amp;modestbranding=1" title="Video pengenalan Centric Ecosystem" data-i18n-aria="tentang.videoAria" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
       </div>
 
@@ -286,21 +315,21 @@
             <div class="w-14 h-14 rounded-2xl bg-brand-500/20 flex items-center justify-center mb-6">
               <svg class="w-7 h-7 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
             </div>
-            <h3 class="text-2xl font-bold text-white mb-4">Visi</h3>
-            <p class="text-slate-400 leading-relaxed">Menjadi ekosistem digital terdepan di Indonesia yang memberdayakan setiap bisnis untuk mencapai potensi penuh mereka melalui solusi teknologi yang inovatif, terintegrasi, dan mudah diakses.</p>
+            <h3 class="text-2xl font-bold text-white mb-4" data-i18n="tentang.visionTitle">Visi</h3>
+            <p class="text-slate-400 leading-relaxed" data-i18n="tentang.visionDesc">Menjadi ekosistem digital terdepan di Indonesia yang memberdayakan setiap bisnis untuk mencapai potensi penuh mereka melalui solusi teknologi yang inovatif, terintegrasi, dan mudah diakses.</p>
           </div>
         </div>
         <div class="bg-white rounded-3xl p-8 lg:p-10 border border-slate-200 shadow-sm fade-in-up stagger-1">
           <div class="w-14 h-14 rounded-2xl bg-brand-100 flex items-center justify-center mb-6">
             <svg class="w-7 h-7 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
           </div>
-          <h3 class="text-2xl font-bold text-slate-900 mb-4">Misi</h3>
+          <h3 class="text-2xl font-bold text-slate-900 mb-4" data-i18n="tentang.missionTitle">Misi</h3>
           <ul class="space-y-3 text-slate-600 leading-relaxed">
-            <li class="flex items-start gap-3"><span class="tabular w-6 h-6 shrink-0 rounded-lg bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center mt-0.5">01</span> Menyediakan produk digital berkualitas tinggi yang saling terintegrasi</li>
-            <li class="flex items-start gap-3"><span class="tabular w-6 h-6 shrink-0 rounded-lg bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center mt-0.5">02</span> Memberikan pengalaman pengguna yang seamless dan intuitif</li>
-            <li class="flex items-start gap-3"><span class="tabular w-6 h-6 shrink-0 rounded-lg bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center mt-0.5">03</span> Mendukung transformasi digital bisnis Indonesia dengan solusi terjangkau</li>
-            <li class="flex items-start gap-3"><span class="tabular w-6 h-6 shrink-0 rounded-lg bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center mt-0.5">04</span> Menjaga keamanan data dan privasi pelanggan sebagai prioritas utama</li>
-            <li class="flex items-start gap-3"><span class="tabular w-6 h-6 shrink-0 rounded-lg bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center mt-0.5">05</span> Memberikan dukungan pelanggan 24/7 yang responsif dan solutif</li>
+            <li class="flex items-start gap-3"><span class="tabular w-6 h-6 shrink-0 rounded-lg bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center mt-0.5">01</span> <span data-i18n="tentang.mission1">Menyediakan produk digital berkualitas tinggi yang saling terintegrasi</span></li>
+            <li class="flex items-start gap-3"><span class="tabular w-6 h-6 shrink-0 rounded-lg bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center mt-0.5">02</span> <span data-i18n="tentang.mission2">Memberikan pengalaman pengguna yang seamless dan intuitif</span></li>
+            <li class="flex items-start gap-3"><span class="tabular w-6 h-6 shrink-0 rounded-lg bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center mt-0.5">03</span> <span data-i18n="tentang.mission3">Mendukung transformasi digital bisnis Indonesia dengan solusi terjangkau</span></li>
+            <li class="flex items-start gap-3"><span class="tabular w-6 h-6 shrink-0 rounded-lg bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center mt-0.5">04</span> <span data-i18n="tentang.mission4">Menjaga keamanan data dan privasi pelanggan sebagai prioritas utama</span></li>
+            <li class="flex items-start gap-3"><span class="tabular w-6 h-6 shrink-0 rounded-lg bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center mt-0.5">05</span> <span data-i18n="tentang.mission5">Memberikan dukungan pelanggan 24/7 yang responsif dan solutif</span></li>
           </ul>
         </div>
       </div>
@@ -310,8 +339,8 @@
         <span class="absolute right-0 top-0 font-display text-[8rem] lg:text-[11rem] font-bold ghost-text-dark select-none pointer-events-none leading-none">2026</span>
         <div class="relative max-w-3xl mx-auto">
           <div class="text-center mb-16 fade-in">
-            <span class="text-brand-600 font-semibold text-sm">Perjalanan</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">Perjalanan kami</h2>
+            <span class="text-brand-600 font-semibold text-sm"><span data-i18n="tentang.timelineEyebrow">Perjalanan</span></span>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mt-3 mb-4" data-i18n="tentang.timelineTitle">Perjalanan kami</h2>
           </div>
           <div class="space-y-10">
             <div class="flex items-start gap-5 fade-in-up stagger-1">
@@ -320,9 +349,9 @@
                 <div class="w-0.5 flex-1 bg-gradient-to-b from-brand-200 to-transparent mt-3"></div>
               </div>
               <div class="pb-6">
-                <span class="font-display text-xs font-bold text-brand-600 tracking-widest">TONGGAK 01</span>
-                <h3 class="text-xl font-bold text-slate-900 mt-1 mb-2">Lahirnya Centric Ecosystem</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Centric Ecosystem didirikan dengan visi untuk menciptakan ekosistem produk digital terintegrasi pertama di Indonesia yang mencakup berbagai kebutuhan bisnis dalam satu platform.</p>
+                <span class="font-display text-xs font-bold text-brand-600 tracking-widest" data-i18n="tentang.milestone1Label">TONGGAK 01</span>
+                <h3 class="text-xl font-bold text-slate-900 mt-1 mb-2" data-i18n="tentang.milestone1Title">Lahirnya Centric Ecosystem</h3>
+                <p class="text-slate-500 text-sm leading-relaxed" data-i18n="tentang.milestone1Desc">Centric Ecosystem didirikan dengan visi untuk menciptakan ekosistem produk digital terintegrasi pertama di Indonesia yang mencakup berbagai kebutuhan bisnis dalam satu platform.</p>
               </div>
             </div>
             <div class="flex items-start gap-5 fade-in-up stagger-2">
@@ -331,9 +360,9 @@
                 <div class="w-0.5 flex-1 bg-gradient-to-b from-brand-200 to-transparent mt-3"></div>
               </div>
               <div class="pb-6">
-                <span class="font-display text-xs font-bold text-brand-600 tracking-widest">TONGGAK 02</span>
-                <h3 class="text-xl font-bold text-slate-900 mt-1 mb-2">Peluncuran produk pertama</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Centric Hub (WhatsApp Gateway &amp; CRM) dan Centric Buzz (SMM Platform) diluncurkan dan mendapatkan respon positif dari ribuan pengguna di Indonesia.</p>
+                <span class="font-display text-xs font-bold text-brand-600 tracking-widest" data-i18n="tentang.milestone2Label">TONGGAK 02</span>
+                <h3 class="text-xl font-bold text-slate-900 mt-1 mb-2" data-i18n="tentang.milestone2Title">Peluncuran produk pertama</h3>
+                <p class="text-slate-500 text-sm leading-relaxed" data-i18n="tentang.milestone2Desc">Centric Hub (WhatsApp Gateway &amp; CRM) dan Centric Buzz (SMM Platform) diluncurkan dan mendapatkan respon positif dari ribuan pengguna di Indonesia.</p>
               </div>
             </div>
             <div class="flex items-start gap-5 fade-in-up stagger-3">
@@ -341,9 +370,9 @@
                 <div class="w-12 h-12 rounded-2xl bg-brand-600 text-white flex items-center justify-center font-display font-bold text-sm shrink-0 shadow-lg shadow-brand-600/30">2026</div>
               </div>
               <div class="pb-0">
-                <span class="font-display text-xs font-bold text-brand-600 tracking-widest">TONGGAK 03</span>
-                <h3 class="text-xl font-bold text-slate-900 mt-1 mb-2">Ekspansi ekosistem</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Centric Meet (AI Meeting), Centric Link (LinkBackSeed Aggregator), dan Centric Seekr (Platform Karir Jobseeker) bergabung melengkapi ekosistem. Kami terus berinovasi untuk menghadirkan solusi terbaik bagi pelanggan.</p>
+                <span class="font-display text-xs font-bold text-brand-600 tracking-widest" data-i18n="tentang.milestone3Label">TONGGAK 03</span>
+                <h3 class="text-xl font-bold text-slate-900 mt-1 mb-2" data-i18n="tentang.milestone3Title">Ekspansi ekosistem</h3>
+                <p class="text-slate-500 text-sm leading-relaxed" data-i18n="tentang.milestone3Desc">Centric Meet (AI Meeting), Centric Link (LinkBackSeed Aggregator), dan Centric Seekr (Platform Karir Jobseeker) bergabung melengkapi ekosistem. Kami terus berinovasi untuk menghadirkan solusi terbaik bagi pelanggan.</p>
               </div>
             </div>
           </div>
@@ -385,11 +414,11 @@
           <a href="index.html" class="inline-flex items-center gap-3 mb-4">
             <img src="logo/logo_CC_putih.png" alt="Centric" class="h-8 w-auto brightness-0 invert opacity-90" />
           </a>
-          <p class="text-slate-400 text-sm leading-relaxed max-w-sm">Ekosistem solusi digital terintegrasi untuk mempercepat pertumbuhan bisnis Anda di era digital.</p>
+          <p class="text-slate-400 text-sm leading-relaxed max-w-sm" data-i18n="footer.tagline">Ekosistem solusi digital terintegrasi untuk mempercepat pertumbuhan bisnis Anda di era digital.</p>
         </div>
 
         <div class="lg:col-span-2">
-          <h4 class="text-white font-semibold mb-4">Produk</h4>
+          <h4 class="text-white font-semibold mb-4" data-i18n="footer.products">Produk</h4>
           <ul class="space-y-3">
             <li><a href="https://meet.customercentric.id" target="_blank" class="text-slate-400 hover:text-white text-sm transition-colors">Centric Meet</a></li>
             <li><a href="https://hub.customercentric.id" target="_blank" class="text-slate-400 hover:text-white text-sm transition-colors">Centric Hub</a></li>
@@ -400,17 +429,17 @@
         </div>
 
         <div class="lg:col-span-2">
-          <h4 class="text-white font-semibold mb-4">Perusahaan</h4>
+          <h4 class="text-white font-semibold mb-4" data-i18n="footer.company">Perusahaan</h4>
           <ul class="space-y-3">
-            <li><a href="tentang-kami.html" class="text-slate-400 hover:text-white text-sm transition-colors">Tentang Kami</a></li>
-            <li><a href="kebijakan-privasi.html" class="text-slate-400 hover:text-white text-sm transition-colors">Kebijakan Privasi</a></li>
-            <li><a href="syarat-ketentuan.html" class="text-slate-400 hover:text-white text-sm transition-colors">Syarat & Ketentuan</a></li>
-            <li><a href="hubungi-kami.html" class="text-slate-400 hover:text-white text-sm transition-colors">Hubungi Kami</a></li>
+            <li><a href="tentang-kami.html" data-i18n="footer.aboutLink" class="text-slate-400 hover:text-white text-sm transition-colors">Tentang Kami</a></li>
+            <li><a href="kebijakan-privasi.html" data-i18n="footer.privacyLink" class="text-slate-400 hover:text-white text-sm transition-colors">Kebijakan Privasi</a></li>
+            <li><a href="syarat-ketentuan.html" data-i18n="footer.termsLink" class="text-slate-400 hover:text-white text-sm transition-colors">Syarat & Ketentuan</a></li>
+            <li><a href="hubungi-kami.html" data-i18n="footer.contactLink" class="text-slate-400 hover:text-white text-sm transition-colors">Hubungi Kami</a></li>
           </ul>
         </div>
 
         <div class="lg:col-span-3">
-          <h4 class="text-white font-semibold mb-4">Kontak</h4>
+          <h4 class="text-white font-semibold mb-4" data-i18n="footer.contactHeading">Kontak</h4>
           <ul class="space-y-3">
             <li class="text-slate-400 text-sm">support@customercentric.id</li>
             <li class="text-slate-400 text-sm">+62 851-5612-2122</li>
@@ -419,7 +448,7 @@
         </div>
       </div>
       <div class="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-slate-500 text-sm">&copy; 2026 Centric Ecosystem. Hak Cipta Dilindungi.</p>
+        <p class="text-slate-500 text-sm" data-i18n="footer.rights">&copy; 2026 Centric Ecosystem. Hak Cipta Dilindungi.</p>
         <div class="flex items-center gap-4">
           <a href="https://www.instagram.com/customercentric.id" target="_blank" rel="noopener noreferrer" aria-label="Instagram Centric" class="text-slate-500 hover:text-brand-300 transition-colors">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
@@ -458,6 +487,16 @@
       });
     });
 
+    const counterLocale = () => {
+      const lang = window.ccI18n ? window.ccI18n.getLang() : 'id';
+      if (lang === 'en') return 'en-US';
+      if (lang === 'ko') return 'ko-KR';
+      return 'id-ID';
+    };
+    const formatStat = (el) => {
+      const target = parseInt(el.dataset.target) || 0;
+      return target <= 100 ? String(target) : target.toLocaleString(counterLocale());
+    };
     const animateCounters = () => {
       const counters = document.querySelectorAll('.stat-number');
       const observer = new IntersectionObserver((entries) => {
@@ -468,15 +507,16 @@
             const duration = 2000;
             const start = performance.now();
             const isSmall = target <= 100;
+            const locale = counterLocale();
 
             const update = (currentTime) => {
               const elapsed = currentTime - start;
               const progress = Math.min(elapsed / duration, 1);
               const eased = 1 - Math.pow(1 - progress, 3);
               const current = Math.floor(eased * target);
-              el.textContent = isSmall ? current : current.toLocaleString('id-ID');
+              el.textContent = isSmall ? current : current.toLocaleString(locale);
               if (progress < 1) requestAnimationFrame(update);
-              else el.textContent = isSmall ? target : target.toLocaleString('id-ID');
+              else { el.textContent = formatStat(el); el.classList.add('done'); }
             };
             requestAnimationFrame(update);
             observer.unobserve(el);
@@ -487,7 +527,11 @@
       counters.forEach(el => observer.observe(el));
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('cc:langchange', () => {
+      document.querySelectorAll('.stat-number.done').forEach(el => { el.textContent = formatStat(el); });
+    });
+
+    const boot = () => {
       const elements = document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .fade-in-up, .fade-scale');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -508,7 +552,20 @@
       }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
       elements.forEach(el => observer.observe(el));
       animateCounters();
-    });
+    };
+
+    const bootWithI18n = () => {
+      const initAll = () => {
+        if (window.ccI18n && window.ccI18n.readyPromise) {
+          window.ccI18n.readyPromise.then(boot).catch(boot);
+        } else {
+          boot();
+        }
+      };
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAll);
+      else initAll();
+    };
+    bootWithI18n();
   </script>
 </body>
 </html>

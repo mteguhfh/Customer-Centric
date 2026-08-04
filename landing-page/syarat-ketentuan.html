@@ -23,10 +23,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png" />
   <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=3" />
+  <link rel="stylesheet" href="css/style.css?v=4" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script src="js/i18n.js" defer></script>
   <style>
     html { scroll-behavior: smooth; overflow-x: clip; }
     body { overflow-x: clip; }
@@ -83,6 +84,14 @@
     .stagger-2 { transition-delay: 0.2s !important; }
     .stagger-3 { transition-delay: 0.3s !important; }
     .stagger-4 { transition-delay: 0.4s !important; }
+
+    /* ===== LANGUAGE SWITCHER ===== */
+    .lang-switch { display: inline-flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid rgba(255,255,255,0.12); border-radius: 9999px; background: rgba(255,255,255,0.05); }
+    .lang-switch.hide-on-mobile { display: none; }
+    @media (min-width: 768px) { .lang-switch.hide-on-mobile { display: inline-flex; } }
+    .lang-btn { padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; line-height: 1.25rem; color: #94a3b8; transition: color 0.2s ease, background-color 0.2s ease; }
+    .lang-btn:hover { color: #a4b1ff; }
+    .lang-btn.active { background: #3e4df0; color: #ffffff; }
   </style>
   <script type="application/ld+json">
   {
@@ -124,9 +133,9 @@
   }
   </script>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased">
+<body class="bg-slate-50 text-slate-900 antialiased" data-page="syarat">
 
-  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-slate-900 focus:px-5 focus:py-3 focus:rounded-xl focus:shadow-xl focus:text-sm focus:font-semibold">
+  <a href="#main" data-i18n="nav.skip" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-slate-900 focus:px-5 focus:py-3 focus:rounded-xl focus:shadow-xl focus:text-sm focus:font-semibold">
     Langsung ke konten
   </a>
 
@@ -140,12 +149,17 @@
           <img src="logo/logo_CC_putih.png" alt="Centric" class="h-8 md:h-9 w-auto brightness-0 invert" />
         </a>
         <div class="hidden md:flex items-center gap-8">
-          <a href="index.html" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Beranda</a>
-          <a href="tentang-kami.html" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Tentang</a>
-          <a href="hubungi-kami.html" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Kontak</a>
+          <a href="index.html" data-i18n="nav.home" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Beranda</a>
+          <a href="tentang-kami.html" data-i18n="nav.about" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Tentang</a>
+          <a href="hubungi-kami.html" data-i18n="nav.contact" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Kontak</a>
+        </div>
+        <div class="lang-switch hide-on-mobile" role="group" data-i18n-aria="nav.langLabel">
+          <button type="button" data-lang="id" class="lang-btn" aria-pressed="true">ID</button>
+          <button type="button" data-lang="en" class="lang-btn" aria-pressed="false">EN</button>
+          <button type="button" data-lang="ko" class="lang-btn" aria-pressed="false">KO</button>
         </div>
         <a href="index.html#products" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl btn-primary transition-all">
-          Jelajahi Produk
+          <span data-i18n="nav.exploreProducts">Jelajahi Produk</span>
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
         </a>
         <button id="menu-toggle" class="md:hidden p-2 text-slate-300 hover:text-white" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -157,10 +171,15 @@
     </div>
     <div id="mobile-menu" class="md:hidden hidden max-h-0 overflow-hidden mobile-menu">
       <div class="px-4 py-4 space-y-3 border-t border-brand-500/20">
-        <a href="index.html" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Beranda</a>
-        <a href="tentang-kami.html" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Tentang Kami</a>
-        <a href="hubungi-kami.html" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Hubungi Kami</a>
-        <a href="index.html#products" class="block w-full text-center px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl mt-2">Jelajahi Produk</a>
+        <a href="index.html" data-i18n="nav.home" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Beranda</a>
+        <a href="tentang-kami.html" data-i18n="nav.aboutFull" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Tentang Kami</a>
+        <a href="hubungi-kami.html" data-i18n="footer.contactLink" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Hubungi Kami</a>
+        <a href="index.html#products" data-i18n="nav.exploreProducts" class="block w-full text-center px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl mt-2">Jelajahi Produk</a>
+        <div class="lang-switch pt-2" role="group" data-i18n-aria="nav.langLabel">
+          <button type="button" data-lang="id" class="lang-btn" aria-pressed="true">ID</button>
+          <button type="button" data-lang="en" class="lang-btn" aria-pressed="false">EN</button>
+          <button type="button" data-lang="ko" class="lang-btn" aria-pressed="false">KO</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -169,21 +188,21 @@
   <section id="main" tabindex="-1" class="relative pt-32 pb-24 md:pt-44 md:pb-28 bg-ink overflow-hidden">
     <div class="hero-glow absolute inset-0 pointer-events-none"></div>
     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
-    <span class="absolute left-1/2 -translate-x-1/2 top-8 font-display text-[26vw] lg:text-[11rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none leading-none">Syarat</span>
+    <span data-i18n="syarat.ghost" class="absolute left-1/2 -translate-x-1/2 top-8 font-display text-[26vw] lg:text-[11rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none leading-none">Syarat</span>
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-500/10 border border-brand-500/20 rounded-full text-brand-300 text-sm font-medium mb-6 fade-in visible">
         <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse-glow"></span>
-        Aturan &amp; ketentuan layanan
+        <span data-i18n="syarat.heroBadge">Aturan &amp; ketentuan layanan</span>
       </div>
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-6 text-balance fade-in visible">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-6 text-balance fade-in visible" data-i18n-html="syarat.heroTitle">
         Syarat & <span class="text-brand-300">Ketentuan</span>
       </h1>
-      <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-8 fade-in visible">
+      <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-8 fade-in visible" data-i18n="syarat.heroDesc">
         Ketentuan yang mengatur penggunaan situs web dan seluruh produk Centric Ecosystem.
       </p>
       <span class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-slate-300 fade-in visible">
         <svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        Terakhir diperbarui: Mei 2026
+        <span data-i18n="syarat.updated">Terakhir diperbarui: Mei 2026</span>
       </span>
     </div>
   </section>
@@ -197,20 +216,20 @@
         <aside class="lg:col-span-4">
           <div class="lg:sticky lg:top-28 space-y-6">
             <div class="bg-white rounded-3xl border border-slate-200 p-8 fade-in-left">
-              <span class="text-brand-600 font-semibold text-sm">Daftar isi</span>
-              <h2 class="text-xl font-bold text-slate-900 mt-2 mb-6">Pada halaman ini</h2>
+              <span class="text-brand-600 font-semibold text-sm"><span data-i18n="syarat.toc">Daftar isi</span></span>
+              <h2 class="text-xl font-bold text-slate-900 mt-2 mb-6" data-i18n="syarat.tocTitle">Pada halaman ini</h2>
               <ul class="space-y-4">
-                <li><a href="#sec-1" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">01</span> Penerimaan Ketentuan</a></li>
-                <li><a href="#sec-2" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">02</span> Definisi</a></li>
-                <li><a href="#sec-3" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">03</span> Pendaftaran Akun</a></li>
-                <li><a href="#sec-4" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">04</span> Penggunaan Layanan</a></li>
-                <li><a href="#sec-5" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">05</span> Hak Kekayaan Intelektual</a></li>
-                <li><a href="#sec-6" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">06</span> Pembayaran &amp; Langganan</a></li>
-                <li><a href="#sec-7" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">07</span> Pembatasan Tanggung Jawab</a></li>
-                <li><a href="#sec-8" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">08</span> Penghentian</a></li>
-                <li><a href="#sec-9" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">09</span> Perubahan Ketentuan</a></li>
-                <li><a href="#sec-10" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">10</span> Hukum yang Berlaku</a></li>
-                <li><a href="#sec-11" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">11</span> Hubungi Kami</a></li>
+                <li><a href="#sec-1" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">01</span> <span data-i18n="syarat.toc1">Penerimaan Ketentuan</span></a></li>
+                <li><a href="#sec-2" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">02</span> <span data-i18n="syarat.toc2">Definisi</span></a></li>
+                <li><a href="#sec-3" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">03</span> <span data-i18n="syarat.toc3">Pendaftaran Akun</span></a></li>
+                <li><a href="#sec-4" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">04</span> <span data-i18n="syarat.toc4">Penggunaan Layanan</span></a></li>
+                <li><a href="#sec-5" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">05</span> <span data-i18n="syarat.toc5">Hak Kekayaan Intelektual</span></a></li>
+                <li><a href="#sec-6" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">06</span> <span data-i18n="syarat.toc6">Pembayaran &amp; Langganan</span></a></li>
+                <li><a href="#sec-7" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">07</span> <span data-i18n="syarat.toc7">Pembatasan Tanggung Jawab</span></a></li>
+                <li><a href="#sec-8" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">08</span> <span data-i18n="syarat.toc8">Penghentian</span></a></li>
+                <li><a href="#sec-9" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">09</span> <span data-i18n="syarat.toc9">Perubahan Ketentuan</span></a></li>
+                <li><a href="#sec-10" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">10</span> <span data-i18n="syarat.toc10">Hukum yang Berlaku</span></a></li>
+                <li><a href="#sec-11" class="flex items-baseline gap-3 text-sm text-slate-500 hover:text-brand-600 transition-colors"><span class="tabular text-slate-300 font-semibold w-5 shrink-0">11</span> <span data-i18n="syarat.toc11">Hubungi Kami</span></a></li>
               </ul>
             </div>
 
@@ -220,10 +239,10 @@
                 <div class="w-11 h-11 rounded-xl bg-brand-500/20 flex items-center justify-center mb-4">
                   <svg class="w-5 h-5 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                 </div>
-                <h3 class="text-white font-semibold mb-1.5">Punya pertanyaan?</h3>
-                <p class="text-slate-400 text-sm mb-5">Tim kami siap membantu Anda memahami ketentuan layanan.</p>
+                <h3 class="text-white font-semibold mb-1.5" data-i18n="syarat.cardTitle">Punya pertanyaan?</h3>
+                <p class="text-slate-400 text-sm mb-5" data-i18n="syarat.cardDesc">Tim kami siap membantu Anda memahami ketentuan layanan.</p>
                 <a href="hubungi-kami.html" class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl btn-primary transition-all">
-                  Hubungi Kami
+                  <span data-i18n="syarat.cardBtn">Hubungi Kami</span>
                   <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
               </div>
@@ -236,87 +255,87 @@
           <div class="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 md:p-14 fade-in-right space-y-10 text-slate-600 leading-relaxed">
 
             <div id="sec-1">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">01</span> Penerimaan Ketentuan</h2>
-              <p>Dengan mengakses atau menggunakan situs web customercentric.id dan/atau produk-produk Centric Ecosystem (Centric Meet, Centric Hub, Centric Buzz, Centric Link, dan Centric Seekr), Anda menyetujui untuk terikat oleh Syarat &amp; Ketentuan ini. Jika Anda tidak setuju dengan salah satu bagian dari ketentuan ini, Anda tidak diperbolehkan menggunakan Layanan kami.</p>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">01</span> <span data-i18n="syarat.s1Title">Penerimaan Ketentuan</span></h2>
+              <p data-i18n="syarat.s1P1">Dengan mengakses atau menggunakan situs web customercentric.id dan/atau produk-produk Centric Ecosystem (Centric Meet, Centric Hub, Centric Buzz, Centric Link, dan Centric Seekr), Anda menyetujui untuk terikat oleh Syarat &amp; Ketentuan ini. Jika Anda tidak setuju dengan salah satu bagian dari ketentuan ini, Anda tidak diperbolehkan menggunakan Layanan kami.</p>
             </div>
 
             <div id="sec-2">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">02</span> Definisi</h2>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">02</span> <span data-i18n="syarat.s2Title">Definisi</span></h2>
               <ul class="list-disc pl-6 space-y-2">
-                <li><strong>"Centric Ecosystem"</strong> atau <strong>"kami"</strong> merujuk pada pemilik dan operator situs web dan produk-produk terkait.</li>
-                <li><strong>"Layanan"</strong> merujuk pada seluruh produk, fitur, dan layanan yang disediakan oleh Centric Ecosystem.</li>
-                <li><strong>"Pengguna"</strong> atau <strong>"Anda"</strong> merujuk pada individu atau entitas yang menggunakan Layanan kami.</li>
-                <li><strong>"Konten"</strong> merujuk pada semua informasi, teks, gambar, video, data, atau materi lain yang diunggah atau dibuat melalui Layanan.</li>
+                <li data-i18n-html="syarat.s2Li1"><strong>"Centric Ecosystem"</strong> atau <strong>"kami"</strong> merujuk pada pemilik dan operator situs web dan produk-produk terkait.</li>
+                <li data-i18n-html="syarat.s2Li2"><strong>"Layanan"</strong> merujuk pada seluruh produk, fitur, dan layanan yang disediakan oleh Centric Ecosystem.</li>
+                <li data-i18n-html="syarat.s2Li3"><strong>"Pengguna"</strong> atau <strong>"Anda"</strong> merujuk pada individu atau entitas yang menggunakan Layanan kami.</li>
+                <li data-i18n-html="syarat.s2Li4"><strong>"Konten"</strong> merujuk pada semua informasi, teks, gambar, video, data, atau materi lain yang diunggah atau dibuat melalui Layanan.</li>
               </ul>
             </div>
 
             <div id="sec-3">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">03</span> Pendaftaran Akun</h2>
-              <p>Untuk menggunakan Layanan kami, Anda mungkin perlu mendaftar akun. Anda bertanggung jawab untuk:</p>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">03</span> <span data-i18n="syarat.s3Title">Pendaftaran Akun</span></h2>
+              <p data-i18n="syarat.s3Lead">Untuk menggunakan Layanan kami, Anda mungkin perlu mendaftar akun. Anda bertanggung jawab untuk:</p>
               <ul class="list-disc pl-6 mt-3 space-y-2">
-                <li>Memberikan informasi yang akurat, lengkap, dan terkini selama proses pendaftaran</li>
-                <li>Menjaga kerahasiaan kredensial akun Anda</li>
-                <li>Semua aktivitas yang terjadi di bawah akun Anda</li>
-                <li>Segera memberi tahu kami jika terjadi pelanggaran keamanan atau penggunaan tidak sah</li>
+                <li data-i18n="syarat.s3Li1">Memberikan informasi yang akurat, lengkap, dan terkini selama proses pendaftaran</li>
+                <li data-i18n="syarat.s3Li2">Menjaga kerahasiaan kredensial akun Anda</li>
+                <li data-i18n="syarat.s3Li3">Semua aktivitas yang terjadi di bawah akun Anda</li>
+                <li data-i18n="syarat.s3Li4">Segera memberi tahu kami jika terjadi pelanggaran keamanan atau penggunaan tidak sah</li>
               </ul>
-              <p class="mt-4">Kami berhak untuk menolak pendaftaran, menangguhkan, atau menghentikan akun jika informasi yang diberikan tidak akurat atau jika terjadi pelanggaran terhadap ketentuan ini.</p>
+              <p class="mt-4" data-i18n="syarat.s3P2">Kami berhak untuk menolak pendaftaran, menangguhkan, atau menghentikan akun jika informasi yang diberikan tidak akurat atau jika terjadi pelanggaran terhadap ketentuan ini.</p>
             </div>
 
             <div id="sec-4">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">04</span> Penggunaan Layanan</h2>
-              <p>Anda setuju untuk menggunakan Layanan hanya untuk tujuan yang sah dan sesuai dengan ketentuan ini. Anda dilarang untuk:</p>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">04</span> <span data-i18n="syarat.s4Title">Penggunaan Layanan</span></h2>
+              <p data-i18n="syarat.s4Lead">Anda setuju untuk menggunakan Layanan hanya untuk tujuan yang sah dan sesuai dengan ketentuan ini. Anda dilarang untuk:</p>
               <ul class="list-disc pl-6 mt-3 space-y-2">
-                <li>Melanggar hukum atau peraturan yang berlaku</li>
-                <li>Mengirimkan konten ilegal, mengancam, fitnah, atau melanggar hak pihak ketiga</li>
-                <li>Melakukan kegiatan yang dapat merusak, melumpuhkan, atau membebani infrastruktur Layanan</li>
-                <li>Mencoba mendapatkan akses tidak sah ke sistem atau jaringan kami</li>
-                <li>Menggunakan Layanan untuk mengirim spam, phishing, atau aktivitas penipuan lainnya</li>
-                <li>Merekayasa balik, mendekompilasi, atau membongkar bagian mana pun dari Layanan</li>
+                <li data-i18n="syarat.s4Li1">Melanggar hukum atau peraturan yang berlaku</li>
+                <li data-i18n="syarat.s4Li2">Mengirimkan konten ilegal, mengancam, fitnah, atau melanggar hak pihak ketiga</li>
+                <li data-i18n="syarat.s4Li3">Melakukan kegiatan yang dapat merusak, melumpuhkan, atau membebani infrastruktur Layanan</li>
+                <li data-i18n="syarat.s4Li4">Mencoba mendapatkan akses tidak sah ke sistem atau jaringan kami</li>
+                <li data-i18n="syarat.s4Li5">Menggunakan Layanan untuk mengirim spam, phishing, atau aktivitas penipuan lainnya</li>
+                <li data-i18n="syarat.s4Li6">Merekayasa balik, mendekomplilasi, atau membongkar bagian mana pun dari Layanan</li>
               </ul>
             </div>
 
             <div id="sec-5">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">05</span> Hak Kekayaan Intelektual</h2>
-              <p>Seluruh konten, fitur, dan fungsionalitas Layanan — termasuk namun tidak terbatas pada kode, desain, logo, merek dagang, teks, grafik, dan perangkat lunak — adalah milik Centric Ecosystem atau pemberi lisensinya dan dilindungi oleh hak cipta, merek dagang, dan undang-undang kekayaan intelektual lainnya.</p>
-              <p class="mt-4">Anda tidak diperbolehkan mereproduksi, mendistribusikan, memodifikasi, atau membuat karya turunan dari materi kami tanpa izin tertulis sebelumnya.</p>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">05</span> <span data-i18n="syarat.s5Title">Hak Kekayaan Intelektual</span></h2>
+              <p data-i18n="syarat.s5P1">Seluruh konten, fitur, dan fungsionalitas Layanan — termasuk namun tidak terbatas pada kode, desain, logo, merek dagang, teks, grafik, dan perangkat lunak — adalah milik Centric Ecosystem atau pemberi lisensinya dan dilindungi oleh hak cipta, merek dagang, dan undang-undang kekayaan intelektual lainnya.</p>
+              <p class="mt-4" data-i18n="syarat.s5P2">Anda tidak diperbolehkan mereproduksi, mendistribusikan, memodifikasi, atau membuat karya turunan dari materi kami tanpa izin tertulis sebelumnya.</p>
             </div>
 
             <div id="sec-6">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">06</span> Pembayaran dan Langganan</h2>
-              <p>Beberapa Layanan kami mungkin memerlukan pembayaran. Dengan mendaftar langganan berbayar, Anda setuju untuk:</p>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">06</span> <span data-i18n="syarat.s6Title">Pembayaran dan Langganan</span></h2>
+              <p data-i18n="syarat.s6Lead">Beberapa Layanan kami mungkin memerlukan pembayaran. Dengan mendaftar langganan berbayar, Anda setuju untuk:</p>
               <ul class="list-disc pl-6 mt-3 space-y-2">
-                <li>Membayar biaya yang berlaku sesuai dengan paket yang dipilih</li>
-                <li>Memberikan informasi pembayaran yang valid</li>
-                <li>Membayar semua pajak yang berlaku</li>
+                <li data-i18n="syarat.s6Li1">Membayar biaya yang berlaku sesuai dengan paket yang dipilih</li>
+                <li data-i18n="syarat.s6Li2">Memberikan informasi pembayaran yang valid</li>
+                <li data-i18n="syarat.s6Li3">Membayar semua pajak yang berlaku</li>
               </ul>
-              <p class="mt-4">Biaya langganan tidak dapat dikembalikan kecuali dinyatakan lain dalam kebijakan pengembalian dana kami.</p>
+              <p class="mt-4" data-i18n="syarat.s6P2">Biaya langganan tidak dapat dikembalikan kecuali dinyatakan lain dalam kebijakan pengembalian dana kami.</p>
             </div>
 
             <div id="sec-7">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">07</span> Pembatasan Tanggung Jawab</h2>
-              <p>Centric Ecosystem tidak bertanggung jawab atas kerusakan langsung, tidak langsung, insidental, konsekuensial, atau khusus yang timbul dari penggunaan atau ketidakmampuan menggunakan Layanan kami, bahkan jika kami telah diberitahu tentang kemungkinan kerusakan tersebut.</p>
-              <p class="mt-4">Layanan kami disediakan "sebagaimana adanya" dan "tersedia sebagaimana adanya" tanpa jaminan apa pun, baik tersurat maupun tersirat.</p>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">07</span> <span data-i18n="syarat.s7Title">Pembatasan Tanggung Jawab</span></h2>
+              <p data-i18n="syarat.s7P1">Centric Ecosystem tidak bertanggung jawab atas kerusakan langsung, tidak langsung, insidental, konsekuensial, atau khusus yang timbul dari penggunaan atau ketidakmampuan menggunakan Layanan kami, bahkan jika kami telah diberitahu tentang kemungkinan kerusakan tersebut.</p>
+              <p class="mt-4" data-i18n="syarat.s7P2">Layanan kami disediakan "sebagaimana adanya" dan "tersedia sebagaimana adanya" tanpa jaminan apa pun, baik tersurat maupun tersirat.</p>
             </div>
 
             <div id="sec-8">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">08</span> Penghentian</h2>
-              <p>Kami berhak untuk menangguhkan atau menghentikan akses Anda ke Layanan kapan saja, dengan atau tanpa pemberitahuan, jika Anda melanggar ketentuan ini atau untuk alasan operasional lainnya.</p>
-              <p class="mt-4">Setelah penghentian, hak Anda untuk menggunakan Layanan akan berakhir, dan Anda harus berhenti menggunakan Layanan serta, jika diminta, menghapus salinan konten yang Anda miliki.</p>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">08</span> <span data-i18n="syarat.s8Title">Penghentian</span></h2>
+              <p data-i18n="syarat.s8P1">Kami berhak untuk menangguhkan atau menghentikan akses Anda ke Layanan kapan saja, dengan atau tanpa pemberitahuan, jika Anda melanggar ketentuan ini atau untuk alasan operasional lainnya.</p>
+              <p class="mt-4" data-i18n="syarat.s8P2">Setelah penghentian, hak Anda untuk menggunakan Layanan akan berakhir, dan Anda harus berhenti menggunakan Layanan serta, jika diminta, menghapus salinan konten yang Anda miliki.</p>
             </div>
 
             <div id="sec-9">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">09</span> Perubahan Syarat &amp; Ketentuan</h2>
-              <p>Kami dapat mengubah Syarat &amp; Ketentuan ini dari waktu ke waktu. Perubahan akan diumumkan melalui Layanan kami. Dengan terus menggunakan Layanan setelah perubahan tersebut, Anda menyetujui ketentuan yang diperbarui.</p>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">09</span> <span data-i18n="syarat.s9Title">Perubahan Syarat &amp; Ketentuan</span></h2>
+              <p data-i18n="syarat.s9P1">Kami dapat mengubah Syarat &amp; Ketentuan ini dari waktu ke waktu. Perubahan akan diumumkan melalui Layanan kami. Dengan terus menggunakan Layanan setelah perubahan tersebut, Anda menyetujui ketentuan yang diperbarui.</p>
             </div>
 
             <div id="sec-10">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">10</span> Hukum yang Berlaku</h2>
-              <p>Syarat &amp; Ketentuan ini diatur oleh dan ditafsirkan sesuai dengan hukum Republik Indonesia. Setiap sengketa yang timbul dari ketentuan ini akan diselesaikan di pengadilan yang berwenang di Indonesia.</p>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">10</span> <span data-i18n="syarat.s10Title">Hukum yang Berlaku</span></h2>
+              <p data-i18n="syarat.s10P1">Syarat &amp; Ketentuan ini diatur oleh dan ditafsirkan sesuai dengan hukum Republik Indonesia. Setiap sengketa yang timbul dari ketentuan ini akan diselesaikan di pengadilan yang berwenang di Indonesia.</p>
             </div>
 
             <div id="sec-11">
-              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">11</span> Hubungi Kami</h2>
-              <p>Jika Anda memiliki pertanyaan tentang Syarat &amp; Ketentuan ini, silakan hubungi kami:</p>
+              <h2 class="text-2xl font-bold text-slate-900 mb-4"><span class="tabular text-brand-600">11</span> <span data-i18n="syarat.s11Title">Hubungi Kami</span></h2>
+              <p data-i18n="syarat.s11P1">Jika Anda memiliki pertanyaan tentang Syarat &amp; Ketentuan ini, silakan hubungi kami:</p>
               <ul class="mt-3 space-y-1">
                 <li>Email: support@customercentric.id</li>
                 <li>Telepon: +62 851-5612-2122</li>
@@ -336,19 +355,19 @@
       <div class="relative bg-ink rounded-3xl overflow-hidden fade-in-up">
         <div class="hero-glow absolute inset-0 pointer-events-none"></div>
         <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
-        <span class="absolute -right-4 -top-10 font-display text-[9rem] lg:text-[11rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none leading-none">Tanya</span>
+        <span data-i18n="syarat.ctaGhost" class="absolute -right-4 -top-10 font-display text-[9rem] lg:text-[11rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none leading-none">Tanya</span>
         <div class="relative p-8 lg:p-14 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
           <div class="flex items-start gap-5">
             <div class="w-14 h-14 shrink-0 rounded-2xl bg-brand-500/20 flex items-center justify-center">
               <svg class="w-7 h-7 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
             </div>
             <div>
-              <h3 class="text-2xl font-bold text-white mb-2">Punya pertanyaan soal ketentuan?</h3>
-              <p class="text-slate-400 leading-relaxed max-w-xl">Tim kami siap membantu menjelaskan aturan layanan Centric Ecosystem.</p>
+              <h3 class="text-2xl font-bold text-white mb-2" data-i18n="syarat.ctaTitle">Punya pertanyaan soal ketentuan?</h3>
+              <p class="text-slate-400 leading-relaxed max-w-xl" data-i18n="syarat.ctaDesc">Tim kami siap membantu menjelaskan aturan layanan Centric Ecosystem.</p>
             </div>
           </div>
           <a href="hubungi-kami.html" class="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl btn-primary transition-all shrink-0">
-            Hubungi Kami
+            <span data-i18n="syarat.ctaBtn">Hubungi Kami</span>
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
         </div>
@@ -364,10 +383,10 @@
           <a href="index.html" class="inline-flex items-center gap-3 mb-4">
             <img src="logo/logo_CC_putih.png" alt="Centric" class="h-8 w-auto brightness-0 invert opacity-90" />
           </a>
-          <p class="text-slate-400 text-sm leading-relaxed max-w-sm">Ekosistem solusi digital terintegrasi untuk mempercepat pertumbuhan bisnis Anda di era digital.</p>
+          <p class="text-slate-400 text-sm leading-relaxed max-w-sm" data-i18n="footer.tagline">Ekosistem solusi digital terintegrasi untuk mempercepat pertumbuhan bisnis Anda di era digital.</p>
         </div>
         <div class="lg:col-span-2">
-          <h4 class="text-white font-semibold mb-4">Produk</h4>
+          <h4 class="text-white font-semibold mb-4" data-i18n="footer.products">Produk</h4>
           <ul class="space-y-3">
             <li><a href="https://meet.customercentric.id" target="_blank" class="text-slate-400 hover:text-white text-sm transition-colors">Centric Meet</a></li>
             <li><a href="https://hub.customercentric.id" target="_blank" class="text-slate-400 hover:text-white text-sm transition-colors">Centric Hub</a></li>
@@ -377,16 +396,16 @@
           </ul>
         </div>
         <div class="lg:col-span-2">
-          <h4 class="text-white font-semibold mb-4">Perusahaan</h4>
+          <h4 class="text-white font-semibold mb-4" data-i18n="footer.company">Perusahaan</h4>
           <ul class="space-y-3">
-            <li><a href="tentang-kami.html" class="text-slate-400 hover:text-white text-sm transition-colors">Tentang Kami</a></li>
-            <li><a href="kebijakan-privasi.html" class="text-slate-400 hover:text-white text-sm transition-colors">Kebijakan Privasi</a></li>
-            <li><a href="syarat-ketentuan.html" class="text-slate-400 hover:text-white text-sm transition-colors">Syarat & Ketentuan</a></li>
-            <li><a href="hubungi-kami.html" class="text-slate-400 hover:text-white text-sm transition-colors">Hubungi Kami</a></li>
+            <li><a href="tentang-kami.html" data-i18n="footer.aboutLink" class="text-slate-400 hover:text-white text-sm transition-colors">Tentang Kami</a></li>
+            <li><a href="kebijakan-privasi.html" data-i18n="footer.privacyLink" class="text-slate-400 hover:text-white text-sm transition-colors">Kebijakan Privasi</a></li>
+            <li><a href="syarat-ketentuan.html" data-i18n="footer.termsLink" class="text-slate-400 hover:text-white text-sm transition-colors">Syarat & Ketentuan</a></li>
+            <li><a href="hubungi-kami.html" data-i18n="footer.contactLink" class="text-slate-400 hover:text-white text-sm transition-colors">Hubungi Kami</a></li>
           </ul>
         </div>
         <div class="lg:col-span-3">
-          <h4 class="text-white font-semibold mb-4">Kontak</h4>
+          <h4 class="text-white font-semibold mb-4" data-i18n="footer.contactHeading">Kontak</h4>
           <ul class="space-y-3">
             <li class="text-slate-400 text-sm">support@customercentric.id</li>
             <li class="text-slate-400 text-sm">+62 851-5612-2122</li>
@@ -395,7 +414,7 @@
         </div>
       </div>
       <div class="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-slate-500 text-sm">&copy; 2026 Centric Ecosystem. Hak Cipta Dilindungi.</p>
+        <p class="text-slate-500 text-sm" data-i18n="footer.rights">&copy; 2026 Centric Ecosystem. Hak Cipta Dilindungi.</p>
         <div class="flex items-center gap-4">
           <a href="https://www.instagram.com/customercentric.id" target="_blank" rel="noopener noreferrer" aria-label="Instagram Centric" class="text-slate-500 hover:text-brand-300 transition-colors">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>

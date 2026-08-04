@@ -1,12 +1,24 @@
 {
   "hero": {
-    "headline": "Ekosistem Digital untuk <span class=\"text-brand-300\">Percepatan Bisnis</span> Anda",
-    "subheadline": "Centric menghadirkan 5 produk unggulan yang saling terintegrasi — dari meeting intelligence, WhatsApp CRM, social media marketing, link-building, hingga platform karir — untuk mendorong pertumbuhan bisnis Anda."
+    "headline": {
+      "id": "Ekosistem Digital untuk <span class=\"text-brand-300\">Percepatan Bisnis</span> Anda",
+      "en": "A Digital Ecosystem for <span class=\"text-brand-300\">Business Acceleration</span>",
+      "ko": "비즈니스 <span class=\"text-brand-300\">성장 가속화</span>를 위한 디지털 생태계"
+    },
+    "subheadline": {
+      "id": "Centric menghadirkan 5 produk unggulan yang saling terintegrasi — dari meeting intelligence, WhatsApp CRM, social media marketing, link-building, hingga platform karir — untuk mendorong pertumbuhan bisnis Anda.",
+      "en": "Centric brings together 5 flagship, fully integrated products — from meeting intelligence, WhatsApp CRM, social media marketing, link-building, to a career platform — to drive your business growth.",
+      "ko": "Centric은 미팅 인텔리전스, WhatsApp CRM, 소셜 미디어 마케팅, 링크빌딩부터 커리어 플랫폼까지 — 완전히 통합된 5가지 대표 제품으로 비즈니스 성장을 견인합니다."
+    }
   },
   "testimonials": [
     {
       "id": 1,
-      "quote": "Centric Hub benar-benar membantu tim sales kami. WA Gateway-nya stabil, fitur broadcast-nya powerful banget. Recommended!",
+      "quote": {
+        "id": "Centric Hub benar-benar membantu tim sales kami. WA Gateway-nya stabil, fitur broadcast-nya powerful banget. Recommended!",
+        "en": "Centric Hub has truly helped our sales team. The WA Gateway is stable and the broadcast feature is incredibly powerful. Recommended!",
+        "ko": "Centric Hub는 영업팀에 정말 큰 도움이 되었습니다. WA 게이트웨이가 안정적이고 브로드캐스트 기능도 매우 강력합니다. 추천합니다!"
+      },
       "name": "Andi Pratama",
       "role": "CEO",
       "company": "TechStart Inc.",
@@ -14,7 +26,11 @@
     },
     {
       "id": 2,
-      "quote": "Cece Buzz adalah SMM panel terbaik yang pernah saya pakai. Proses cepat, harga kompetitif, dan support 24/7-nya luar biasa.",
+      "quote": {
+        "id": "Cece Buzz adalah SMM panel terbaik yang pernah saya pakai. Proses cepat, harga kompetitif, dan support 24/7-nya luar biasa.",
+        "en": "Cece Buzz is the best SMM panel I have ever used. Fast process, competitive pricing, and outstanding 24/7 support.",
+        "ko": "Cece Buzz는 제가 사용해 본 SMM 패널 중 최고입니다. 처리 속도가 빠르고 가격도 경쟁력 있으며 24/7 지원이 훌륭합니다."
+      },
       "name": "Sari Dewi",
       "role": "Digital Marketer",
       "company": "Creativa Agency",
@@ -22,7 +38,11 @@
     },
     {
       "id": 3,
-      "quote": "Centric Meet menghemat waktu tim saya dalam membuat notulensi rapat. Fitur AI-nya akurat dan ringkasannya sangat membantu.",
+      "quote": {
+        "id": "Centric Meet menghemat waktu tim saya dalam membuat notulensi rapat. Fitur AI-nya akurat dan ringkasannya sangat membantu.",
+        "en": "Centric Meet has saved my team so much time writing meeting minutes. The AI features are accurate and the summaries are very helpful.",
+        "ko": "Centric Meet 덕분에 팀이 회의록 작성 시간을 크게 절약했습니다. AI 기능이 정확하고 요약도 매우 유용합니다."
+      },
       "name": "Bambang Kris",
       "role": "Operations Lead",
       "company": "FinCorp Group",
@@ -32,28 +52,68 @@
   "faq": [
     {
       "id": 1,
-      "question": "Apa itu Centric Ecosystem?",
-      "answer": "Centric Ecosystem adalah kumpulan produk digital yang saling terintegrasi, terdiri dari Centric Meet (AI Meeting), Centric Hub (WhatsApp CRM), Centric Buzz (SMM Platform), Centric Link (LinkBackSeed Aggregator), dan Centric Seekr (Platform Karir Jobseeker)."
+      "question": {
+        "id": "Apa itu Centric Ecosystem?",
+        "en": "What is the Centric Ecosystem?",
+        "ko": "Centric Ecosystem이란 무엇인가요?"
+      },
+      "answer": {
+        "id": "Centric Ecosystem adalah kumpulan produk digital yang saling terintegrasi, terdiri dari Centric Meet (AI Meeting), Centric Hub (WhatsApp CRM), Centric Buzz (SMM Platform), Centric Link (LinkBackSeed Aggregator), dan Centric Seekr (Platform Karir Jobseeker).",
+        "en": "The Centric Ecosystem is a collection of fully integrated digital products, comprising Centric Meet (AI Meeting), Centric Hub (WhatsApp CRM), Centric Buzz (SMM Platform), Centric Link (LinkBackSeed Aggregator), and Centric Seekr (Jobseeker Career Platform).",
+        "ko": "Centric Ecosystem은 완전히 통합된 디지털 제품 모음으로, Centric Meet(AI 미팅), Centric Hub(WhatsApp CRM), Centric Buzz(SMM 플랫폼), Centric Link(LinkBackSeed 애그리게이터), Centric Seekr(구직자 커리어 플랫폼)로 구성됩니다."
+      }
     },
     {
       "id": 2,
-      "question": "Apakah produk-produk Centric bisa digunakan terpisah?",
-      "answer": "Ya, setiap produk dapat digunakan secara independen sesuai kebutuhan Anda. Namun, ketika digunakan bersama-sama, integrasi antar produk memberikan nilai tambah yang lebih besar."
+      "question": {
+        "id": "Apakah produk-produk Centric bisa digunakan terpisah?",
+        "en": "Can Centric products be used separately?",
+        "ko": "Centric 제품을 개별적으로 사용할 수 있나요?"
+      },
+      "answer": {
+        "id": "Ya, setiap produk dapat digunakan secara independen sesuai kebutuhan Anda. Namun, ketika digunakan bersama-sama, integrasi antar produk memberikan nilai tambah yang lebih besar.",
+        "en": "Yes, every product can be used independently according to your needs. However, when used together, the integration between products delivers even greater value.",
+        "ko": "네, 모든 제품은 필요에 따라 독립적으로 사용할 수 있습니다. 다만 함께 사용하면 제품 간 통합을 통해 더 큰 가치를 얻을 수 있습니다."
+      }
     },
     {
       "id": 3,
-      "question": "Bagaimana cara mendaftar?",
-      "answer": "Kunjungi halaman produk yang ingin Anda gunakan, klik tombol 'Daftar' atau 'Mulai', dan ikuti proses registrasi. Pendaftaran gratis tanpa biaya tersembunyi."
+      "question": {
+        "id": "Bagaimana cara mendaftar?",
+        "en": "How do I sign up?",
+        "ko": "가입은 어떻게 하나요?"
+      },
+      "answer": {
+        "id": "Kunjungi halaman produk yang ingin Anda gunakan, klik tombol 'Daftar' atau 'Mulai', dan ikuti proses registrasi. Pendaftaran gratis tanpa biaya tersembunyi.",
+        "en": "Visit the product page you would like to use, click 'Sign Up' or 'Get Started', and follow the registration process. Registration is free with no hidden fees.",
+        "ko": "사용하려는 제품 페이지를 방문하여 '가입' 또는 '시작하기' 버튼을 클릭하고 등록 절차를 따르세요. 등록은 무료이며 숨은 비용이 없습니다."
+      }
     },
     {
       "id": 4,
-      "question": "Apakah ada dukungan teknis jika saya mengalami masalah?",
-      "answer": "Tentu! Tim support kami siap membantu 24/7 melalui WhatsApp, email, atau live chat. Kami berkomitmen untuk memberikan respon cepat dan solusi terbaik."
+      "question": {
+        "id": "Apakah ada dukungan teknis jika saya mengalami masalah?",
+        "en": "Is there technical support if I run into problems?",
+        "ko": "문제가 발생하면 기술 지원을 받을 수 있나요?"
+      },
+      "answer": {
+        "id": "Tentu! Tim support kami siap membantu 24/7 melalui WhatsApp, email, atau live chat. Kami berkomitmen untuk memberikan respon cepat dan solusi terbaik.",
+        "en": "Of course! Our support team is ready to help 24/7 via WhatsApp, email, or live chat. We are committed to providing fast responses and the best solutions.",
+        "ko": "물론입니다! 지원팀이 WhatsApp, 이메일, 라이브 채팅을 통해 24/7 도움을 드립니다. 빠른 응답과 최상의 솔루션을 약속드립니다."
+      }
     },
     {
       "id": 5,
-      "question": "Apakah data saya aman?",
-      "answer": "Keamanan data adalah prioritas utama kami. Semua produk Centric dibangun dengan standar keamanan tinggi, enkripsi data, dan kepatuhan terhadap regulasi perlindungan data."
+      "question": {
+        "id": "Apakah data saya aman?",
+        "en": "Is my data safe?",
+        "ko": "내 데이터는 안전한가요?"
+      },
+      "answer": {
+        "id": "Keamanan data adalah prioritas utama kami. Semua produk Centric dibangun dengan standar keamanan tinggi, enkripsi data, dan kepatuhan terhadap regulasi perlindungan data.",
+        "en": "Data security is our top priority. All Centric products are built with high security standards, data encryption, and compliance with data protection regulations.",
+        "ko": "데이터 보안은 우리의 최우선 과제입니다. 모든 Centric 제품은 높은 보안 기준, 데이터 암호화, 개인정보 보호 규정 준수를 바탕으로 구축되었습니다."
+      }
     }
   ]
 }

@@ -23,10 +23,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png" />
   <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/style.css?v=3" />
+  <link rel="stylesheet" href="css/style.css?v=4" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script src="js/i18n.js" defer></script>
   <style>
     html { scroll-behavior: smooth; overflow-x: clip; }
     body { overflow-x: clip; }
@@ -83,6 +84,14 @@
     .stagger-2 { transition-delay: 0.2s !important; }
     .stagger-3 { transition-delay: 0.3s !important; }
     .stagger-4 { transition-delay: 0.4s !important; }
+
+    /* ===== LANGUAGE SWITCHER ===== */
+    .lang-switch { display: inline-flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid rgba(255,255,255,0.12); border-radius: 9999px; background: rgba(255,255,255,0.05); }
+    .lang-switch.hide-on-mobile { display: none; }
+    @media (min-width: 768px) { .lang-switch.hide-on-mobile { display: inline-flex; } }
+    .lang-btn { padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; line-height: 1.25rem; color: #94a3b8; transition: color 0.2s ease, background-color 0.2s ease; }
+    .lang-btn:hover { color: #a4b1ff; }
+    .lang-btn.active { background: #3e4df0; color: #ffffff; }
   </style>
   <script type="application/ld+json">
   {
@@ -124,9 +133,9 @@
   }
   </script>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased">
+<body class="bg-slate-50 text-slate-900 antialiased" data-page="kontak">
 
-  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-slate-900 focus:px-5 focus:py-3 focus:rounded-xl focus:shadow-xl focus:text-sm focus:font-semibold">
+  <a href="#main" data-i18n="nav.skip" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-slate-900 focus:px-5 focus:py-3 focus:rounded-xl focus:shadow-xl focus:text-sm focus:font-semibold">
     Langsung ke konten
   </a>
 
@@ -140,12 +149,17 @@
           <img src="logo/logo_CC_putih.png" alt="Centric" class="h-8 md:h-9 w-auto brightness-0 invert" />
         </a>
         <div class="hidden md:flex items-center gap-8">
-          <a href="index.html" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Beranda</a>
-          <a href="tentang-kami.html" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Tentang</a>
-          <a href="hubungi-kami.html" class="nav-link text-sm font-medium text-white transition-colors" aria-current="page">Kontak</a>
+          <a href="index.html" data-i18n="nav.home" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Beranda</a>
+          <a href="tentang-kami.html" data-i18n="nav.about" class="nav-link text-sm font-medium text-slate-300 hover:text-brand-300 transition-colors">Tentang</a>
+          <a href="hubungi-kami.html" data-i18n="nav.contact" class="nav-link text-sm font-medium text-white transition-colors" aria-current="page">Kontak</a>
+        </div>
+        <div class="lang-switch hide-on-mobile" role="group" data-i18n-aria="nav.langLabel">
+          <button type="button" data-lang="id" class="lang-btn" aria-pressed="true">ID</button>
+          <button type="button" data-lang="en" class="lang-btn" aria-pressed="false">EN</button>
+          <button type="button" data-lang="ko" class="lang-btn" aria-pressed="false">KO</button>
         </div>
           <a href="index.html#products" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl btn-primary transition-all" style="box-shadow: 0 4px 20px rgba(62,77,240,0.3);">
-          Jelajahi Produk
+          <span data-i18n="nav.exploreProducts">Jelajahi Produk</span>
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
         </a>
         <button id="menu-toggle" class="md:hidden p-2 text-slate-300 hover:text-white" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -157,10 +171,15 @@
     </div>
     <div id="mobile-menu" class="md:hidden hidden max-h-0 overflow-hidden mobile-menu">
       <div class="px-4 py-4 space-y-3 border-t border-brand-500/20">
-        <a href="index.html" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Beranda</a>
-        <a href="tentang-kami.html" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Tentang Kami</a>
-        <a href="hubungi-kami.html" class="block text-sm font-medium text-white py-2">Hubungi Kami</a>
-        <a href="index.html#products" class="block w-full text-center px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl mt-2">Jelajahi Produk</a>
+        <a href="index.html" data-i18n="nav.home" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Beranda</a>
+        <a href="tentang-kami.html" data-i18n="nav.aboutFull" class="block text-sm font-medium text-slate-300 hover:text-brand-300 py-2">Tentang Kami</a>
+        <a href="hubungi-kami.html" data-i18n="footer.contactLink" class="block text-sm font-medium text-white py-2">Hubungi Kami</a>
+        <a href="index.html#products" data-i18n="nav.exploreProducts" class="block w-full text-center px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl mt-2">Jelajahi Produk</a>
+        <div class="lang-switch pt-2" role="group" data-i18n-aria="nav.langLabel">
+          <button type="button" data-lang="id" class="lang-btn" aria-pressed="true">ID</button>
+          <button type="button" data-lang="en" class="lang-btn" aria-pressed="false">EN</button>
+          <button type="button" data-lang="ko" class="lang-btn" aria-pressed="false">KO</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -169,33 +188,33 @@
   <section id="main" tabindex="-1" class="relative pt-32 pb-20 md:pt-44 md:pb-24 bg-ink overflow-hidden">
     <div class="hero-glow absolute inset-0 pointer-events-none"></div>
     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 40px 40px;"></div>
-    <span class="absolute right-0 top-24 lg:top-16 font-display text-[24vw] lg:text-[12rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none leading-none">Kontak</span>
+    <span data-i18n="kontak.ghost" class="absolute right-0 top-24 lg:top-16 font-display text-[24vw] lg:text-[12rem] font-bold ghost-text whitespace-nowrap select-none pointer-events-none leading-none">Kontak</span>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-12 gap-14 lg:gap-16 items-center">
         <div class="lg:col-span-6">
           <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-500/10 border border-brand-500/20 rounded-full text-brand-300 text-sm font-medium mb-6 fade-in visible">
             <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse-glow"></span>
-            Dukungan 24/7
+            <span data-i18n="kontak.heroBadge">Dukungan 24/7</span>
           </div>
-          <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.05] tracking-tight text-balance mb-6 fade-in visible">
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.05] tracking-tight text-balance mb-6 fade-in visible" data-i18n-html="kontak.heroTitle">
             Hubungi <span class="text-brand-300">Kami</span>
           </h1>
-          <p class="text-lg sm:text-xl text-slate-400 max-w-xl mb-10 fade-in visible">
+          <p class="text-lg sm:text-xl text-slate-400 max-w-xl mb-10 fade-in visible" data-i18n="kontak.heroDesc">
             Punya pertanyaan, saran, atau butuh bantuan? Tim kami siap membantu Anda 24/7 tanpa biaya konsultasi.
           </p>
           <div class="flex flex-wrap gap-4 fade-in visible">
             <a href="#form" class="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-2xl btn-primary text-base magnetic-btn">
-              Kirim Pesan
+              <span data-i18n="kontak.ctaMessage">Kirim Pesan</span>
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
             </a>
             <a href="#kontak" class="inline-flex items-center gap-2 px-8 py-3.5 border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white font-semibold rounded-2xl btn-outline text-base magnetic-btn">
-              Lihat Saluran Kontak
+              <span data-i18n="kontak.ctaChannels">Lihat Saluran Kontak</span>
             </a>
           </div>
           <div class="mt-10 pt-8 border-t border-white/10 flex flex-wrap items-center gap-x-8 gap-y-3 fade-in visible">
-            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Respon dalam 1-2 jam kerja</span>
-            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Tanpa biaya konsultasi</span>
+            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span data-i18n="kontak.trustResponse">Respon dalam 1-2 jam kerja</span></span>
+            <span class="flex items-center gap-2 text-sm text-slate-400"><svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span data-i18n="kontak.trustFree">Tanpa biaya konsultasi</span></span>
           </div>
         </div>
 
@@ -204,8 +223,8 @@
             <div class="relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-7 shadow-2xl shadow-black/30">
               <div class="flex items-center justify-between mb-6">
                 <div>
-                  <p class="text-xs font-semibold text-slate-400 mb-1">Saluran cepat</p>
-                  <p class="text-xl sm:text-2xl font-bold text-white leading-tight">Pilih cara favorit Anda</p>
+                  <p class="text-xs font-semibold text-slate-400 mb-1"><span data-i18n="kontak.cardLabel">Saluran cepat</span></p>
+                  <p class="text-xl sm:text-2xl font-bold text-white leading-tight"><span data-i18n="kontak.cardTitle">Pilih cara favorit Anda</span></p>
                 </div>
                 <div class="w-11 h-11 rounded-2xl bg-brand-600 flex items-center justify-center shrink-0">
                   <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
@@ -224,7 +243,7 @@
                 <a href="tel:+6285156122122" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-3 transition-colors">
                   <span class="w-10 h-10 shrink-0 rounded-xl bg-brand-500/15 flex items-center justify-center"><svg class="w-5 h-5 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></span>
                   <span class="min-w-0">
-                    <span class="block text-sm font-semibold text-white">Telepon</span>
+                    <span class="block text-sm font-semibold text-white"><span data-i18n="kontak.phone">Telepon</span></span>
                     <span class="block text-xs text-slate-400">+62 851-5612-2122</span>
                   </span>
                   <svg class="w-4 h-4 ml-auto text-slate-500 group-hover:text-brand-300 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -233,17 +252,17 @@
                   <span class="w-10 h-10 shrink-0 rounded-xl bg-emerald-500/15 flex items-center justify-center"><svg class="w-5 h-5 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></span>
                   <span class="min-w-0">
                     <span class="block text-sm font-semibold text-white">WhatsApp</span>
-                    <span class="block text-xs text-slate-400">Chat langsung, 24/7</span>
+                    <span class="block text-xs text-slate-400"><span data-i18n="kontak.waSub">Chat langsung, 24/7</span></span>
                   </span>
                   <svg class="w-4 h-4 ml-auto text-slate-500 group-hover:text-brand-300 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 </a>
               </div>
 
               <div class="mt-6 pt-5 border-t border-white/10 flex items-center justify-between">
-                <span class="text-xs text-slate-400">Semua saluran</span>
+                <span class="text-xs text-slate-400"><span data-i18n="kontak.cardAll">Semua saluran</span></span>
                 <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-300">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-glow"></span>
-                  Online sekarang
+                  <span data-i18n="kontak.online">Online sekarang</span>
                 </span>
               </div>
             </div>
@@ -260,42 +279,42 @@
 
         <!-- Left: Contact Info -->
         <div id="kontak" class="lg:col-span-5">
-          <span class="text-brand-600 font-semibold text-sm">Informasi kontak</span>
-          <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mt-3 mb-4 text-balance">Temukan cara terbaik untuk terhubung</h2>
-          <p class="text-lg text-slate-500 mb-10">Pilih saluran yang paling nyaman bagi Anda. Kami merespon semua pesan secepat mungkin.</p>
+          <span class="text-brand-600 font-semibold text-sm"><span data-i18n="kontak.infoEyebrow">Informasi kontak</span></span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mt-3 mb-4 text-balance" data-i18n="kontak.infoTitle">Temukan cara terbaik untuk terhubung</h2>
+          <p class="text-lg text-slate-500 mb-10" data-i18n="kontak.infoDesc">Pilih saluran yang paling nyaman bagi Anda. Kami merespon semua pesan secepat mungkin.</p>
 
           <div class="grid sm:grid-cols-2 gap-5">
             <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm fade-in-up stagger-1">
               <div class="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center mb-4">
                 <svg class="w-6 h-6 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
               </div>
-              <h3 class="font-bold text-slate-900 mb-1">Email</h3>
+              <h3 class="font-bold text-slate-900 mb-1" data-i18n="kontak.emailTitle">Email</h3>
               <p class="text-sm text-slate-500 leading-relaxed mb-3">support@customercentric.id</p>
-              <p class="text-xs text-slate-400">Respon dalam 1-2 jam kerja</p>
+              <p class="text-xs text-slate-400" data-i18n="kontak.emailResponse">Respon dalam 1-2 jam kerja</p>
             </div>
             <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm fade-in-up stagger-2">
               <div class="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center mb-4">
                 <svg class="w-6 h-6 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
               </div>
-              <h3 class="font-bold text-slate-900 mb-1">Telepon</h3>
+              <h3 class="font-bold text-slate-900 mb-1" data-i18n="kontak.phoneTitle">Telepon</h3>
               <p class="text-sm text-slate-500 leading-relaxed mb-3">+62 851-5612-2122</p>
-              <p class="text-xs text-slate-400">Senin - Jumat, 08:00 - 20:00 WIB</p>
+              <p class="text-xs text-slate-400" data-i18n="kontak.phoneHours">Senin - Jumat, 08:00 - 20:00 WIB</p>
             </div>
             <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm fade-in-up stagger-3">
               <div class="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center mb-4">
                 <svg class="w-6 h-6 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
               </div>
-              <h3 class="font-bold text-slate-900 mb-1">Live Chat</h3>
-              <p class="text-sm text-slate-500 leading-relaxed mb-3">Tersedia di setiap produk Centric</p>
-              <p class="text-xs text-slate-400">24/7 Support</p>
+              <h3 class="font-bold text-slate-900 mb-1" data-i18n="kontak.chatTitle">Live Chat</h3>
+              <p class="text-sm text-slate-500 leading-relaxed mb-3" data-i18n="kontak.chatSub">Tersedia di setiap produk Centric</p>
+              <p class="text-xs text-slate-400" data-i18n="kontak.chatHours">24/7 Support</p>
             </div>
             <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm fade-in-up stagger-4">
               <div class="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center mb-4">
                 <svg class="w-6 h-6 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               </div>
-              <h3 class="font-bold text-slate-900 mb-1">Alamat</h3>
-              <p class="text-sm text-slate-500 leading-relaxed mb-3">Digital Creative Space</p>
-              <p class="text-xs text-slate-400">Jakarta, Indonesia</p>
+              <h3 class="font-bold text-slate-900 mb-1" data-i18n="kontak.addressTitle">Alamat</h3>
+              <p class="text-sm text-slate-500 leading-relaxed mb-3" data-i18n="kontak.addressSub">Digital Creative Space</p>
+              <p class="text-xs text-slate-400" data-i18n="kontak.addressCity">Jakarta, Indonesia</p>
             </div>
           </div>
 
@@ -305,10 +324,10 @@
               <div class="w-11 h-11 rounded-xl bg-brand-500/20 flex items-center justify-center mb-4">
                 <svg class="w-5 h-5 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 0V16.5a2.25 2.25 0 01-2.25 2.25h-1.5a2.25 2.25 0 01-2.25-2.25v-2.25"/></svg>
               </div>
-              <h3 class="text-white font-semibold mb-1.5">Butuh bantuan cepat?</h3>
-              <p class="text-slate-400 text-sm mb-5">Temukan jawaban atas pertanyaan yang sering diajukan.</p>
+              <h3 class="text-white font-semibold mb-1.5" data-i18n="kontak.helpTitle">Butuh bantuan cepat?</h3>
+              <p class="text-slate-400 text-sm mb-5" data-i18n="kontak.helpDesc">Temukan jawaban atas pertanyaan yang sering diajukan.</p>
               <a href="index.html#faq" class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl btn-primary transition-all">
-                Lihat FAQ
+                <span data-i18n="kontak.helpBtn">Lihat FAQ</span>
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
               </a>
             </div>
@@ -318,41 +337,41 @@
         <!-- Right: Contact Form -->
         <div id="form" class="lg:col-span-7">
           <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 sm:p-10 fade-in-up">
-            <span class="text-brand-600 font-semibold text-sm">Form kontak</span>
-            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-2 mb-6">Kirim pesan</h2>
+            <span class="text-brand-600 font-semibold text-sm"><span data-i18n="kontak.formEyebrow">Form kontak</span></span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-2 mb-6" data-i18n="kontak.formTitle">Kirim pesan</h2>
             <form action="#" method="POST" id="contact-form" class="space-y-5" novalidate>
               <div>
-                <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5">Nama Lengkap</label>
-                <input type="text" id="name" name="name" autocomplete="name" required placeholder="Masukkan nama Anda" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm" />
-                <p id="name-error" class="hidden text-red-600 text-xs mt-1.5">Nama wajib diisi.</p>
+                <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5" data-i18n="kontak.formName">Nama Lengkap</label>
+                <input type="text" id="name" name="name" autocomplete="name" required placeholder="Masukkan nama Anda" data-i18n-placeholder="kontak.formNamePh" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm" />
+                <p id="name-error" class="hidden text-red-600 text-xs mt-1.5" data-i18n="kontak.formNameErr">Nama wajib diisi.</p>
               </div>
               <div>
-                <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
-                <input type="email" id="email" name="email" autocomplete="email" required placeholder="Masukkan email Anda" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm" />
-                <p id="email-error" class="hidden text-red-600 text-xs mt-1.5">Masukkan alamat email yang valid.</p>
+                <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5" data-i18n="kontak.formEmail">Email</label>
+                <input type="email" id="email" name="email" autocomplete="email" required placeholder="Masukkan email Anda" data-i18n-placeholder="kontak.formEmailPh" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm" />
+                <p id="email-error" class="hidden text-red-600 text-xs mt-1.5" data-i18n="kontak.formEmailErr">Masukkan alamat email yang valid.</p>
               </div>
               <div>
-                <label for="subject" class="block text-sm font-medium text-slate-700 mb-1.5">Subjek</label>
+                <label for="subject" class="block text-sm font-medium text-slate-700 mb-1.5" data-i18n="kontak.formSubject">Subjek</label>
                 <select id="subject" name="subject" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm">
-                  <option value="">Pilih subjek</option>
-                  <option value="info">Informasi Produk</option>
-                  <option value="support">Dukungan Teknis</option>
-                  <option value="billing">Penagihan & Pembayaran</option>
-                  <option value="partnership">Kerja Sama</option>
-                  <option value="other">Lainnya</option>
+                  <option value="" data-i18n="kontak.formSubjectPh">Pilih subjek</option>
+                  <option value="info" data-i18n="kontak.formOptInfo">Informasi Produk</option>
+                  <option value="support" data-i18n="kontak.formOptSupport">Dukungan Teknis</option>
+                  <option value="billing" data-i18n="kontak.formOptBilling">Penagihan &amp; Pembayaran</option>
+                  <option value="partnership" data-i18n="kontak.formOptPartnership">Kerja Sama</option>
+                  <option value="other" data-i18n="kontak.formOptOther">Lainnya</option>
                 </select>
-                <p id="subject-error" class="hidden text-red-600 text-xs mt-1.5">Silakan pilih subjek.</p>
+                <p id="subject-error" class="hidden text-red-600 text-xs mt-1.5" data-i18n="kontak.formSubjectErr">Silakan pilih subjek.</p>
               </div>
               <div>
-                <label for="message" class="block text-sm font-medium text-slate-700 mb-1.5">Pesan</label>
-                <textarea id="message" name="message" rows="5" required placeholder="Tulis pesan Anda di sini..." class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm resize-none"></textarea>
-                <p id="message-error" class="hidden text-red-600 text-xs mt-1.5">Pesan wajib diisi.</p>
+                <label for="message" class="block text-sm font-medium text-slate-700 mb-1.5" data-i18n="kontak.formMessage">Pesan</label>
+                <textarea id="message" name="message" rows="5" required placeholder="Tulis pesan Anda di sini..." data-i18n-placeholder="kontak.formMessagePh" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm resize-none"></textarea>
+                <p id="message-error" class="hidden text-red-600 text-xs mt-1.5" data-i18n="kontak.formMessageErr">Pesan wajib diisi.</p>
               </div>
               <button type="submit" id="submit-btn" class="w-full px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl btn-primary transition-all text-sm">
-                Kirim Pesan
+                <span data-i18n="kontak.formSubmit">Kirim Pesan</span>
                 <svg class="w-4 h-4 inline ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
               </button>
-              <div id="form-success" class="hidden p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-sm">Terima kasih! Pesan Anda telah terkirim. Tim kami akan segera menghubungi Anda.</div>
+              <div id="form-success" class="hidden p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-sm" data-i18n="kontak.formSuccess">Terima kasih! Pesan Anda telah terkirim. Tim kami akan segera menghubungi Anda.</div>
             </form>
           </div>
         </div>
@@ -369,11 +388,11 @@
           <a href="index.html" class="inline-flex items-center gap-3 mb-4">
             <img src="logo/logo_CC_putih.png" alt="Centric" class="h-8 w-auto brightness-0 invert opacity-90" />
           </a>
-          <p class="text-slate-400 text-sm leading-relaxed max-w-sm">Ekosistem solusi digital terintegrasi untuk mempercepat pertumbuhan bisnis Anda di era digital.</p>
+          <p class="text-slate-400 text-sm leading-relaxed max-w-sm" data-i18n="footer.tagline">Ekosistem solusi digital terintegrasi untuk mempercepat pertumbuhan bisnis Anda di era digital.</p>
         </div>
 
         <div class="lg:col-span-2">
-          <h4 class="text-white font-semibold mb-4">Produk</h4>
+          <h4 class="text-white font-semibold mb-4" data-i18n="footer.products">Produk</h4>
           <ul class="space-y-3">
             <li><a href="https://meet.customercentric.id" target="_blank" class="text-slate-400 hover:text-white text-sm transition-colors">Centric Meet</a></li>
             <li><a href="https://hub.customercentric.id" target="_blank" class="text-slate-400 hover:text-white text-sm transition-colors">Centric Hub</a></li>
@@ -384,17 +403,17 @@
         </div>
 
         <div class="lg:col-span-2">
-          <h4 class="text-white font-semibold mb-4">Perusahaan</h4>
+          <h4 class="text-white font-semibold mb-4" data-i18n="footer.company">Perusahaan</h4>
           <ul class="space-y-3">
-            <li><a href="tentang-kami.html" class="text-slate-400 hover:text-white text-sm transition-colors">Tentang Kami</a></li>
-            <li><a href="kebijakan-privasi.html" class="text-slate-400 hover:text-white text-sm transition-colors">Kebijakan Privasi</a></li>
-            <li><a href="syarat-ketentuan.html" class="text-slate-400 hover:text-white text-sm transition-colors">Syarat & Ketentuan</a></li>
-            <li><a href="hubungi-kami.html" class="text-slate-400 hover:text-white text-sm transition-colors">Hubungi Kami</a></li>
+            <li><a href="tentang-kami.html" data-i18n="footer.aboutLink" class="text-slate-400 hover:text-white text-sm transition-colors">Tentang Kami</a></li>
+            <li><a href="kebijakan-privasi.html" data-i18n="footer.privacyLink" class="text-slate-400 hover:text-white text-sm transition-colors">Kebijakan Privasi</a></li>
+            <li><a href="syarat-ketentuan.html" data-i18n="footer.termsLink" class="text-slate-400 hover:text-white text-sm transition-colors">Syarat & Ketentuan</a></li>
+            <li><a href="hubungi-kami.html" data-i18n="footer.contactLink" class="text-slate-400 hover:text-white text-sm transition-colors">Hubungi Kami</a></li>
           </ul>
         </div>
 
         <div class="lg:col-span-3">
-          <h4 class="text-white font-semibold mb-4">Kontak</h4>
+          <h4 class="text-white font-semibold mb-4" data-i18n="footer.contactHeading">Kontak</h4>
           <ul class="space-y-3">
             <li class="text-slate-400 text-sm">support@customercentric.id</li>
             <li class="text-slate-400 text-sm">+62 851-5612-2122</li>
@@ -403,7 +422,7 @@
         </div>
       </div>
       <div class="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-slate-500 text-sm">&copy; 2026 Centric Ecosystem. Hak Cipta Dilindungi.</p>
+        <p class="text-slate-500 text-sm" data-i18n="footer.rights">&copy; 2026 Centric Ecosystem. Hak Cipta Dilindungi.</p>
         <div class="flex items-center gap-4">
           <a href="https://www.instagram.com/customercentric.id" target="_blank" rel="noopener noreferrer" aria-label="Instagram Centric" class="text-slate-500 hover:text-brand-300 transition-colors">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
